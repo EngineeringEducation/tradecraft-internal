@@ -1,0 +1,111 @@
+
+<h1 id="title">Today</h1>
+<div class="row">
+<div class="col-md-4">
+    <h2>Schedule</h2>
+    {{#each schedule_blocks}}
+    <div class="schedule_block">
+      <strong>{{time}}</strong> {{type}} : <a href="curriculum/{{curriculum_id}}">{{title}}</a>
+    </div>
+    {{/each}}
+
+    <h2>Community Events</h2>
+    {{#each events}}
+      <div class="event">
+        <strong>{{date}}</strong>
+        {{#if href}}
+          <a href="{{href}}">
+        {{/if}}
+             {{title}}
+        {{#if href}}
+          </a>
+        {{/if}}
+         <label class="label label-{{label}}">{{type}}</label>
+      </div>
+    {{/each}}
+
+    <h2>News</h2>
+    {{#each news}}
+    <div class="news">
+      <a href="/news/{{id}}"><strong>{{title}}</strong></a> 
+    </div>
+    {{/each}}
+    <h2>Community Submissions</h2>
+    {{#each community}}
+    <div class="community_link">
+      <a href="{{link}}" target="_blank"><strong>{{title}}</strong></a> {{student_name}}
+      <a href="{{tweet}}" target="_blank">
+        <span class="social social-twitter" aria-hidden="true" style="font-size:24px;"></span>
+      </a>
+      <a href="{{facebook}}">
+        <span class="social social-facebook" aria-hidden="true" style="font-size:24px;"></span>
+      </a>
+    </div>
+    {{/each}}
+    
+    
+</div>
+<div class="col-md-8">
+    
+    <h2>Feedback</h2>
+    {{#each feedback}}
+    <div class="feedback">
+      <strong><a href="#">{{date}} {{title}}</a> </strong><button class="btn btn-warning btn-xs">Didn't Attend</button>
+    </div>
+    {{/each}}
+    
+
+    <h2>Your Assignments</h2>
+    {{#each assignments}}
+    <div class="assignment well">
+      <a href="#">{{title}}</a> <strong>Due {{due_date}}</strong><br>
+      {{notes}}
+      {{# if notes}} <br>{{/if}}
+      <button class="btn btn-primary btn-xs">Start</button> <button class="btn btn-success btn-xs">Turn In</button> <button class="btn btn-warning btn-xs">Help</button> <button class="btn btn-danger btn-xs">Abandon</button>
+    </div>
+    {{/each}}
+
+    <h2>Your Assignment Materials</h2>
+    {{#each assignments_materials}}
+    <div class="materials">
+      <a href="{{link}}">{{title}}</a>
+    </div>
+    {{/each}}
+    
+
+</div>
+
+<div class="col-md-8">
+  <h2>Progress</h2>
+  Front-End Web Development
+  <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+      <span class="sr-only">40% Complete (success)</span>
+    </div>
+  </div>
+  Server-side Development
+  <div class="progress">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+      <span class="sr-only">20% Complete</span>
+    </div>
+  </div>
+  iOS Development
+  <div class="progress">
+    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+      <span class="sr-only">60% Complete (warning)</span>
+    </div>
+  </div>
+  Algorithms
+  <div class="progress">
+    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+      <span class="sr-only">80% Complete (danger)</span>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#student_today_link').addClass("active")
+  })
+
+</script>

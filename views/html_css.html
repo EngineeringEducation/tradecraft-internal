@@ -1,0 +1,109 @@
+      <h1 id="title">HTML/CSS</h1>
+      <div class="row">
+      <div class="col-md-4">
+          <h2>Curriculum</h2>
+          <ul class="curriculum">
+            <li class="text-primary">Live code a basic page
+              <ul>
+                <li>Some</li>
+                <li>Examples</li>
+              </ul>
+            </li>
+            <li class="text-warning">Tags</li>
+            <li class="text-warning">Attributes</li>
+            <li class="text-warning">Classes</li>
+            <li class="text-warning">IDs</li>
+            <li class="text-primary">CSS</li>
+            <li class="text-success">The Box Model</li>
+            <li class="text-success">Linking Stylesheets</li>
+            <li class="text-success">CSS Frameworks</li>
+            <li class="text-success">The Grid System</li>
+          </ul>
+
+          
+          <h2>Prework</h2>
+          <div class="prework">
+            <ul>
+              <li><a href="http://teamtreehouse.com/tracks/front-end-web-development">Front-end Web Development Track on Treehouse</a></li>
+            </ul>
+          </div>
+
+
+          <h2>Exercises:</h2>
+          <div class="exercises">
+            <strong>Main:</strong>
+            <div class="main">
+            <ul>
+              <li><a href="https://github.com/lizTheDeveloper/HTML_Hackbright/blob/master/ex01/readme.md">Intro to HTML</a> (8 hours)</li>
+              <li><a href="https://github.com/TradecraftEngineering/Onboarding/blob/master/front-end/layout_exercise.md">Your Personal Brand</a> (20 hours)</li>
+            </ul>
+            </div>
+            <strong>Stretch Goals</strong>
+            <div class="stretch">
+              <ul>
+                <li><a href="https://github.com/TradecraftEngineering/Onboarding/tree/master/front-end#htmlcss">Other HTML Content</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <h2>Tutorials and Resources</h2>
+          <div class="tutorials">
+            <ul>
+              <li><a href="http://www.teaching-materials.org/htmlcss-1day/">Teaching-Materials HTML/CSS</a></li>
+              <li><a href="https://www.khanacademy.org/computing/computer-programming/html-css">Khan Academy's HTML/CSS Course by Pamela Fox</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference">Mozilla Reference</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-8">
+
+
+        To:&nbsp;<span class="label label-success">TC-All</span> &nbsp; From:&nbsp;<select id="from"><option value="liz@tradecrafted.com">liz</option><option value="janardan@tradecrafted.com">janardan</option></select>
+        <br>
+        Body:
+        <div id="email_container">
+          <textarea class="emailer" id="email_template">
+Hey Students,
+This is our first front-end web curriculum! If you haven't already, make sure you've looked at the prework for this curriculum. 
+<% if (prework) { %>
+<h2>Prework</h2>
+<%= prework %>
+<% } %>
+
+
+<h2>Curriculum</h2>
+<strong>We'll be covering these topics:</strong><br>
+<%= primary %>
+<br>
+
+<strong>And we'll review these if anyone needs them:</strong><br>
+<%= warning %>
+<br>
+
+<strong>If we get to them, we'll cover:</strong><br>
+<%= success %>
+<br>
+
+
+<h2>Exercises</h2>
+<%= main %>
+
+<strong>With stretch goals:</strong><br>
+<%= stretch %>
+<br>
+
+<h2>Tutorials and Resources</h2>
+<%= resources %>
+
+
+          </textarea>
+        </div>
+        <br>
+        <button class="btn btn-primary" id="send"> Send Mail! </button>
+        <button class="btn btn-primary" id="preview"> Preview Mail! </button>
+        <button class="btn btn-primary" id="edit"> Edit Mail! </button>
+
+        </div>
+      </div>
+    </div><!-- /.container -->
+

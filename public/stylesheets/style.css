@@ -1,0 +1,12 @@
+.body {
+	margin-top: 60px;
+}
+
+.emailer {
+	width : 80%;
+	height: 400px;
+}
+
+.done {
+	text-decoration: line-through;
+}
