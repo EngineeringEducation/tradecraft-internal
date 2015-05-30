@@ -11,8 +11,14 @@ var student = function student (config) {
 	
 }
 
-student.prototype.getToday = function() {
-
+student.prototype.getToday = function(cb) {
+	if (this.db) {
+		console.log("connected yay");
+		var db = this.db;
+	} else {
+		console.log("boo no db");	
+	}
+	var queryCount = 0;
 	var params = {
 		assignments : [
 			{
@@ -143,7 +149,44 @@ student.prototype.getToday = function() {
 		]
 
 	}
-	return params;
+
+	//Get student's assignments
+	db.query("SELECT a.title, a.short_notes AS notes, sa.due_date, sa.status FROM assignments a JOIN students_assignments sa ON sa.assignment_id = a.id;", function(err, results) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		queryCount = 7;
+		//pretty-fy the dates using moment
+		results.rows.forEach(function(assignment) {
+			assignment.due_date = moment(assignment.due_date).fromNow()
+		});
+		params.assignments = results.rows;
+		send(params);
+	});
+
+	//Get student's assignment materials ##FIXME
+	db.query("SELECT a.title, a.short_notes AS notes, sa.due_date, sa.status FROM assignments a JOIN students_assignments sa ON sa.assignment_id = a.id;", function(err, results) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		queryCount = 7;
+		//pretty-fy the dates using moment
+		results.rows.forEach(function(assignment) {
+			assignment.due_date = moment(assignment.due_date).fromNow()
+		});
+		params.assignments = results.rows;
+		send(params);
+	})
+
+
+	//Send once all the queries are finished running
+	function send (params) {
+		if (queryCount == 7) {
+			cb(params);
+		}
+	}
 }
 //functions
 

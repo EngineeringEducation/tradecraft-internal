@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var pg = require("pg");
 
 var routes = require('./routes/index');
 var student = require('./routes/student');
@@ -37,6 +38,7 @@ pg.connect(conString, function(err, client) {
 //Keep the DB accessible
 app.use(function(req, res, next) {
     req.db = db;
+    next();
 });
 
 app.use('/', routes);
