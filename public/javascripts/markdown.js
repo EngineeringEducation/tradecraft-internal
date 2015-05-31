@@ -15,6 +15,9 @@ var md = window.markdownit({
   }
 });
 
-var result = md.render($('markdown').html());
-$('markdown').html(result);
+
+$('markdown').each(function(i, e) {
+  var result = md.render($(e).html());
+  $(e).html(result);
+})
 

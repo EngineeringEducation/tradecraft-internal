@@ -2,6 +2,9 @@
 var _ = require("underscore");
 var moment = require('moment');
 
+//This is the stuff we'll take out when it's time to make a today controller
+var news = require('../routes/news');
+
 var student = function student (config) {
 	_.extend(this, config);
 	if (!this.db) {
@@ -11,6 +14,9 @@ var student = function student (config) {
 	
 }
 
+
+//This function is fucking giant. Also it makes student tightly coupled with like everything else.
+// We need to move "Today" controllers into their own thing so that it's less hideous and not so tightly coupled.
 student.prototype.getToday = function(cb) {
 	if (this.db) {
 		console.log("connected yay");
@@ -20,31 +26,6 @@ student.prototype.getToday = function(cb) {
 	}
 	var queryCount = 0;
 	var params = {
-		assignments : [
-			{
-				title : "Webapp Layout",
-				due_date : moment(moment(new Date()).add(2, "days")).fromNow()
-			},
-			{
-				title : "Eloquent JS",
-				due_date : moment(moment(new Date()).add(3, "days")).fromNow(),
-				notes : "Chapters 2-4 \n"
-			}
-		],
-		assignments_materials : [
-			{
-				link : "http://www.teaching-materials.org/htmlcss-1day/",
-				title : "Teaching-Materials HTML/CSS"
-			},
-			{
-				link : "https://www.khanacademy.org/computing/computer-programming/html-css",
-				title : "Khan Academy's HTML/CSS Course by Pamela Fox"
-			},
-			{
-				link : "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference",
-				title : "Mozilla Reference"
-			}
-		],
 		schedule_blocks : [
 			{
 				time: "9:30-11:30",
@@ -90,20 +71,6 @@ student.prototype.getToday = function(cb) {
 				type : "Networking",
 				label : "success",
 				href : "http://google.com/"
-			}
-		],
-		news : [
-			{
-				title : "Downstairs Front Bathroom is not working",
-				id : "1"
-			},
-			{
-				title : "Still need volunteers for tradeconf",
-				id : "2"
-			},
-			{
-				title : "An Announcement from Russ",
-				id : "3"
 			}
 		],
 		community : [
@@ -156,7 +123,7 @@ student.prototype.getToday = function(cb) {
 			console.log(err);
 			return;
 		}
-		queryCount = 7;
+		queryCount++;
 		//pretty-fy the dates using moment
 		results.rows.forEach(function(assignment) {
 			assignment.due_date = moment(assignment.due_date).fromNow()
@@ -165,25 +132,28 @@ student.prototype.getToday = function(cb) {
 		send(params);
 	});
 
-	//Get student's assignment materials ##FIXME
-	db.query("SELECT a.title, a.short_notes AS notes, sa.due_date, sa.status FROM assignments a JOIN students_assignments sa ON sa.assignment_id = a.id;", function(err, results) {
+	//Get student's assignment materials
+	db.query("SELECT am.link, am.description AS title, am.subjects FROM assignments_materials am JOIN students_assignments sa ON sa.assignment_id = am.assignment_id;", function(err, results) {
 		if (err) {
 			console.log(err);
 			return;
 		}
-		queryCount = 7;
+		queryCount++;
 		//pretty-fy the dates using moment
-		results.rows.forEach(function(assignment) {
-			assignment.due_date = moment(assignment.due_date).fromNow()
+		results.rows.forEach(function(materials) {
+			materials.subjects = materials.subjects.split(',');
 		});
-		params.assignments = results.rows;
+		params.assignments_materials = results.rows;
 		send(params);
 	})
+
+	//Get all the news
 
 
 	//Send once all the queries are finished running
 	function send (params) {
-		if (queryCount == 7) {
+		if (queryCount == 2) {
+			console.log("Got all queries");
 			cb(params);
 		}
 	}

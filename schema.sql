@@ -2,7 +2,7 @@ CREATE DATABASE tradecraft;
 
 \c tradecraft
 
-
+-- Curriculum Related Tables
 CREATE TABLE curriculum (
 	id serial PRIMARY KEY,
 	created timestamp DEFAULT NOW(),
@@ -76,7 +76,7 @@ CREATE TABLE assignments_materials (
 );
 
 
--- what cohorts, for what
+-- Student and Accounts tables
 CREATE TABLE cohorts ( 
 	id serial PRIMARY KEY,
 	created timestamp DEFAULT NOW(),
@@ -99,3 +99,10 @@ CREATE TABLE instructors (
 	name varchar(300),
 	google_auth_token varchar(300)
 );
+
+CREATE TABLE news (
+	id serial PRIMARY KEY,
+	created timestamp DEFAULT NOW(),
+	title text,
+	body text
+)
