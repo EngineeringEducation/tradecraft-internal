@@ -148,11 +148,21 @@ student.prototype.getToday = function(cb) {
 	})
 
 	//Get all the news
-
+	news.getNews(db, function(err, news) {
+		if (err) {
+			console.log("Error", err);
+			return;
+		}
+		queryCount++;
+		console.log("news: ", news);
+		params.news = news;
+		console.log("params.news: ", params.news);
+		send(params);
+	});
 
 	//Send once all the queries are finished running
 	function send (params) {
-		if (queryCount == 2) {
+		if (queryCount == 3) {
 			console.log("Got all queries");
 			cb(params);
 		}
@@ -161,12 +171,6 @@ student.prototype.getToday = function(cb) {
 //functions
 
 /////// For now, we're going to do this functional-style. Maybe we'll turn this into something cleaner later.
-
-
-
-
-
-
 
 //exports
 var exports

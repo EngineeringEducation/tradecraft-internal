@@ -12,15 +12,6 @@ router.get('/', function(req, res, next) {
 	})
 });
 
-router.get('/:id', function(req, res, next) {
-	getNews(req.db, function(err, news) {
-		if (!err) {
-			res.render('news/all_news', { "news": news });
-		}
-		
-	}, req.params.id)
-});
-
 router.get('/new', function(req, res, next) {
 	res.render("news/new_news");
 });
@@ -36,28 +27,39 @@ router.post('/new', function(req, res, next) {
 	}
 });
 
+//Has to come after /new or it will match /new and try to interpret it as an ID
+router.get('/:id', function(req, res, next) {
+	getNews(req.db, function(err, news) {
+		if (!err) {
+			res.render('news/all_news', { "news": news });
+		}
+		
+	}, req.params.id)
+});
+
 
 
 /// Not bothering with a whole complex model with News, probably have to throw together some analytics eventually
 //. but it's just not really worth it for now.
-
 function getNews (db, done, id) {
 	// This function is a bit damp.
 	if (id){
-		db.query("SELECT title, body FROM news WHERE id = $1;",[id], function(err, results) {
+		db.query("SELECT title, body, created, id FROM news WHERE id = $1;",[id], function(err, results) {
 			if (err) {
 				console.log(err);
 				done(err, null);
+			} else{
+				done(null, results.rows);
 			}
-			done(null, results.rows);
 		});
 	} else {
-		db.query("SELECT title, body FROM news;", function(err, results) {
+		db.query("SELECT title, body, created, id FROM news ORDER BY created desc;", function(err, results) {
 			if (err) {
 				console.log(err);
 				done(err, null);
+			} else{
+				done(null, results.rows);
 			}
-			done(null, results.rows);
 		});
 	}
 }
@@ -75,4 +77,4 @@ function newNews (db, title, body, done) {
 module.exports = router;
 //let's just reuse this code
 module.exports.getNews = getNews;
-module.exports.getNews = newNews;
+module.exports.newNews = newNews;
