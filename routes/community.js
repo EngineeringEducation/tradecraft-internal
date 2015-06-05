@@ -7,7 +7,7 @@ var community = new Community();
 /* GET home page. */
 // I typed the word "news" too many times for this and now it looks weird.
 router.get('/', function(req, res, next) {
-	community.getCommunityPage(req.db, req.user, id, function(errList, data) {
+	community.getCommunityPage(req.db, req.user, (req.query.page || 1), function(errList, data) {
 		res.render('community/news', data);
 	});
 });
