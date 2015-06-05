@@ -1,0 +1,153 @@
+<h1>Community Submissions</h1>
+
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">Newest</a></li>
+    <li role="presentation"><a href="#publishers" aria-controls="publishers" role="tab" data-toggle="tab">Top Publishers</a></li>
+    <li role="presentation"><a href="#links" aria-controls="links" role="tab" data-toggle="tab">Top Links</a></li>
+    <li role="presentation"><a href="#submit" aria-controls="submit" role="tab" data-toggle="tab">Submit</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="new">
+    	{{#each newest}}
+			<div class="submission row">
+				<div class="col-sm-2">
+					<div class="vote"  id="new_{{id}}">
+						<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					</div>
+					<div class="h4 well count count_{{id}}">{{votes}}</div>
+				</div>
+				<div class="col-sm-10">
+					<div class="col-sm-11">
+						<div class="h3" class="community_title">{{title}} by {{author}}</div> 
+					</div>
+				</div>
+			</div>
+		{{/each}}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="publishers">
+    	{{#each topMembers}}
+			<div class="submission row">
+				<div class="col-sm-2">
+					<div class="vote" id="publisher_{{id}}">
+						<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					</div>
+					<div class="h4 well count count_{{id}}">{{votes}}</div>
+				</div>
+				<div class="col-sm-10">
+					<div class="col-sm-11">
+						<div class="h3" class="community_title">{{title}} by {{author}}</div> 
+					</div>
+				</div>
+			</div>
+		{{/each}}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="links">
+    	{{#each topOthers}}
+			<div class="submission row">
+				<div class="col-sm-2">
+					<div class="vote" id="links_{{id}}">
+						<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					</div>
+					<div class="h4 well count count_{{id}}">{{votes}}</div>
+				</div>
+				<div class="col-sm-10">
+					<div class="col-sm-11">
+						<div class="h3" class="community_title">{{title}} by {{author}}</div> 
+					</div>
+				</div>
+			</div>
+		{{/each}}
+   	</div>
+    <div role="tabpanel" class="tab-pane" id="submit">
+    	<h1 id="title">New Community Post</h1>
+
+		<h3>Guidelines</h3>
+		<p>This form is to submit things you've written, for feedback and for sharing amongst the community, or to share things you feel are of educational value. If you wrote it, summarize it. If you learned something from it, tell us what you learned. Make sure it's clear why we should spend our time on this post :)</p>
+
+		<form class="form-horizontal" action="/community/submit" method="POST">
+			<div class="form-group">
+				<div class="col-sm-2">
+			    	<label for="exampleInputEmail1">Link</label>
+			   	</div>
+			   	<div class="col-sm-8">
+			    	<input class="form-control" type="text" name="link" id="link" placeholder="http://google.com/">
+			    </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2">
+			    	<label for="exampleInputEmail1">Link Title</label>
+			   	</div>
+			   	<div class="col-sm-8">
+			    	<input class="form-control" type="text" name="title" id="title" placeholder="How I Hacked My Way To Awesomeness">
+			    </div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-2">
+			    	<label for="exampleInputEmail1">Description</label>
+			   	</div>
+			   	<div class="col-sm-8">
+			    	<textarea class="form-control" type="text" name="description" id="description" placeholder="I wrote this about how I networked my way into a job at our last alumni mixer!" rows="4"></textarea>
+			    </div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-1">
+				    <label for="exampleInputEmail1">Author</label>
+				</div>
+				<div class="col-sm-1">
+				    <input type="checkbox" name="self" id="is_self" checked> Me
+			    </div>
+			    <div class="col-sm-8">
+			    	<input class="form-control" type="text" name="author" id="author" placeholder="Steve Jobs">
+			    </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-1">
+					<label for="tweet_data">Tweet</label>
+				</div>
+				<div class="col-sm-4">
+					<input type="radio" value="tweet_link_option" id="tweet_link_option" name="tweet_data_type"> Tweet Link (to RT an already-created tweet) <br>
+					<input type="radio" value="tweet_new_option" id="tweet_new_option" name="tweet_data_type" checked> Tweet Text (so they can uniquely tweet their own tweet)
+				</div>
+				<div class="col-sm-6">
+					<input type="text" id="tweet_data" name="tweet_data" class="form-control" placeholder="A great read! bit.ly/awesomeTC h/t @tradecraft #killingit">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-1">
+					<label for="tweet_data">Facebook</label>
+				</div>
+				<div class="col-sm-4">
+					<input type="radio" value="fb_link_option" id="fb_link_option" name="fb_data_type"> FB Link (to share an already-created FB Post) <br>
+					<input type="radio" value="fb_new_option" id="fb_new_option" name="fb_data_type" checked> Post Text (so they can uniquely post their own fb post (link from article will be link shared))
+				</div>
+				<div class="col-sm-6">
+					<input type="text" id="fb_data" name="fb_data" class="form-control" placeholder="Tradecraft killing it again with this awesome post. Gotta love this great content!">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-2">
+					<button class="btn btn-success">Submit</button>
+				</div>
+			</div>
+		</form>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<script type="text/javascript" src="javascripts/community.js"></script>

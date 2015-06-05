@@ -1,0 +1,94 @@
+
+      <h1 id="title">{{title}}</h1>
+      <div class="row">
+      <div class="col-md-4">
+          <h2>Curriculum</h2>
+          <ul class="curriculum">
+            
+            <li class="text-primary">Live code a basic page</li>
+            
+            <li class="text-primary">CSS</li>
+           
+            <li class="text-success">The Grid System</li>
+          </ul>
+
+          
+          <h2>Prework</h2>
+          <div class="prework">
+            <ul>
+              <li><a href="http://teamtreehouse.com/tracks/front-end-web-development">Front-end Web Development Track on Treehouse</a></li>
+            </ul>
+          </div>
+
+
+          <h2>Exercises:</h2>
+          <div class="exercises">
+            <strong>Main:</strong>
+            <div class="main">
+            <ul>
+              <li>Some Thing!</li>
+              
+            </ul>
+            </div>
+            <strong>Stretch Goals</strong>
+            <div class="stretch">
+              <ul>
+                <li><a href="https://github.com/TradecraftEngineering/Onboarding/tree/master/front-end">Other Content</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <h2>Tutorials and Resources</h2>
+          <div class="tutorials">
+            <ul>
+              <li></li>
+              <li></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference">Mozilla Reference</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-8">
+
+
+        To:&nbsp;<span class="label label-success">TC-All</span> &nbsp; From:&nbsp;<select id="from"><option value="liz@tradecrafted.com">liz</option><option value="janardan@tradecrafted.com">janardan</option></select>
+        <br>
+        Body:
+        <div id="email_container">
+          <textarea class="emailer" id="email_template">
+Hey Students,
+<% if (prework) { %>
+If you haven't already, make sure you've looked at the prework for this curriculum. 
+<h2>Prework</h2>
+<%= prework %>
+<% } %>
+
+<h2>Curriculum</h2>
+We'll be covering these topics:<br>
+<%= primary %>
+
+And we'll review these if anyone needs them:<br>
+<%= warning %>
+
+If we get to them, we'll cover:<br>
+<%= success %>
+
+
+<h2>Exercises</h2>
+<%= main %>
+
+With stretch goals:<br>
+<%= stretch %>
+
+<h2>Tutorials and Resources</h2>
+<%= resources %>
+
+
+          </textarea>
+        </div>
+        <br>
+        <button class="btn btn-primary" id="send"> Send Mail! </button>
+        <button class="btn btn-primary" id="preview"> Preview Mail! </button>
+        <button class="btn btn-primary" id="edit"> Edit Mail! </button>
+
+        </div>
+      </div>

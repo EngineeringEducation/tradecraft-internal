@@ -1,3 +1,5 @@
+DROP DATABASE tradecraft;
+
 CREATE DATABASE tradecraft;
 
 \c tradecraft
@@ -83,7 +85,7 @@ CREATE TABLE cohorts (
 	generation varchar(40), -- tc12, tc13, etc
 	week_offset int -- how many weeks after "true" did they start (true is 12 and 16 etc)
 );
-CREATE TABLE students (
+CREATE TABLE users (
 	id serial PRIMARY KEY,
 	created timestamp DEFAULT NOW(),
 	name varchar(300),
@@ -93,16 +95,42 @@ CREATE TABLE students (
 	cohort varchar(40),
 	start_date timestamp
 );
-CREATE TABLE instructors (
-	id serial PRIMARY KEY,
-	created timestamp DEFAULT NOW(),
-	name varchar(300),
-	google_auth_token varchar(300)
-);
 
+-- Internal Tradecraft News Table - like for announcements
 CREATE TABLE news (
 	id serial PRIMARY KEY,
 	created timestamp DEFAULT NOW(),
 	title text,
 	body text
-)
+);
+
+CREATE TABLE community_news (
+	id serial PRIMARY KEY,
+	created timestamp DEFAULT NOW(),
+	submitter_id int,
+	author text,
+	title text,
+	submitter_is_author boolean,
+	description text,
+	link text,
+	fb text,
+	twitter text
+);
+
+CREATE TABLE community_news_votes (
+	id serial PRIMARY KEY,
+	created timestamp DEFAULT NOW(),
+	user_id int,
+	submission_id int,
+	vote boolean
+);
+
+CREATE TABLE community_news_comments (
+	id serial PRIMARY KEY,
+	created timestamp DEFAULT NOW(),
+	user_id int,
+	submission_id int,
+	title text,
+	comment text,
+	flagged boolean
+);
