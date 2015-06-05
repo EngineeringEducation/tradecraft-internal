@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Connects to postgres once, on server start
-var conString = process.env.DATABASE_URL || "postgres://localhost/tradecraft";
+var conString = process.env.DATABASE_URL || "postgres://localhost:5432/tradecraft";
 var db;
 pg.connect(conString, function(err, client) {
   if (err) {
