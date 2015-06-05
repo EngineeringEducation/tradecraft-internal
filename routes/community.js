@@ -33,19 +33,23 @@ router.post('/submit', function(req, res, next) {
 
 //Has to come after /new or it will match /new and try to interpret it as an ID
 router.get('/:id', function(req, res, next) {
+	console.log("Is this being triggered from vote")
 	res.render('community/discussion', submission);
 
 });
 
 router.post('/:id/vote', function(req, res, next) {
+
 	if (req.body.vote){
-		community.recordVote(req.db, req.params["id"], req.user, req.body.vote, function(err, newVoteCount) {
+		community.recordVote(req.db, req.params.id, req.user, req.body.vote, function(err, upvotes) {
+			console.log("Are we coming back from the model");
 			if (!err) {
 				console.log("Community vote recorded");
-				res.send({"status" : true, "votes" : newVoteCount});
+				res.send({"status" : true, "votes" : upvotes});
 			}
-		})
+		});
 	} else {
+		console.log(req.body)
 	}
 });
 
