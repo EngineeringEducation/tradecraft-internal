@@ -110,7 +110,7 @@ CREATE TABLE community_news (
 	submitter_id int,
 	author text,
 	title text,
-	submitter_is_author boolean,
+	submitter_is_author boolean DEFAULT FALSE,
 	description text,
 	link text,
 	fb text,

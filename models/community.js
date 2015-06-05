@@ -93,7 +93,7 @@ community.prototype.getCommunityPage = function(db, user, page, cb) {
 community.prototype.saveNewSubmission = function(db, user, author, submitterIsAuthor, title, description, link, twitter, fb, cb) {
 	console.log("boop")
 	db.query("INSERT INTO community_news (submitter_id, title, author, submitter_is_author, description, link, fb, twitter)	VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", 
-		[user.id, title, author, submitterIsAuthor, description, link, fb, twitter], function(err, results) {
+		[user.id, title, author, Boolean(submitterIsAuthor), description, link, fb, twitter], function(err, results) {
 			if (!err) {
 				// Now get it back out, so we have the ID and the actual created time
 				db.query("SELECT id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter FROM community_news WHERE submitter_id = $1 ORDER BY id DESC LIMIT 1", [user.id], function(err, results) {
@@ -122,16 +122,25 @@ community.prototype.saveNewSubmission = function(db, user, author, submitterIsAu
 };
 
 community.prototype.recordVote = function(db, submission_id, user, vote, cb) {
+	console.log("Recording a vote...")
 	// insert, set BOTH upvote and downvote properties, which are per-user, otherwise handlebars sucks
-	db.query("INSERT INTO community_news_votes (user_id, submission_id, vote) VALUES ($1, $2, $3)", [req.user.id, submission_id, vote], function(err, results) {
+	db.query("INSERT INTO community_news_votes (user_id, submission_id, vote) VALUES ($1, $2, $3)", [user.id, submission_id, vote], function(err, results) {
 		if (!err) {
 			console.log(user.name + " upvoted " + submission_id);
-			//##FIXME Get the vote count back out.
-			cb(null, 47)
+			db.query("SELECT count(vote) as upvotes FROM community_news_votes WHERE submission_id = $1 AND vote = TRUE;", [submission_id], function(err, results) {
+				if (err) {
+					cb(err, null);
+					return;
+				}
+				cb(null, results.rows[0].upvotes)
+			});
+
 		} else {
+			console.log(err);
 			cb(err, null);
 		}
 	}); // end insert vote
+	console.log("Did shit happen or what")
 };
 
 
