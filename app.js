@@ -62,6 +62,9 @@ app.use('/community', community);
 app.get("/career", function(req, res, next) {
     res.render("career_development")
 })
+app.use('/tradecraft-brand', function (req, res ) {
+  res.render('tradecraft_brand');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
