@@ -45,6 +45,9 @@ app.use(function(req, res, next) {
 app.use('/', routes);
 app.use('/student', student);
 app.use('/news', news);
+app.use('/tradecraft-brand', function (req, res ) {
+  res.render('tradecraft_brand');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
