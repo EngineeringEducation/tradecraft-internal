@@ -24,13 +24,13 @@
       </div>
     {{/each}}
 
-    <a href="/news"><h2>News</h2></a>
+    <h2><a href="/news">News</a></h2>
     {{#each news}}
     <div class="news">
       <a href="/news/{{id}}"><strong>{{title}}</strong></a> 
     </div>
     {{/each}}
-    <h2>Community Submissions</h2>
+    <h2><a href="/community">Community Submissions</a></h2>
     {{#each community}}
     <div class="community_link">
       <a href="{{link}}" target="_blank"><strong>{{title}}</strong></a> {{student_name}}

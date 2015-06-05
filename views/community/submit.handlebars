@@ -1,0 +1,55 @@
+
+<h1 id="title">New Community Post</h1>
+
+<h3>Guidelines</h3>
+<p>This form is to submit things you've written, for feedback and for sharing amongst the community, or to share things you feel are of educational value. If you wrote it, summarize it. If you learned something from it, tell us what you learned.</p>
+
+<form class="form-horizontal" action="/community/new" method="POST">
+	<div class="form-group">
+		<div class="col-sm-2">
+	    	<label for="exampleInputEmail1">Link Title</label>
+	   	</div>
+	   	<div class="col-sm-8">
+	    	<input class="form-control" type="text" name="title" id="title" placeholder="How I Hacked My Way To Awesomeness">
+	    </div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-2">
+	    	<label for="exampleInputEmail1">Description</label>
+	   	</div>
+	   	<div class="col-sm-8">
+	    	<textarea class="form-control" type="text" name="title" id="title" placeholder="I wrote this about how I networked my way into a job at our last alumni mixer!" rows="4"></textarea>
+	    </div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-1">
+		    <label for="exampleInputEmail1">Author</label>
+		</div>
+		<div class="col-sm-1">
+		    <input type="checkbox" name="self" id="is_self" checked> Me
+	    </div>
+	    <div class="col-sm-8">
+	    	<input class="form-control" type="text" name="author" id="author" placeholder="Steve Jobs">
+	    </div>
+	</div>
+
+
+
+	<div class="form-group">
+		<button class="btn btn-success">Submit</button>
+	</div>
+</form>
+
+
+
+
+
+<script type="text/javascript">
+	$('#career_link').addClass("active");
+	$('#author').toggle();
+	$('#is_self').on('click', function(e) {
+		$('#author').toggle();
+	})
+</script>

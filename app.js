@@ -10,6 +10,7 @@ var pg = require("pg");
 var routes = require('./routes/index');
 var student = require('./routes/student');
 var news = require('./routes/news');
+var community = require('./routes/community');
 
 var app = express();
 
@@ -42,9 +43,25 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use(function(req, res, next) {
+    //hard coded for a bit
+    req.user = {
+        id : 1,
+        name : "Liz Howard",
+        type : "instructor"
+    }
+    next()
+});
+
 app.use('/', routes);
 app.use('/student', student);
 app.use('/news', news);
+app.use('/community', community);
+
+///These will turn into full-blown controllers later
+app.get("/career", function(req, res, next) {
+    res.render("career_development")
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
