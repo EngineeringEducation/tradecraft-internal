@@ -24,7 +24,7 @@ var community = function() {
 
 //Get the top 10 submissions where the author is a user, paginated
 community.prototype.getTopSubmissionsWrittenByMembers = function(db, user, page, cb) {
-	db.query("SELECT community_news.id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter, COUNT(vote) AS votes FROM community_news JOIN community_news_votes ON community_news.id = community_news_votes.submission_id WHERE vote = TRUE AND community_news.submitter_is_author = TRUE GROUP BY community_news.id ORDER BY votes ASC LIMIT 10", [user.id], function(err, results) {
+	db.query("SELECT community_news.id, community_news.created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter, COUNT(vote) AS votes FROM community_news LEFT OUTER JOIN community_news_votes ON community_news.id = community_news_votes.submission_id WHERE vote = TRUE AND community_news.submitter_is_author = TRUE GROUP BY community_news.id ORDER BY votes DESC LIMIT 10", function(err, results) {
 		if (!err) {
 			var topSubmissionsWrittenByMembers = results.rows;
 			cb(null, topSubmissionsWrittenByMembers);
@@ -36,7 +36,7 @@ community.prototype.getTopSubmissionsWrittenByMembers = function(db, user, page,
 
 //Get the top 10 submissions where the author is not a user, paginated
 community.prototype.getTopSubmissionsWrittenByOthers = function(db, user, page, cb) {
-	db.query("SELECT community_news.id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter, COUNT(vote) AS votes FROM community_news JOIN community_news_votes ON community_news.id = community_news_votes.submission_id WHERE vote = TRUE AND community_news.submitter_is_author = FALSE GROUP BY community_news.id ORDER BY votes ASC LIMIT 10", [user.id], function(err, results) {
+	db.query("SELECT community_news.id, community_news.created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter, COUNT(vote) AS votes FROM community_news LEFT OUTER JOIN community_news_votes ON community_news.id = community_news_votes.submission_id WHERE vote = TRUE AND community_news.submitter_is_author = FALSE GROUP BY community_news.id ORDER BY votes DESC LIMIT 10", function(err, results) {
 		if (!err) {
 			var topSubmissionsWrittenByOthers = results.rows;
 			cb(null, topSubmissionsWrittenByOthers);
@@ -48,7 +48,7 @@ community.prototype.getTopSubmissionsWrittenByOthers = function(db, user, page, 
 
 //Get the newest submissions, paginated by 10
 community.prototype.getNewSubmissions = function(db, user, page, cb) {
-	db.query("SELECT community_news.id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter, COUNT(vote) AS votes FROM community_news JOIN community_news_votes ON community_news.id = community_news_votes.submission_id WHERE vote = TRUE GROUP BY community_news.id ORDER BY id ASC LIMIT 10", [user.id], function(err, results) {
+	db.query("SELECT community_news.id, community_news.created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter, COUNT(vote) AS votes FROM community_news LEFT OUTER JOIN community_news_votes ON community_news.id = community_news_votes.submission_id WHERE vote = TRUE GROUP BY community_news.id ORDER BY id ASC LIMIT 10", function(err, results) {
 		if (!err) {
 			var newSubmissions = results.rows;
 			cb(null, newSubmissions);
@@ -96,7 +96,7 @@ community.prototype.saveNewSubmission = function(db, user, author, submitterIsAu
 		[user.id, title, author, submitterIsAuthor, description, link, fb, twitter], function(err, results) {
 			if (!err) {
 				// Now get it back out, so we have the ID and the actual created time
-				db.query("SELECT id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter FROM community_news WHERE submitter_id = $1 ORDER BY id ASC LIMIT 1", [user.id], function(err, results) {
+				db.query("SELECT id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter FROM community_news WHERE submitter_id = $1 ORDER BY id DESC LIMIT 1", [user.id], function(err, results) {
 					if (!err) {
 						var submission = results.rows[0];
 						console.log(user.name + " submitted " + submission.id)

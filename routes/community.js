@@ -17,10 +17,14 @@ router.get('/submit', function(req, res, next) {
 });
 
 router.post('/submit', function(req, res, next) {
+	console.log("Just got a form sent to submit- ", req.body);
+
 	if (req.body.self) {
 		var author = req.user.name;
+	} else {
+		var author = req.body.author;
 	}
-	community.saveNewSubmission(req.db, req.user, author, req.body.self, req.body.title, req.body.description, req.body.link, req.body.twitter_data, req.body.fb_data, function(err, results){
+	community.saveNewSubmission(req.db, req.user, author, req.body.self, req.body.title, req.body.description, req.body.link, req.body.tweet_data, req.body.fb_data, function(err, results){
 		console.log("err", err);
 		console.log("results", results);
 		res.redirect("/community");
