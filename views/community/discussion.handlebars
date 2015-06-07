@@ -3,19 +3,36 @@
 <div class="well">
 	<div class="row">
 
-		<div class="col-sm-1">
-			<div class="vote">
-				<span class="h3 up"><span class="glyphicon glyphicon-arrow-up"></span></span><br>
-				<span class="h3 down"><span class="glyphicon glyphicon-arrow-down"></span></span>
+		<div class="col-sm-2">
+			<div class="vote"  id="new_{{id}}">
+				<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+				<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 			</div>
-			<div class="h3 count">{{votes}}</div>
+			<div class="h4 well count count_{{id}}">{{votes}}</div>
 		</div>
-		<div class="col-sm-11">
-			<div class="h1" class="community_title">{{title}}</div>
+		<div class="col-sm-10">
+			<div class="h1" class="community_title">{{title}} {{#if author}} By {{author}} {{/if}}</div>
 		</div>
 	</div>
 	<hr class="clear">
 	<p>{{description}}</p>
 </div>
+
+<div class="container">
+	{{#each comments}}
+	<div class="row">
+		<div class="comment_title h5">{{title}} by {{author}}</div>
+		<div class="comment_body">{{body}}</div>
+	</div>
+	{{/each}}
+</div>
+
+<form class="form well" action="{{id}}/comment" method="POST">
+	<h5>New Comment</h5>
+	<label for="title">Comment Title</label><input type="text" id="title" name="title" class="form-control">
+	<label for="body">Comment</label><textarea class="textarea form-control" rows="5" name="body" id="body"></textarea>
+	<button class="btn btn-primary">Submit</button>
+</form>
+
 
 <script type="text/javascript" src="/javascripts/community.js"></script>

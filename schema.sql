@@ -90,7 +90,8 @@ CREATE TABLE users (
 	created timestamp DEFAULT NOW(),
 	name varchar(300),
 	email varchar(300),
-	google_auth_token varchar(300),
+	provider varchar(300),
+	provider_id varchar(300),
 	status varchar(300),
 	cohort varchar(40),
 	start_date timestamp
@@ -122,7 +123,7 @@ CREATE TABLE community_news_votes (
 	created timestamp DEFAULT NOW(),
 	user_id int,
 	submission_id int,
-	vote boolean
+	vote smallint DEFAULT 1
 );
 
 CREATE TABLE community_news_comments (
@@ -132,5 +133,5 @@ CREATE TABLE community_news_comments (
 	submission_id int,
 	title text,
 	comment text,
-	flagged boolean
+	flagged boolean DEFAULT FALSE
 );

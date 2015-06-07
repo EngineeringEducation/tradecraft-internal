@@ -19,3 +19,12 @@ INSERT INTO students_assignments (due_date, status, assignment_id, student_id, c
 INSERT INTO assignments_materials (assignment_id, link, description, subjects) VALUES (1, 'http://www.teaching-materials.org/htmlcss-1day/', 'Teaching-Materials HTML/CSS', 'HTML,CSS,Hosting');
 INSERT INTO assignments_materials (assignment_id, link, description, subjects) VALUES (1, 'https://www.khanacademy.org/computing/computer-programming/html-css', 'Kahn Academy''s HTML/CSS by Pamela Fox', 'HTML,CSS');
 INSERT INTO assignments_materials (assignment_id, link, description, subjects) VALUES (2, 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference', 'Mozilla Reference', 'HTML,CSS,Web Technology');
+
+
+
+
+COPY community_news (id, created, submitter_id, author, title, submitter_is_author, description, link, fb, twitter) FROM stdin;
+1	2015-06-05 00:27:40.168799	1		Hacker News	f	Something mmm	http://news.ycombinator.com	hn hn hn woo	its hn
+2	2015-06-05 00:39:42.524513	1	Liz Howard	Liz The Dev	t	IT's my site	http://lizthedeveloper.com	lizthedev	lizthedev
+3	2015-06-05 00:46:28.63816	1	Liz Howard	TC Eng	t	Something I made early on	http://tradecraftengineering.com		
+\.

@@ -14,7 +14,7 @@ $(".up").on('click', function(e) {
 	$.post(url, {vote: true})
 	.done(function(response) {
 		$(el).addClass("text-primary");
-		$(".count_" + id).addClass("text-primary").html(response.votes);
+		$(".count_" + id).addClass("text-primary").removeClass("text-danger").html(response.votes);
 		$(".down_" + id).removeClass("text-danger");
 	})
 	.fail(function(response) {
@@ -39,7 +39,7 @@ $(".down").on('click', function(e) {
 	$.post(url, {vote: false})
 	.done(function(response) {
 		$(el).addClass("text-danger");
-		$(".count_" + id).addClass("text-danger").html(response.votes);
+		$(".count_" + id).addClass("text-danger").removeClass("text-primary").html(response.votes);
 		$(".up_" + id).removeClass("text-primary");
 	})
 	.fail(function(response) {
