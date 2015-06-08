@@ -1,3 +1,5 @@
 <h1> Tradecraft Internal App </h1>
 
-<a class="btn btn-primary">Login with Google</a> to get started
+{{#unless user}}
+	<a class="btn btn-primary" href="/auth/google">Login with Google</a> to get started
+{{/unless}}

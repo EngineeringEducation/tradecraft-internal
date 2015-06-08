@@ -55,8 +55,11 @@
             <li id="tools_link"><a href="/#contact">Tools</a></li>
             <li id="brand_link"><a href="/tradecraft-brand">Brand</a></li>
             {{#unless user}}
-            <li id="login_link"><a class="btn btn-primary" href="/auth/google">Sign In with Google</a></li>
+              <li id="login_link"><a class="btn btn-primary" href="/auth/google">Sign In with Google</a></li>
             {{/unless}}
+            {{#if user}}
+              <li id="user_link"><a href="/profile">{{user.loginProfile.displayName}}</a></li>
+            {{/if}}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

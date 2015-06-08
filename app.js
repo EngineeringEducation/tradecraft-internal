@@ -100,12 +100,10 @@ app.use(function(req, res, next) {
             callbackURL: GOOGLE_CALLBACK_URL
         },
         function(accessToken, refreshToken, profile, done) {
-            var user = new User({loginProfile : profile, db: db});
-            user.findOrCreate(function(err) {
-                console.log("User " + this.name);
-            });
-            process.nextTick(function () {
-                return done(null, user);
+            console.log("User " + profile.displayName + " verified login from Google.")
+            var user = new User({'loginProfile' : profile, 'db': db});
+            user.findOrCreate(function(err, user) {
+                done(err, user);
             });
         }
     ));
@@ -114,12 +112,16 @@ app.use(function(req, res, next) {
 
 
     //// ### OTHER RANDOM SHIT
-    passport.serializeUser(function(user, done) {  
+    passport.serializeUser(function(user, done) {
+        console.log("serializeUser");
+        //Gotta get rid of the DB in order to serialize due to circular references
+        delete user.db;
         done(null, JSON.stringify(user));
     });
 
     passport.deserializeUser(function(user, callback){
-           callback(null, JSON.parse(user));
+        console.log("deserializeUser")
+        callback(null, JSON.parse(user));
     });
 
     //## AUTHENTICATION ROUTES ##
@@ -129,14 +131,15 @@ app.use(function(req, res, next) {
         'https://www.googleapis.com/auth/calendar'] }),
         function(req, res){
             console.log("response after scopes")
-        } // this never gets called
+        } 
     );
 
     //redirect after authenticate
     app.use('/oauth2callback',
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
-        if (req.user['_json'].domain == "tradecrafted.com") {
+        req.locals.user = req.user;
+        if (req.user.loginProfile['_json'].domain == "tradecrafted.com") {
           res.redirect('/');
         } else {
           res.render('error', {
