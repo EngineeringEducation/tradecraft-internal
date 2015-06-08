@@ -11,6 +11,41 @@
 	text-decoration: line-through;
 }
 
+.meta {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+.no-margin-top {
+  margin-top: 0;
+}
+
+.title-block {
+  margin: 15px 0;
+}
+
+.bare {
+  margin: 0;
+}
+
+.showhide-container {
+  display: none;
+}
+
+section {
+  margin-bottom: 60px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+h2 {
+  margin: 20px 0;
+}
+
+h3 {
+  font-weight: 200;
+}
+
 /* Community Styles */
 
 .vote {
@@ -33,4 +68,27 @@
 
 .community_title {
 	padding-left: 10px;
+}
+
+/* Brand styles */
+
+.logo-table {
+  width: 100%;
+  border: 1px solid #eee;
+  margin-bottom: 30px;
+}
+
+.logo-table th,
+.logo-table td {
+  padding: 10px;
+  width: calc(100% / 6);
+  text-align: center;
+}
+
+.logo-table th {
+  vertical-align: top;
+}
+
+.logo-table td.disabled {
+  background: #f5f5f5;
 }
