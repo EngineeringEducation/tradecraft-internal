@@ -138,7 +138,7 @@ app.use(function(req, res, next) {
     app.use('/oauth2callback',
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
-        req.locals.user = req.user;
+        res.locals.user = req.user;
         if (req.user.loginProfile['_json'].domain == "tradecrafted.com") {
           res.redirect('/');
         } else {
