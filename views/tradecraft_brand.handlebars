@@ -1,101 +1,987 @@
-<div class="col-md-9" role="main">
+<script>
+// Sorrrrry... see note in tradecraft_brand.js
+$(function() {
+
+  // Show/hide pattern for the logo options tables
+  $('.showhide').click(function(e) {
+    e.preventDefault();
+    $(this).find('span').toggleClass('glyphicon-plus-sign glyphicon-minus-sign');
+    $(this).parent().next('.showhide-container').slideToggle();
+  });
+
+  // Smooth scroll
+  $(function() {
+    $('a[href*=#]:not([href=#])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+        if (target.length) {
+          $('html,body').animate({
+            scrollTop: target.offset().top
+          }, 1000);
+          return false;
+        }
+      }
+    });
+  });
+
+});
+</script>
+
+<div class="col-sm-10" role="main">
   <h1>Tradecraft brand v2.0</h1>
   <p class="help-block">Last updated 6/10/2015</p>
 
   <hr>
 
-  <h2 id="logo">Logo</h2>
-  <p>
-    Here are some options for logos. To use, <strong>right click &gt; save as</strong>.
-  </p>
+  <section>
 
-  <h3>Social profile logos</h3>
-  <h4>Twitter</h4>
-  <h4>LinkedIn</h4>
-  <h4>Facebook</h4>
-  <h4>Instagram</h4>
-  <h4>TC website @1x</h4>
-  <h4>TC website @2x</h4>
-  <h4>TC favicon (16px, 24px)</h4>
-  <h4>Small (480px)</h4>
-  <h4>Medium (800px)</h4>
-  <h4>Large (1200px)</h4>
+    <h2 id="logo">Logo</h2>
+    <h3>Usage guidelines</h3>
+    <p>
+      There are 3 rules of logo usage:
+      <ol>
+        <li>Don't ever stretch the logo.</li>
+        <li>Leave 15% whitespace all the way around.</li>
+        <li>If you're using a raster version, only make it smaller &mdash;
+        never bigger (or pixelation will occur and you'll make children cry). Use
+        vector versions when you can to be safe.</li>
+      </ol>
+    </p>
 
-  <h3>General Use</h3>
-  <h4>Light on Dark</h4>
-  Primarily, use the light on dark color scheme.
-  <ul>
-    <li>PNG: small, medium, large</li>
-    <li>JPG: small, medium, large</li>
-    <li>SVG: small, medium, large</li>
-    <li>GIF: small, medium, large</li>
-    <li>EPS (use for print)</li>
-  </ul>
+    <h3>Download options</h3>
+    <p>Use the most appropriate logo for the job. When in doubt, refer to rule #3 above.</p>
 
-  <h4>Dark on Light</h4>
-  Only use in some circumstances when required.
+    <hr>
+    <div class="clearfix title-block">
+      <h4 class="bare pull-left">Full logo, light on dark (primary)</h4>
+      <a href="#" class="pull-right showhide"><span class="glyphicon glyphicon-plus-sign"></span> Download Options</a>
+      <br><img src="example.png" class="example-img">
+    </div>
 
-  <ul>
-    <li>PNG: small, medium, large</li>
-    <li>JPG: small, medium, large</li>
-    <li>SVG: small, medium, large</li>
-    <li>GIF: small, medium, large</li>
-    <li>EPS (use for print)</li>
-  </ul>
+    <div class="showhide-container">
+      <table cellpadding="0" cellspacing="0" border="1" class="logo-table">
+        <thead class="panel panel-default">
+          <tr class="panel-heading">
+            <th></th>
+            <th>PNG<br><span class="meta">Raster. Use for the <strong>web</strong>, or when transparency is required.</span></th>
+            <th>SVG<br><span class="meta">Vector. Best option for the <strong>web</strong> <a href="http://caniuse.com/#feat=svg">when supported</a>.</span></th>
+            <th>JPG<br><span class="meta">Raster. Use for the <strong>web</strong> only when required.</span></th>
+            <th>GIF<br><span class="meta">Raster. Use for <strong>HTML email</strong> only.</span></th>
+            <th>EPS<br><span class="meta">Vector. Use for any <strong>print</strong> collateral.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Small<br><span class="meta">480px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td>
+              <a href="#" class="eps">Download</a>
+            </td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Medium<br><span class="meta">800px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Large<br><span class="meta">1200px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Website<br><span class="meta">??? X ???</span></th>
+            <td>
+              <a href="#" class="png">Download @1x</a><br>
+              <a href="#" class="png">Download @2x</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Twitter<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">LinkedIn<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Facebook<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Instagram<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Favicon<br><span class="meta">16px X 16px <em>and</em> 32px X 32px for HiDPI</span></th>
+            <td colspan="5">
+              <a href="#" class="png">Download ICO</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <hr>
+    <hr>
+    <div class="clearfix title-block">
+      <h4 class="bare pull-left">Logomark, light on dark (primary)</h4>
+      <a href="#" class="pull-right showhide"><span class="glyphicon glyphicon-plus-sign"></span> Download Options</a>
+      <br><img src="example.png" class="example-img">
+    </div>
 
-  <h2 id="colors">Color Palette</h2>
-  <p>
+    <div class="showhide-container">
+      <table cellpadding="0" cellspacing="0" border="1" class="logo-table">
+        <thead class="panel panel-default">
+          <tr class="panel-heading">
+            <th></th>
+            <th>PNG<br><span class="meta">Raster. Use for the <strong>web</strong>, or when transparency is required.</span></th>
+            <th>SVG<br><span class="meta">Vector. Best option for the <strong>web</strong> <a href="http://caniuse.com/#feat=svg">when supported</a>.</span></th>
+            <th>JPG<br><span class="meta">Raster. Use for the <strong>web</strong> only when required.</span></th>
+            <th>GIF<br><span class="meta">Raster. Use for <strong>HTML email</strong> only.</span></th>
+            <th>EPS<br><span class="meta">Vector. Use for any <strong>print</strong> collateral.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Small<br><span class="meta">480px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td>
+              <a href="#" class="eps">Download</a>
+            </td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Medium<br><span class="meta">800px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Large<br><span class="meta">1200px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Website<br><span class="meta">??? X ???</span></th>
+            <td>
+              <a href="#" class="png">Download @1x</a><br>
+              <a href="#" class="png">Download @2x</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Twitter<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">LinkedIn<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Facebook<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Instagram<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Favicon<br><span class="meta">16px X 16px <em>and</em> 32px X 32px for HiDPI</span></th>
+            <td colspan="5">
+              <a href="#" class="png">Download ICO</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  </p>
+    <hr>
+    <div class="clearfix title-block">
+      <h4 class="bare pull-left">Stacked logo, light on dark</h4>
+      <a href="#" class="pull-right showhide"><span class="glyphicon glyphicon-plus-sign"></span> Download Options</a>
+      <br><img src="example.png" class="example-img">
+    </div>
 
-  <hr>
+    <div class="showhide-container">
+      <table cellpadding="0" cellspacing="0" border="1" class="logo-table">
+        <thead class="panel panel-default">
+          <tr class="panel-heading">
+            <th></th>
+            <th>PNG<br><span class="meta">Raster. Use for the <strong>web</strong>, or when transparency is required.</span></th>
+            <th>SVG<br><span class="meta">Vector. Best option for the <strong>web</strong> <a href="http://caniuse.com/#feat=svg">when supported</a>.</span></th>
+            <th>JPG<br><span class="meta">Raster. Use for the <strong>web</strong> only when required.</span></th>
+            <th>GIF<br><span class="meta">Raster. Use for <strong>HTML email</strong> only.</span></th>
+            <th>EPS<br><span class="meta">Vector. Use for any <strong>print</strong> collateral.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Small<br><span class="meta">480px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td>
+              <a href="#" class="eps">Download</a>
+            </td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Medium<br><span class="meta">800px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Large<br><span class="meta">1200px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Website<br><span class="meta">??? X ???</span></th>
+            <td>
+              <a href="#" class="png">Download @1x</a><br>
+              <a href="#" class="png">Download @2x</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Twitter<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">LinkedIn<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Facebook<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Instagram<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Favicon<br><span class="meta">16px X 16px <em>and</em> 32px X 32px for HiDPI</span></th>
+            <td colspan="5">
+              <a href="#" class="png">Download ICO</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <h2 id="typography">Typography</h2>
-  <p>
-    Use no more than 2 typefaces in any given piece of collateral (print or web).
-  </p>
+    <hr>
+    <div class="clearfix title-block">
+      <h4 class="bare pull-left">Full logo, dark on light (use only when required)</h4>
+      <a href="#" class="pull-right showhide"><span class="glyphicon glyphicon-plus-sign"></span> Download Options</a>
+      <br><img src="example.png" class="example-img">
+    </div>
 
-  <h3>Headline copy</h3>
-  <p>
-    <strong>GOTHAM LIGHT</strong>. All caps, with line-height / leading that is 
-    200% larger than the type size. For instance, if you're setting a headline
-    at 48px, the leading should be 96px.
-  </p>
-  <a href="#" class="btn btn-default">Download Gotham *</a><br>
-  * Don't share outside TC
+    <div class="showhide-container">
+      <table cellpadding="0" cellspacing="0" border="1" class="logo-table">
+        <thead class="panel panel-default">
+          <tr class="panel-heading">
+            <th></th>
+            <th>PNG<br><span class="meta">Raster. Use for the <strong>web</strong>, or when transparency is required.</span></th>
+            <th>SVG<br><span class="meta">Vector. Best option for the <strong>web</strong> <a href="http://caniuse.com/#feat=svg">when supported</a>.</span></th>
+            <th>JPG<br><span class="meta">Raster. Use for the <strong>web</strong> only when required.</span></th>
+            <th>GIF<br><span class="meta">Raster. Use for <strong>HTML email</strong> only.</span></th>
+            <th>EPS<br><span class="meta">Vector. Use for any <strong>print</strong> collateral.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Small<br><span class="meta">480px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td>
+              <a href="#" class="eps">Download</a>
+            </td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Medium<br><span class="meta">800px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Large<br><span class="meta">1200px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Website<br><span class="meta">??? X ???</span></th>
+            <td>
+              <a href="#" class="png">Download @1x</a><br>
+              <a href="#" class="png">Download @2x</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Twitter<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">LinkedIn<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Facebook<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Instagram<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Favicon<br><span class="meta">16px X 16px <em>and</em> 32px X 32px for HiDPI</span></th>
+            <td colspan="5">
+              <a href="#" class="png">Download ICO</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <h3>Body copy</h3>
-  <p>
-  <strong>Sentinel book</strong>. Normal caps, and the line-height is 1.5x the
-  point size. For instance, the default size on the website is 18px large, with
-  a line height of 27px.
-  </p>
+    <hr>
+    <div class="clearfix title-block">
+      <h4 class="bare pull-left">Logomark, dark on light (use only when required)</h4>
+      <a href="#" class="pull-right showhide"><span class="glyphicon glyphicon-plus-sign"></span> Download Options</a>
+      <br><img src="example.png" class="example-img">
+    </div>
 
-  <a href="#" class="btn btn-default">Download Sentinel *</a><br>
-  * Don't share outside TC
+    <div class="showhide-container">
+      <table cellpadding="0" cellspacing="0" border="1" class="logo-table">
+        <thead class="panel panel-default">
+          <tr class="panel-heading">
+            <th></th>
+            <th>PNG<br><span class="meta">Raster. Use for the <strong>web</strong>, or when transparency is required.</span></th>
+            <th>SVG<br><span class="meta">Vector. Best option for the <strong>web</strong> <a href="http://caniuse.com/#feat=svg">when supported</a>.</span></th>
+            <th>JPG<br><span class="meta">Raster. Use for the <strong>web</strong> only when required.</span></th>
+            <th>GIF<br><span class="meta">Raster. Use for <strong>HTML email</strong> only.</span></th>
+            <th>EPS<br><span class="meta">Vector. Use for any <strong>print</strong> collateral.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Small<br><span class="meta">480px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td>
+              <a href="#" class="eps">Download</a>
+            </td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Medium<br><span class="meta">800px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Large<br><span class="meta">1200px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Website<br><span class="meta">??? X ???</span></th>
+            <td>
+              <a href="#" class="png">Download @1x</a><br>
+              <a href="#" class="png">Download @2x</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Twitter<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">LinkedIn<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Facebook<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Instagram<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Favicon<br><span class="meta">16px X 16px <em>and</em> 32px X 32px for HiDPI</span></th>
+            <td colspan="5">
+              <a href="#" class="png">Download ICO</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <hr>
+    <hr>
+    <div class="clearfix title-block">
+      <h4 class="bare pull-left">Stacked logo, dark on light (use only when required)</h4>
+      <a href="#" class="pull-right showhide"><span class="glyphicon glyphicon-plus-sign"></span> Download Options</a>
+      <br><img src="example.png" class="example-img">
+    </div>
 
-  <h2 id="iconography">Iconography</h2>
+    <div class="showhide-container">
+      <table cellpadding="0" cellspacing="0" border="1" class="logo-table">
+        <thead class="panel panel-default">
+          <tr class="panel-heading">
+            <th></th>
+            <th>PNG<br><span class="meta">Raster. Use for the <strong>web</strong>, or when transparency is required.</span></th>
+            <th>SVG<br><span class="meta">Vector. Best option for the <strong>web</strong> <a href="http://caniuse.com/#feat=svg">when supported</a>.</span></th>
+            <th>JPG<br><span class="meta">Raster. Use for the <strong>web</strong> only when required.</span></th>
+            <th>GIF<br><span class="meta">Raster. Use for <strong>HTML email</strong> only.</span></th>
+            <th>EPS<br><span class="meta">Vector. Use for any <strong>print</strong> collateral.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Small<br><span class="meta">480px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td>
+              <a href="#" class="eps">Download</a>
+            </td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Medium<br><span class="meta">800px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Large<br><span class="meta">1200px X ??</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Website<br><span class="meta">??? X ???</span></th>
+            <td>
+              <a href="#" class="png">Download @1x</a><br>
+              <a href="#" class="png">Download @2x</a>
+            </td>
+            <td>
+              <a href="#" class="svg">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Twitter<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">LinkedIn<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Facebook<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Instagram<br><span class="meta">???</span></th>
+            <td>
+              <a href="#" class="png">Download</a>
+            </td>
+            <td class="disabled"></td>
+            <td>
+              <a href="#" class="jpg">Download</a>
+            </td>
+            <td>
+              <a href="#" class="gif">Download</a>
+            </td>
+            <td class="disabled"></td>
+          </tr>
+          <tr class="panel panel-default">
+            <th class="panel-heading">Favicon<br><span class="meta">16px X 16px <em>and</em> 32px X 32px for HiDPI</span></th>
+            <td colspan="5">
+              <a href="#" class="png">Download ICO</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <hr>
+  </section>
+
+  <section>
+    <h2 id="colors">Color Palette</h2>
+    <p>
+
+    </p>
+  </section>
+
+  <section>
+    <h2 id="typography">Typography</h2>
+    <p>
+      Use no more than 2 typefaces in any given piece of collateral (print or web).
+    </p>
+
+    <h3>Headline copy</h3>
+    <p>
+      <strong>GOTHAM LIGHT</strong>. All caps, with line-height / leading that is
+      200% larger than the type size. For instance, if you're setting a headline
+      at 48px, the leading should be 96px.
+    </p>
+    <a href="#" class="btn btn-default">Download Gotham *</a><br>
+    * Don't share outside TC
+
+    <h3>Body copy</h3>
+    <p>
+    <strong>Sentinel book</strong>. Normal caps, and the line-height is 1.5x the
+    point size. For instance, the default size on the website is 18px large, with
+    a line height of 27px.
+    </p>
+
+    <a href="#" class="btn btn-default">Download Sentinel *</a><br>
+    * Don't share outside TC
+  </section>
+
+  <section>
+    <h2 id="iconography">Iconography</h2>
+    <p>TBD&hellip;</p>
+  </section>
+
+  <section>
+    <h2 id="photography">Photography</h2>
+    <p>TBD&hellip;</p>
+  </section>
   
-  <h2 id="photography">Photography</h2>
-
-  <hr>
-  
-  <h2 id="illustration">Illustration</h2>
+  <section>
+    <h2 id="illustration">Illustration</h2>
+    <p>TBD&hellip;</p>
+  </section>
 
 </div>
-<div class="col-md-3" role="complementary">
-  <ul>
-    <li><a href="#logo">Logo</a></li>
-    <li><a href="#colors">Color Palette</a></li>
-    <li><a href="#typography">Typography</a></li>
-    <li><a href="#iconography">Iconography</a></li>
-    <li><a href="#photography">Photography</a></li>
-    <li><a href="#illustration">Illustration</a></li>
-  </ul>
+<div class="col-sm-2" role="complementary">
+  <nav class="affix">
+    <ul class="nav">
+      <li class="active"><a href="#logo">Logo</a></li>
+      <li><a href="#colors">Color Palette</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#photography">Photography</a></li>
+      <li><a href="#illustration">Illustration</a></li>
+    </ul>
+  </nav>
 </div>

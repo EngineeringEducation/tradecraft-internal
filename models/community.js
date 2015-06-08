@@ -142,6 +142,7 @@ community.prototype.saveNewSubmission = function(db, user, author, submitterIsAu
 };
 
 community.prototype.recordVote = function(db, submission_id, user, vote, cb) {
+	console.log("Recording a vote...")
 	// insert, set BOTH upvote and downvote properties, which are per-user, otherwise handlebars sucks
 	// Also inserting as a number because it makes sql easier
 	db.query("INSERT INTO community_news_votes (user_id, submission_id, vote) VALUES ($1, $2, $3)", [user.id, submission_id, Number(vote)], function(err, results) {
@@ -154,7 +155,6 @@ community.prototype.recordVote = function(db, submission_id, user, vote, cb) {
 				}
 				cb(null, results.rows[0].upvotes)
 			});
-			
 		} else {
 			console.log(err);
 			cb(err, null);

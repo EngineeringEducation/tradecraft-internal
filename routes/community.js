@@ -41,9 +41,12 @@ router.get('/:id', function(req, res, next) {
 
 //This route is just accessed by AJAX.
 router.post('/:id/vote', function(req, res, next) {
+
 	if (req.body.vote){
 		community.recordVote(req.db, req.params.id, req.user, req.body.vote, function(err, upvotes) {
+			console.log("Are we coming back from the model");
 			if (!err) {
+				console.log("Community vote recorded");
 				res.send({"status" : true, "votes" : upvotes});
 			}
 		});
