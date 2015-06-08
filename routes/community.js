@@ -33,31 +33,31 @@ router.post('/submit', function(req, res, next) {
 
 //Has to come after /new or it will match /new and try to interpret it as an ID
 router.get('/:id', function(req, res, next) {
-	console.log("Is this being triggered from vote")
-	res.render('community/discussion', submission);
-
+	community.getSubmission(req.db, req.user, req.params.id, function(err, submission) {
+		res.render('community/discussion', submission);
+	});
 });
 
-router.post('/:id/vote', function(req, res, next) {
 
+//This route is just accessed by AJAX.
+router.post('/:id/vote', function(req, res, next) {
 	if (req.body.vote){
 		community.recordVote(req.db, req.params.id, req.user, req.body.vote, function(err, upvotes) {
-			console.log("Are we coming back from the model");
 			if (!err) {
-				console.log("Community vote recorded");
 				res.send({"status" : true, "votes" : upvotes});
 			}
 		});
 	} else {
-		console.log(req.body)
+		res.send("Vote failed due to no vote being sent");
 	}
 });
 
 router.post('/:id/comment', function(req, res, next) {
-	if (!err) {
-		console.log("Community submission created");
-		res.redirect("/community");
-	}
+	console.log(req.body);
+	community.saveComment(req.db, req.params.id, req.user, req.body.title, req.body.body, function(err) {
+		if (err) {console.log(err)};
+		res.redirect("/community/"+req.params.id);
+	});
 });
 
 module.exports = router;

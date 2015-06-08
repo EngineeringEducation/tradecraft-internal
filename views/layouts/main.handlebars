@@ -42,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">Curriculum</a>
+          <a class="navbar-brand" href="/">Curriculum</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -54,6 +54,12 @@
             <li id="feedback_link"><a href="/#contact">Feedback</a></li>
             <li id="tools_link"><a href="/#contact">Tools</a></li>
             <li id="brand_link"><a href="/tradecraft-brand">Brand</a></li>
+            {{#unless user}}
+              <li id="login_link"><a class="btn btn-primary" href="/auth/google">Sign In with Google</a></li>
+            {{/unless}}
+            {{#if user}}
+              <li id="user_link"><a href="/profile">{{user.loginProfile.displayName}}</a></li>
+            {{/if}}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
