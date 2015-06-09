@@ -3,6 +3,7 @@ var express = require('express');
 
 //View Related
 var exphbs  = require('express-handlebars'); //https://github.com/ericf/express-handlebars (Non defualt engine)
+var helpers = require('./lib/helpers');
 
 //Webserver Tools
 var path = require('path');
@@ -25,6 +26,7 @@ var routes = require('./routes/index');
 var student = require('./routes/student');
 var news = require('./routes/news');
 var community = require('./routes/community');
+var curriculum = require('./routes/curriculum');
 
 
 //Include Models
@@ -47,7 +49,7 @@ var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
 
 // view engine setup
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({'defaultLayout': 'main', 'helpers': helpers}));
 app.set('view engine', 'handlebars');
 
 // Connects to postgres once, on server start
@@ -116,6 +118,7 @@ app.use(function(req, res, next) {
         console.log("serializeUser");
         //Gotta get rid of the DB in order to serialize due to circular references
         delete user.db;
+        console.log(user.email)
         done(null, JSON.stringify(user));
     });
 
@@ -138,6 +141,7 @@ app.use(function(req, res, next) {
     app.use('/oauth2callback',
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
+        console.log("This runs only on login")
         res.locals.user = req.user;
         if (req.user.loginProfile['_json'].domain == "tradecrafted.com") {
           res.redirect('/');
@@ -150,7 +154,14 @@ app.use(function(req, res, next) {
       }
     );
 
-    function ensureAuthenticated(req, res, next) {  
+    app.get('/logout', function(req, res){
+      req.logout();
+      res.redirect('/');
+    });
+
+    function ensureAuthenticated(req, res, next) {
+        console.log("ensureAuthenticated")
+        console.log(req.user)
         if (req.isAuthenticated() && req.user['_json'].domain == "tradecrafted.com") { return next(); }
         res.redirect('/');
     }
@@ -162,6 +173,7 @@ app.use('/',  routes);
 app.use('/student', student);
 app.use('/news', news);
 app.use('/community', community);
+app.use('/curriculum', curriculum);
 
 
 /// ### One-off, temporary, factor out later

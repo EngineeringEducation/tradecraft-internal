@@ -1,6 +1,7 @@
 var _ = require('underscore');
 
-var googleExample = { provider: 'google',
+var googleExample = { 
+provider: 'google',
 id: '111718014976290947180',
 displayName: 'Liz Howard',
 name: { familyName: 'Howard', givenName: 'Liz' },
@@ -44,13 +45,14 @@ User.prototype.findOrCreate = function(done) {
 	// Basically, does this exist in the database, if so add our data to the substantial amount of data we get from the google profile.
 	self.db.query("SELECT id,created,name,email,provider,provider_id,status,cohort, start_date FROM users WHERE provider = $1 AND provider_id = $2", [self.loginProfile.provider, self.loginProfile.id], function(err, results) {
 		if (!err) {
-			if (results.length > 0) {
-				_.extend(results.rows[0], self);
+			if (results.rows.length > 0) {
+				self = _.extend(results.rows[0], self);
+				done(err, self);
 			} else {
-				//create user
+				console.log("Creating user for " + self.loginProfile.provider + " profile id " + self.loginProfile.id);
 				// Get their account email, not other random emails
-				var email = _.findWhere(self.loginProfile.emails, {type: 'account'});
-				self.db.query("INSERT INTO users (name,email,provider,provider_id,status) VALUES ($1, $2, $3, $4, $5)", [self.loginProfile.name, email, self.loginProfile.provider, self.loginProfile.id, 'student'], function (err, results) {
+				var email = _.findWhere(self.loginProfile.emails, {type: 'account'}).value;
+				self.db.query("INSERT INTO users (name,email,provider,provider_id,status) VALUES ($1, $2, $3, $4, $5)", [self.loginProfile.displayName, email, self.loginProfile.provider, self.loginProfile.id, 'student'], function (err, results) {
 					if (!err) {
 						self.db.query("SELECT id,created,name,email,provider,provider_id,status,cohort, start_date FROM users WHERE provider = $1 AND provider_id = $2", [self.loginProfile.provider, self.loginProfile.id], function(err, results) {
 							if (!err) {

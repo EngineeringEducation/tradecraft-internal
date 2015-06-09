@@ -42,23 +42,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Curriculum</a>
+          <a class="navbar-brand" href="/">Tradecraft</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li id="curriculum_link"><a href="/curriculum">Curriculum</a></li>
-            <li id="student_today_link"><a href="/student">Today</a></li>
-            <li id="track_link"><a href="/#">Track</a></li>
-            <li id="career_link"><a href="/career">Career Development</a></li>
-            <li id="personal_link"><a href="/#contact">Personal Development</a></li>
-            <li id="feedback_link"><a href="/#contact">Feedback</a></li>
-            <li id="tools_link"><a href="/#contact">Tools</a></li>
             <li id="brand_link"><a href="/tradecraft-brand">Brand</a></li>
             {{#unless user}}
               <li id="login_link"><a class="btn btn-primary" href="/auth/google">Sign In with Google</a></li>
             {{/unless}}
             {{#if user}}
               <li id="user_link"><a href="/profile">{{user.loginProfile.displayName}}</a></li>
+              <li id="logout_link"><a href="/logout">Logout</a></li>
             {{/if}}
           </ul>
         </div><!--/.nav-collapse -->
