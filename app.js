@@ -144,10 +144,13 @@ app.use(function(req, res, next) {
       function(req, res) {
         console.log("This runs only on login")
         res.locals.user = req.user;
-        if (req.user.loginProfile['_json'].domain == "tradecrafted.com") {
-          res.redirect('/');
+        if (req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.user.status == "student") {
+            res.redirect('/student');
+        } else if (req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.user.status != "student") {
+            res.redirect('/');
         } else {
-          res.render('error', {
+            //People who aren't TCers shouldn't be able to login.
+            res.render('error', {
                 message: "Login Fail",
                 error: " : ( "
             });
@@ -156,8 +159,8 @@ app.use(function(req, res, next) {
     );
 
     app.get('/logout', function(req, res){
-      req.logout();
-      res.redirect('/');
+        req.logout();
+        res.redirect('/');
     });
 
     function ensureAuthenticated(req, res, next) {

@@ -3,7 +3,7 @@
 {% block body %}
 
 	{% if not user %}
-		<a class="btn btn-primary" href="/auth/google">Login with Google</a> to get started
+		<a class="btn btn-primary" href="/auth/google">Login with Google</a> to get started.
 	{% endif %}
 	{% if user %}
 		<h1>Hello, {{user.name}}</h1>

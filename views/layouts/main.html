@@ -43,11 +43,13 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li id="brand_link"><a href="/tradecraft-brand">Brand</a></li>
+            
             {% if not user%}
               <li id="login_link"><a class="btn btn-primary" href="/auth/google">Sign In with Google</a></li>
             {% endif %}
             {% if user%}
+              <li id="student_today_link"><a href="/student">Today</a></li>
+              <li id="brand_link"><a href="/tradecraft-brand">Brand</a></li>
               <li id="user_link"><a href="/profile">{{user.loginProfile.displayName}}</a></li>
               <li id="logout_link"><a href="/logout">Logout</a></li>
             {% endif %}
