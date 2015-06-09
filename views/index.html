@@ -1,12 +1,12 @@
 {% extends "layouts/main.html" %}
 
-{% block main %}
-	<h1> Tradecraft Internal App </h1>
+{% block body %}
 
-
-
-	{% if user %}
+	{% if not user %}
 		<a class="btn btn-primary" href="/auth/google">Login with Google</a> to get started
+	{% endif %}
+	{% if user %}
+		<h1>Hello, {{user.name}}</h1>
 	{% endif %}
 
 {% endblock %}

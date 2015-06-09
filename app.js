@@ -180,10 +180,10 @@ app.use('/curriculum', curriculum);
 /// ### One-off, temporary, factor out later
 ///These will turn into full-blown controllers later
 app.get("/career", function(req, res, next) {
-    res.render("career_development")
+    res.render("career_development.html")
 })
 app.use('/tradecraft-brand', function (req, res ) {
-  res.render('tradecraft_brand');
+  res.render('tradecraft_brand.html');
 });
 
 
