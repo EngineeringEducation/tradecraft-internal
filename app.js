@@ -2,8 +2,7 @@
 var express = require('express');
 
 //View Related
-var exphbs  = require('express-handlebars'); //https://github.com/ericf/express-handlebars (Non defualt engine)
-var helpers = require('./lib/helpers');
+var nunjucks  = require('nunjucks'); //http://mozilla.github.io/nunjucks/
 
 //Webserver Tools
 var path = require('path');
@@ -49,8 +48,10 @@ var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
 
 // view engine setup
-app.engine('handlebars', exphbs({'defaultLayout': 'main', 'helpers': helpers}));
-app.set('view engine', 'handlebars');
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
 
 // Connects to postgres once, on server start
 var conString = process.env.DATABASE_URL || "postgres://localhost:5432/tradecraft";
@@ -204,7 +205,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
-        res.render('error', {
+        res.render('error.html', {
             message: err.message,
             error: err
         });
@@ -215,9 +216,9 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.render('error.html', {
         message: err.message,
-        error: {}
+        error: err
     });
 });
 
