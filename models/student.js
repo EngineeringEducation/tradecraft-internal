@@ -1,17 +1,14 @@
 //imports
 var _ = require("underscore");
 var moment = require('moment');
-
-//This is the stuff we'll take out when it's time to make a today controller
-var news = require('../routes/news');
+var news = require('../models/news');
 
 var student = function student (config) {
 	_.extend(this, config);
 	if (!this.db) {
 		console.log("Oh, gotta get a DB on that sucker");
 	}
-	console.log("New Student Initialized");
-	
+	console.log("Student Initialized");
 }
 
 
@@ -117,6 +114,8 @@ student.prototype.getToday = function(cb) {
 
 	}
 
+
+
 	//Get student's assignments
 	db.query("SELECT a.title, a.short_notes AS notes, sa.due_date, sa.status FROM assignments a JOIN students_assignments sa ON sa.assignment_id = a.id;", function(err, results) {
 		if (err) {
@@ -154,9 +153,7 @@ student.prototype.getToday = function(cb) {
 			return;
 		}
 		queryCount++;
-		console.log("news: ", news);
 		params.news = news;
-		console.log("params.news: ", params.news);
 		send(params);
 	});
 
@@ -168,10 +165,4 @@ student.prototype.getToday = function(cb) {
 		}
 	}
 }
-//functions
-
-/////// For now, we're going to do this functional-style. Maybe we'll turn this into something cleaner later.
-
-//exports
-var exports
-exports.student = student;
+module.exports = student;

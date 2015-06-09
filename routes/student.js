@@ -2,7 +2,7 @@ var express = require('express');
 var moment = require('moment');
 var router = express.Router();
 
-var Student = require("../controllers/student").student;
+var Student = require("../models/student").student;
 
 
 /* GET users homepage. */
