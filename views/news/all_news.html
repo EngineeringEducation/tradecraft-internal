@@ -1,13 +1,15 @@
+{% extends "layouts/main.html" %}
+{% block body %}
 <h1>News</h1>
 <a href="/news/new"><button class="btn btn-primary btn-sm">New</button></a>
-{{#each news}}
-<h2>{{title}}</h2>
+{% for n in news %}
+<h2>{{n.title}}</h2>
 <div class="well">
 <markdown>
-{{body}}
+{{n.body}}
 </markdown>
 </div>
-{{/each}}
+{% endfor %}
 
-
+{% endblock %}
 <script type="text/javascript" src="/javascripts/markdown.js"></script>

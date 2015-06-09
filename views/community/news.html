@@ -1,3 +1,5 @@
+{% extends "layouts/main.html" %}
+{% block body %}
 <h1>Community Submissions</h1>
 
 <div role="tabpanel">
@@ -13,58 +15,58 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="new">
-    	{{#each newest}}
+    	{% for s in newest %}
 			<div class="submission row">
 				<div class="col-sm-2">
-					<div class="vote"  id="new_{{id}}">
-						<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
-						<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					<div class="vote"  id="new_{{s.id}}">
+						<span class="h5 up up_{{s.id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{s.id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 					</div>
-					<div class="h4 well count count_{{id}}">{{votes}}</div>
+					<div class="h4 well count count_{{s.id}}">{{s.votes}}</div>
 				</div>
 				<div class="col-sm-10">
 					<div class="col-sm-11">
-						<div class="h3" class="community_title"><a href="{{link}}">{{title}}</a> (<a href="/community/{{id}}">discussion</a>) {{#if author}} by {{author}} {{/if}}</div> 
+						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s.id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div> 
 					</div>
 				</div>
 			</div>
-		{{/each}}
+		{% endfor %}
     </div>
     <div role="tabpanel" class="tab-pane" id="publishers">
-    	{{#each topMembers}}
+    	{% for s in topMembers %}
 			<div class="submission row">
 				<div class="col-sm-2">
-					<div class="vote" id="publisher_{{id}}">
-						<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
-						<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					<div class="vote" id="publisher_{{s.id}}">
+						<span class="h5 up up_{{s.id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{s.id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 					</div>
-					<div class="h4 well count count_{{id}}">{{votes}}</div>
+					<div class="h4 well count count_{{s.id}}">{{s.votes}}</div>
 				</div>
 				<div class="col-sm-10">
 					<div class="col-sm-11">
-						<div class="h3" class="community_title"><a href="{{link}}">{{title}}</a> (<a href="/community/{{id}}">discussion</a>) {{#if author}} by {{author}} {{/if}}</div>  
+						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s.id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div>  
 					</div>
 				</div>
 			</div>
-		{{/each}}
+		{% endfor %}
     </div>
     <div role="tabpanel" class="tab-pane" id="links">
-    	{{#each topOthers}}
+    	{% for s in topOthers %}
 			<div class="submission row">
 				<div class="col-sm-2">
-					<div class="vote" id="links_{{id}}">
-						<span class="h5 up up_{{id}} {{#if upvote}}text-primary{{/if}}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
-						<span class="h5 down down_{{id}} {{#if downvote}}text-danger{{/if}}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					<div class="vote" id="links_{{s.id}}">
+						<span class="h5 up up_{{s.id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{s.id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 					</div>
-					<div class="h4 well count count_{{id}}">{{votes}}</div>
+					<div class="h4 well count count_{{s.id}}">{{s.votes}}</div>
 				</div>
 				<div class="col-sm-10">
 					<div class="col-sm-11">
-						<div class="h3" class="community_title"><a href="{{link}}">{{title}}</a> (<a href="/community/{{id}}">discussion</a>) {{#if author}} by {{author}} {{/if}}</div>  
+						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s.id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div>  
 					</div>
 				</div>
 			</div>
-		{{/each}}
+		{% endfor %}
    	</div>
     <div role="tabpanel" class="tab-pane" id="submit">
     	<h1 id="title">New Community Post</h1>
@@ -147,7 +149,8 @@
 
 </div>
 
+{% endblock %}
 
-
-
+{% block javascript %}
 <script type="text/javascript" src="javascripts/community.js"></script>
+{% endblock %}

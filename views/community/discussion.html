@@ -1,3 +1,5 @@
+{% extends "layouts/main.html" %}
+{% block body %}
 <h1>Discussion Page</h1>
 
 <div class="well">
@@ -11,7 +13,7 @@
 			<div class="h4 well count count_{{id}}">{{votes}}</div>
 		</div>
 		<div class="col-sm-10">
-			<div class="h1" class="community_title">{{title}} {{#if author}} By {{author}} {{/if}}</div>
+			<div class="h1" class="community_title">{{title}} {% if author %} By {{author}} {% endif %}</div>
 		</div>
 	</div>
 	<hr class="clear">
@@ -19,12 +21,12 @@
 </div>
 
 <div class="container">
-	{{#each comments}}
+	{% for comment in comments %}
 	<div class="row">
-		<div class="comment_title h5">{{title}} by {{author}}</div>
-		<div class="comment_body">{{body}}</div>
+		<div class="comment_title h5">{{comment.title}} by {{comment.author}}</div>
+		<div class="comment_body">{{comment.body}}</div>
 	</div>
-	{{/each}}
+	{% endfor %}
 </div>
 
 <form class="form well" action="{{id}}/comment" method="POST">
@@ -33,6 +35,8 @@
 	<label for="body">Comment</label><textarea class="textarea form-control" rows="5" name="body" id="body"></textarea>
 	<button class="btn btn-primary">Submit</button>
 </form>
+{% endblock %}
 
-
+{% block javascript %}
 <script type="text/javascript" src="/javascripts/community.js"></script>
+{% endblock %}

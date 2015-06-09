@@ -1,76 +1,78 @@
+{% extends "layouts/main.html" %}
 
+{% block body %}
 <h1 id="title">Today</h1>
 <div class="row">
 <div class="col-md-4">
     <h2>Schedule</h2>
-    {{#each schedule_blocks}}
+    {% for schedule_block in schedule_blocks %}
     <div class="schedule_block">
-      <strong>{{time}}</strong> {{type}} : <a href="curriculum/{{curriculum_id}}">{{title}}</a>
+      <strong>{{schedule_block.time}}</strong> {{schedule_block.type}} : <a href="curriculum/{{schedule_block.curriculum_id}}">{{schedule_block.title}}</a>
     </div>
-    {{/each}}
+    {% endfor %}
 
     <h2>Community Events</h2>
-    {{#each events}}
+    {% for event in events %}
       <div class="event">
-        <strong>{{date}}</strong>
-        {{#if href}}
-          <a href="{{href}}">
-        {{/if}}
-             {{title}}
-        {{#if href}}
+        <strong>{{event.date}}</strong>
+        {% if href %}
+          <a href="{{event.href}}">
+        {% endif %}
+             {{event.title}}
+        {% if href %}
           </a>
-        {{/if}}
-         <label class="label label-{{label}}">{{type}}</label>
+        {% endif %}
+         <label class="label label-{{event.label}}">{{event.type}}</label>
       </div>
-    {{/each}}
+    {% endfor %}
 
     <h2><a href="/news">News</a></h2>
-    {{#each news}}
+    {% for new in news %}
     <div class="news">
-      <a href="/news/{{id}}"><strong>{{title}}</strong></a> 
+      <a href="/news/{{new.id}}"><strong>{{new.title}}</strong></a> 
     </div>
-    {{/each}}
+    {% endfor %}
     <h2><a href="/community">Community Submissions</a></h2>
-    {{#each community}}
+    {% for c in community %}
     <div class="community_link">
-      <a href="{{link}}" target="_blank"><strong>{{title}}</strong></a> {{student_name}}
-      <a href="{{tweet}}" target="_blank">
+      <a href="{{c.link}}" target="_blank"><strong>{{c.title}}</strong></a> {{c.student_name}}
+      <a href="{{c.tweet}}" target="_blank">
         <span class="social social-twitter" aria-hidden="true" style="font-size:24px;"></span>
       </a>
-      <a href="{{facebook}}">
+      <a href="{{c.facebook}}">
         <span class="social social-facebook" aria-hidden="true" style="font-size:24px;"></span>
       </a>
     </div>
-    {{/each}}
+    {% endfor %}
     
     
 </div>
 <div class="col-md-8">
     
     <h2>Feedback</h2>
-    {{#each feedback}}
+    {% for f in feedback %}
     <div class="feedback">
-      <strong><a href="#">{{date}} {{title}}</a> </strong><button class="btn btn-warning btn-xs">Didn't Attend</button>
+      <strong><a href="#">{{f.date}} {{f.title}}</a> </strong><button class="btn btn-warning btn-xs">Didn't Attend</button>
     </div>
-    {{/each}}
+    {% endfor %}
     
 
     <h2>Your Assignments</h2>
-    {{#each assignments}}
+    {% for assignment in assignments %}
     <div class="assignment well">
-      <a href="#">{{title}}</a> <strong>Due {{due_date}}</strong><br>
-      {{notes}}
-      {{# if notes}} <br>{{/if}}
+      <a href="#">{{assignment.title}}</a> <strong>Due {{assignment.due_date}}</strong><br>
+      {{assignment.notes}}
+      {% if assignment.notes %} <br>{% endif %}
       <button class="btn btn-primary btn-xs">Start</button> <button class="btn btn-success btn-xs">Turn In</button> <button class="btn btn-warning btn-xs">Help</button> <button class="btn btn-danger btn-xs">Abandon</button>
     </div>
-    {{/each}}
+    {% endfor %}
 
     <h2>Your Assignment Materials</h2>
-    {{#each assignments_materials}}
+    {% for am in assignments_materials %}
     <div class="materials">
-      <a href="{{link}}">{{title}}</a>
+      <a href="{{am.link}}">{{am.title}}</a>
     </div>
-    {{/each}}
+    {% endfor %}
     
 
 </div>
@@ -102,10 +104,11 @@
     </div>
   </div>
 </div>
-
+{% endblock %}
+{% block javascript %}
 <script type="text/javascript">
   $(document).ready(function() {
     $('#student_today_link').addClass("active")
-  })
-
+  });
 </script>
+{% endblock %}
