@@ -20,7 +20,7 @@ var news = {
 				}
 			});
 		}
-	}
+	},
 
 	newNews : function (db, title, body, done) {
 		db.query("INSERT INTO news (title, body) VALUES ($1, $2);", [title, body], function(err, results) {

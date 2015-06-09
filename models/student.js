@@ -3,7 +3,7 @@ var _ = require("underscore");
 var moment = require('moment');
 var news = require('../models/news');
 
-var student = function student (config) {
+var student = function (config) {
 	_.extend(this, config);
 	if (!this.db) {
 		console.log("Oh, gotta get a DB on that sucker");
@@ -147,13 +147,13 @@ student.prototype.getToday = function(cb) {
 	})
 
 	//Get all the news
-	news.getNews(db, function(err, news) {
+	news.getNews(db, function(err, results) {
 		if (err) {
 			console.log("Error", err);
 			return;
 		}
 		queryCount++;
-		params.news = news;
+		params.news = results;
 		send(params);
 	});
 
