@@ -1,6 +1,6 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var Community = require('../models/community');
+var Community = require("../models/community");
 //initialize
 var community = new Community();
 
@@ -8,15 +8,15 @@ var community = new Community();
 // I typed the word "news" too many times for this and now it looks weird.
 router.get('/', function(req, res, next) {
 	community.getCommunityPage(req.db, req.user, (req.query.page || 1), function(errList, data) {
-		res.render('community/news', data);
+		res.render("community/news.html", data);
 	});
 });
 
-router.get('/submit', function(req, res, next) {
-	res.render("community/submit");
+router.get("/submit", function(req, res, next) {
+	res.render("community/submit.html");
 });
 
-router.post('/submit', function(req, res, next) {
+router.post("/submit", function(req, res, next) {
 	console.log("Just got a form sent to submit- ", req.body);
 
 	if (req.body.self) {
@@ -27,20 +27,20 @@ router.post('/submit', function(req, res, next) {
 	community.saveNewSubmission(req.db, req.user, author, req.body.self, req.body.title, req.body.description, req.body.link, req.body.tweet_data, req.body.fb_data, function(err, results){
 		console.log("err", err);
 		console.log("results", results);
-		res.redirect("/community");
+		res.redirect("/community.html");
 	});
 });
 
 //Has to come after /new or it will match /new and try to interpret it as an ID
-router.get('/:id', function(req, res, next) {
+router.get("/:id", function(req, res, next) {
 	community.getSubmission(req.db, req.user, req.params.id, function(err, submission) {
-		res.render('community/discussion', submission);
+		res.render("community/discussion.html", submission);
 	});
 });
 
 
 //This route is just accessed by AJAX.
-router.post('/:id/vote', function(req, res, next) {
+router.post("/:id/vote", function(req, res, next) {
 
 	if (req.body.vote){
 		community.recordVote(req.db, req.params.id, req.user, req.body.vote, function(err, upvotes) {
@@ -55,8 +55,7 @@ router.post('/:id/vote', function(req, res, next) {
 	}
 });
 
-router.post('/:id/comment', function(req, res, next) {
-	console.log(req.body);
+router.post("/:id/comment", function(req, res, next) {
 	community.saveComment(req.db, req.params.id, req.user, req.body.title, req.body.body, function(err) {
 		if (err) {console.log(err)};
 		res.redirect("/community/"+req.params.id);

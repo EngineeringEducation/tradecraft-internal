@@ -6,14 +6,14 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 	getNews(req.db, function(err, news) {
 		if (!err) {
-			res.render('news/all_news', { "news": news });
+			res.render("news/all_news.html", { "news": news });
 		}
 		
 	})
 });
 
 router.get('/new', function(req, res, next) {
-	res.render("news/new_news");
+	res.render("news/new_news.html");
 });
 
 router.post('/new', function(req, res, next) {
@@ -31,7 +31,7 @@ router.post('/new', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
 	getNews(req.db, function(err, news) {
 		if (!err) {
-			res.render('news/all_news', { "news": news });
+			res.render("news/all_news.html", { "news": news });
 		}
 		
 	}, req.params.id)
