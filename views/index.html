@@ -3,7 +3,10 @@
 {% block body %}
 
 	{% if not user %}
-		<a class="btn btn-primary" href="/auth/google">Login with Google</a> to get started.
+		<h2>Welcome to the internal TC app!</h2>
+		<div class="hero well col-md-3">
+			<a class="btn btn-primary" href="/auth/google">Login with Google</a> to get started.
+		</div>
 	{% endif %}
 	{% if user %}
 		<h1>Hello, {{user.name}}</h1>

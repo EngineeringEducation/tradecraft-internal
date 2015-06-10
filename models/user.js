@@ -32,6 +32,7 @@ _json:
 
 var User = function(options) {
 	_.extend(this, options);
+	//I don't know why I have to force this after the extend. Investigate #TODO
 	if (options.db) {
 		this.db = options.db;
 	} else {
@@ -75,6 +76,21 @@ User.prototype.findOrCreate = function(done) {
 			done(err, self);
 		}	
 	});
+};
+
+//This is gonna get complex if we add other logins. 
+User.prototype.getImageURL = function(size) {
+	var self = this;
+	if (this.loginProfile.photos.length > 0) {
+		var imageURLRaw = this.loginProfile.photos[0].value;
+		var imageURL = imageURLRaw.split("?")[0];
+		if (size) {
+			var imageURLSized = imageURL + "?sz=" + size;
+			return imageURLSized;
+		} else {
+			return imageURL;
+		}
+	}
 };
 
 module.exports = User;

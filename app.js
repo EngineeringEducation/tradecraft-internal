@@ -142,8 +142,6 @@ app.use(function(req, res, next) {
     app.use('/oauth2callback',
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
-        console.log("This runs only on login")
-        res.locals.user = req.user;
         if (req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.user.status == "student") {
             res.redirect('/student');
         } else if (req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.user.status != "student") {
@@ -164,11 +162,26 @@ app.use(function(req, res, next) {
     });
 
     function ensureAuthenticated(req, res, next) {
-        console.log("ensureAuthenticated")
-        console.log(req.user)
-        if (req.isAuthenticated() && req.user['_json'].domain == "tradecrafted.com") { return next(); }
+        if (req.isAuthenticated() && req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.path != "/") { return next(); }
         res.redirect('/');
     }
+
+    //Let's make the user on req.user an actual user
+    app.use(function(req, res, next) {
+        //Put the DB on the user, that's how I set up the user model, make it not klugey later
+        if (req.user) {
+            req.user.db = req.db;
+            //Gimmie them methods
+            var user = new User(req.user);
+            user.findOrCreate(function(err, user) {
+                //Gimmie dat data
+                req.user = user;
+                next();
+            });
+        } else {
+            next();
+        }
+    });
 
 
 
