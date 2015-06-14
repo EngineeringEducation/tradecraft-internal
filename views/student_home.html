@@ -44,12 +44,16 @@
         {% for c in community %}
         <div class="community_link">
           <a href="{{c.link}}" target="_blank"><strong>{{c.title}}</strong></a> {{c.student_name}}
+          {% if c.tweet %}
           <a href="{{c.tweet}}" target="_blank">
             <span class="social social-twitter" aria-hidden="true" style="font-size:24px;"></span>
           </a>
+          {% endif %}
+          {% if c.facebook %}
           <a href="{{c.facebook}}">
             <span class="social social-facebook" aria-hidden="true" style="font-size:24px;"></span>
           </a>
+          {% endif %}
         </div>
         {% endfor %}
     {% endif %}

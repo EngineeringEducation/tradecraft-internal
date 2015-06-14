@@ -21,8 +21,7 @@ var submission = {
 //There's no reason to init here, this is just a collection of shit. Refactor this to make it less stupid.
 var community = function() {
 	//Init
-	console.log("init community");
-	console.log(this.getTopSubmissionsWrittenByMembers)
+	console.log("Community Init");
 };
 
 //Get the top 10 submissions where the author is a user, paginated
