@@ -1,0 +1,96 @@
+{% extends "layouts/main.html" %}
+
+{% block body %}
+<h1>New Subject</h1>
+<form class="form">
+
+	<div class="form-group">
+	    <label for="new_subject_name">Name:</label>
+	    <input type="text" class="form-control" id="new_subject_name" placeholder="New Subject" name="name">
+	</div>
+
+	<div class="form-group">
+	    <label for="overview">Overview:</label>
+	    <textarea class="form-control" name="overview" id="overview" rows="3">Summary of topic.</textarea>
+	</div>
+
+	<div class="form-group">
+	    <label for="dependancies">Dependancies:</label>
+	    <select multiple class="form-control" name="dependancies" id="dependancies">
+			<option>Other Subject 1</option>
+			<option>Other Subject 2</option>
+			<option>Other Subject 3</option>
+			<option>Other Subject 4</option>
+			<option>Other Subject 5</option>
+		</select>
+	</div>
+
+	<h3>Resources</h3>
+	<div id="resources">
+		<button id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+		<div class="form-group" id="resource_1">
+			<button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+		    <input type="text" class="form-control form-inline" id="link_1" placeholder="Link" name="link_1">
+		    <input type="text" class="form-control form-inline" id="link-text_1" placeholder="Link Text" name="link-text_1">
+		</div>
+	</div>
+
+	<h3>Examples</h3>
+	<div id="examples">
+		<button id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+		<div class="form-group" id="example_1">
+			<button id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+		    <input type="text" class="form-control form-inline" id="link_1" placeholder="Link" name="link_1">
+		    <input type="text" class="form-control form-inline" id="link-text_1" placeholder="Link Text" name="link-text_1">
+		</div>
+	</div>
+
+</form>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+
+	//Resources
+	var resourceCount = 1;
+	$('#new_resource').on('click', function(e) {
+		e.preventDefault();
+		resourceCount++;
+		$('#resources').append('<div class="form-group" id="resource_'+resourceCount+'"><button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="link_'+resourceCount+'" placeholder="Link" name="link_'+resourceCount+'"><input type="text" class="form-control form-inline" id="link-text_'+resourceCount+'" placeholder="Link Text" name="link-text_'+resourceCount+'"></div>');
+
+		$('.delete_resource').on('click', function(e) {
+			e.preventDefault();
+			resourceCount--;
+			$(this).parent().remove();
+		});
+	});
+
+	$('.delete_resource').on('click', function(e) {
+		e.preventDefault();
+		resourceCount--;
+		$(this).parent().remove();
+	});
+
+	//Examples
+	var exampleCount = 1;
+	$('#new_example').on('click', function(e) {
+		e.preventDefault();
+		exampleCount++;
+		$('#examples').append('<div class="form-group" id="example_'+exampleCount+'"><button class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="link_'+exampleCount+'" placeholder="Link" name="link_'+exampleCount+'"><input type="text" class="form-control form-inline" id="link-text_'+exampleCount+'" placeholder="Link Text" name="link-text_'+exampleCount+'"></div>');
+
+		$('.delete_example').on('click', function(e) {
+			e.preventDefault();
+			exampleCount--;
+			$(this).parent().remove();
+		});
+	});
+
+	$('.delete_example').on('click', function(e) {
+		e.preventDefault();
+		exampleCount--;
+		$(this).parent().remove();
+	});
+
+</script>
+{% endblock %}
