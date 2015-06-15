@@ -53,7 +53,8 @@ nunjucks.configure('views', {
     express: app
 });
 
-// Connects to postgres once, on server start
+// PERSISTENCE RELATED
+//Yeah, we're using two database engines. We'll switch over to mongo over a few weeks.
 var conString = process.env.DATABASE_URL || "postgres://localhost:5432/tradecraft";
 var db;
 pg.connect(conString, function(err, client) {
@@ -63,6 +64,9 @@ pg.connect(conString, function(err, client) {
     db = client;
   }
 });
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/tradecraft');
 
 //Keep the DB accessible
 app.use(function(req, res, next) {

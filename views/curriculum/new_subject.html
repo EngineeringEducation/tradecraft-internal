@@ -2,7 +2,8 @@
 
 {% block body %}
 <h1>New Subject</h1>
-<form class="form">
+<form class="form" action="/curriculum/new" method="POST">
+	<button class="btn btn-success">Save</button>
 
 	<div class="form-group">
 	    <label for="new_subject_name">Name:</label>
@@ -30,8 +31,8 @@
 		<button id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
 		<div class="form-group" id="resource_1">
 			<button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-		    <input type="text" class="form-control form-inline" id="link_1" placeholder="Link" name="link_1">
-		    <input type="text" class="form-control form-inline" id="link-text_1" placeholder="Link Text" name="link-text_1">
+		    <input type="text" class="form-control form-inline" id="resource_1" placeholder="Link" name="resource_1">
+		    <input type="text" class="form-control form-inline" id="resource-text_1" placeholder="Link Text" name="resource-text_1">
 		</div>
 	</div>
 
@@ -40,9 +41,21 @@
 		<button id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
 		<div class="form-group" id="example_1">
 			<button id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-		    <input type="text" class="form-control form-inline" id="link_1" placeholder="Link" name="link_1">
-		    <input type="text" class="form-control form-inline" id="link-text_1" placeholder="Link Text" name="link-text_1">
+		    <input type="text" class="form-control form-inline" id="example_1" placeholder="Link" name="example_1">
+		    <input type="text" class="form-control form-inline" id="example-text_1" placeholder="Link Text" name="example-text_1">
 		</div>
+	</div>
+
+	<h3>Related Assignments</h3>
+	<p>This just ties together assignments you might want to assign students if you do this topic.</p>
+	<div id="assignments">
+		<select multiple class="form-control" name="assignments" >
+			<option>Assignment 1</option>
+			<option>Assignment 2</option>
+			<option>Assignment 3</option>
+			<option>Assignment 4</option>
+			<option>Assignment 5</option>
+		</select>
 	</div>
 
 </form>
@@ -57,7 +70,7 @@
 	$('#new_resource').on('click', function(e) {
 		e.preventDefault();
 		resourceCount++;
-		$('#resources').append('<div class="form-group" id="resource_'+resourceCount+'"><button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="link_'+resourceCount+'" placeholder="Link" name="link_'+resourceCount+'"><input type="text" class="form-control form-inline" id="link-text_'+resourceCount+'" placeholder="Link Text" name="link-text_'+resourceCount+'"></div>');
+		$('#resources').append('<div class="form-group" id="resource_'+resourceCount+'"><button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="resource_'+resourceCount+'" placeholder="Link" name="resource_'+resourceCount+'"><input type="text" class="form-control form-inline" id="resource-text_'+resourceCount+'" placeholder="Link Text" name="resource-text_'+resourceCount+'"></div>');
 
 		$('.delete_resource').on('click', function(e) {
 			e.preventDefault();
@@ -77,7 +90,7 @@
 	$('#new_example').on('click', function(e) {
 		e.preventDefault();
 		exampleCount++;
-		$('#examples').append('<div class="form-group" id="example_'+exampleCount+'"><button class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="link_'+exampleCount+'" placeholder="Link" name="link_'+exampleCount+'"><input type="text" class="form-control form-inline" id="link-text_'+exampleCount+'" placeholder="Link Text" name="link-text_'+exampleCount+'"></div>');
+		$('#examples').append('<div class="form-group" id="example_'+exampleCount+'"><button class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="example_'+exampleCount+'" placeholder="Link" name="example_'+exampleCount+'"><input type="text" class="form-control form-inline" id="example-text_'+exampleCount+'" placeholder="Link Text" name="example-text_'+exampleCount+'"></div>');
 
 		$('.delete_example').on('click', function(e) {
 			e.preventDefault();
@@ -91,6 +104,7 @@
 		exampleCount--;
 		$(this).parent().remove();
 	});
+
 
 </script>
 {% endblock %}
