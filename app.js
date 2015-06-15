@@ -64,13 +64,21 @@ pg.connect(conString, function(err, client) {
     db = client;
   }
 });
-
+//MongoDB
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tradecraft');
+var mongo = mongoose.connection;
+//Which uses event based stuff
+mongo.on('error', console.error.bind(console, 'connection error:'));
+mongo.once('open', function (callback) {
+  console.log("'I am open.' -mongodb")
+});
+
 
 //Keep the DB accessible
 app.use(function(req, res, next) {
     req.db = db;
+    req.mongo = mongo;
     next();
 });
 
