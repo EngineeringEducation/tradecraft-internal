@@ -26,8 +26,6 @@ router.post("/new", function(req, res, next) {
 	//#TODO Error Checking
 	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
 
-	console.log(req.body)
-
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
 		subject : req.body.subject,
@@ -61,12 +59,9 @@ router.post("/new", function(req, res, next) {
 		i++;
 	};
 
-	console.log(curriculum);
 	curriculum.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
 		if (err) throw err;
-		console.log("Saved Curriculum");
-		console.log(curriculum)
 		res.redirect("/curriculum/"+ curriculum._id)
 	});
 
@@ -94,9 +89,6 @@ To conform to good REST principles tho this should be a PUT.
 Should probably make the form be AJAX so we can have a coherent REST API. #TODO
 */
 router.post('/:id', function(req, res, next) {
-	console.log("Got to the submit");
-	console.log(req.body)
-
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,
@@ -109,7 +101,6 @@ router.post('/:id', function(req, res, next) {
 
 	//Get the examples - we might have deleted one in the middle.
 	var exampleCount = Number(req.body.highestExampleCount || 1);
-	console.log("num examples ", typeof exampleCount);
 	var submittedExamples = [];
 	for (var i=1; i<=exampleCount; i++) {
 		console.log(i, req.body["example_" + i], req.body["example-text_" + i]);
@@ -126,7 +117,6 @@ router.post('/:id', function(req, res, next) {
 	
 	//Get the resources - we might have deleted one in the middle.
 	var resourceCount = Number(req.body.highestResourceCount || 1);
-	console.log("num resources ", typeof resourceCount);
 	var submittedResources = [];
 	for (var i=1; i<=resourceCount; i++) {
 		console.log(i, req.body["resource_" + i], req.body["resource-text_" + i])
@@ -139,7 +129,6 @@ router.post('/:id', function(req, res, next) {
 	}
 
 	curriculum.resources = _.compact(submittedResources);
-	console.log(curriculum)
 
 	Curriculum.findByIdAndUpdate(req.params.id, curriculum, function(err) {
 		res.redirect("/curriculum/" + req.params.id);
