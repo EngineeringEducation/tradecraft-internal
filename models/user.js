@@ -93,6 +93,10 @@ User.prototype.getImageURL = function(size) {
 	}
 };
 
+User.prototype.isInstructor = function() {
+	return true;
+};
+
 module.exports = User;
 
 

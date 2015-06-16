@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1>{{thisCurriculum.subject}}</h1>
-<form class="form" id="newSubject" action="/curriculum/new" method="POST">
+<form class="form" id="newSubject" action="/curriculum/{{thisCurriculum._id}}" method="POST">
 	<button class="btn btn-success">Save</button>
 
 	<div class="form-group">
@@ -25,24 +25,26 @@
 	</div>
 
 	<h3>Resources</h3>
-	<div id="resources">
-		<button id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+	<input type="hidden" id="highestResourceCount" value="1" name="highestResourceCount">
+	<div id="resources" class="form-inline">
 		<div class="form-group" id="resource_1">
-			<button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+			<a class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
 		    <input type="url" class="form-control form-inline" id="resource_1" placeholder="Link" name="resource_1">
 		    <input type="text" class="form-control form-inline" id="resource-text_1" placeholder="Link Text" name="resource-text_1">
 		</div>
 	</div>
+	<a id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
 
 	<h3>Examples</h3>
-	<div id="examples">
-		<button id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+	<input type="hidden" value="1" id="highestExampleCount" name="highestExampleCount">
+	<div id="examples" class="form-inline">
 		<div class="form-group" id="example_1">
-			<button id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+			<a id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
 		    <input type="url" class="form-control form-inline" id="example_1" placeholder="Link" name="example_1">
 		    <input type="text" class="form-control form-inline" id="example-text_1" placeholder="Link Text" name="example-text_1">
 		</div>
 	</div>
+	<a id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
 
 	<h3>Related Assignments</h3>
 	<p>This just ties together assignments you might want to assign students if you do this topic.</p>
@@ -60,7 +62,7 @@
 	<div class="form-group">
 	    <label for="new_subject_name">Awesome Gif:</label>
 	    <p>Every curriculum is better with an awesome gif. Find or make one and it will appear to the side of the title.</p>
-	    <input type="url" class="form-control" required id="gif_link" placeholder="Gif Link Here" autofocus name="gif">
+	    <input type="url" class="form-control" id="gif_link" placeholder="Gif Link Here" name="gif">
 	</div>
 </form>
 
@@ -70,11 +72,14 @@
 <script type="text/javascript">
 
 	//Resources, event handlers and new dom element creation
-	var resourceCount = ;
+	var resourceCount = 1;
+	var highestResourceCount = 1;
 	$('#new_resource').on('click', function(e) {
 		e.preventDefault();
 		resourceCount++;
-		$('#resources').append(newLinkGroup({name: 'resources', count: resourceCount}));
+		highestResourceCount++;
+		$('#highestResourceCount').val(highestResourceCount); // Increment the count to the biggest number we've seen (for server-side parsing. I'm aware this is janky as hell.)
+		$('#resources').append(newLinkGroup({name: 'resource', count: resourceCount}));
 
 		$('.delete_resource').on('click', function(e) {
 			e.preventDefault();
@@ -86,8 +91,11 @@
 	//setup from server-side data
 	{% for r in thisCurriculum.resources %}
 		$('#resources').html("") //empty first, since there is one there already
-		$('#resources').append(newLinkGroup({name:'resource', count: resourceCount, }))
+		$('#resources').append(newLinkGroup({name:'resource', count: resourceCount, link: "{{r.link}}", linkText: "{{r.linkText}}" }));
+		resourceCount++;
+		highestResourceCount++;
 	{% endfor %}
+	$('#highestResourceCount').val(highestResourceCount);
 
 	//After all the data-driven ones have been created bind click handlers
 	$('.delete_resource').on('click', function(e) {
@@ -98,9 +106,12 @@
 
 	//Examples, event handlers and new dom element creation
 	var exampleCount = 1;
+	var highestExampleCount = 1;
 	$('#new_example').on('click', function(e) {
 		e.preventDefault();
 		exampleCount++;
+		highestExampleCount++;
+		$('#highestExampleCount').val(highestExampleCount); // Increment the count to the biggest number we've seen (for server-side parsing. I'm aware this is janky as hell.)
 		$('#examples').append(newLinkGroup({name: 'example', count: exampleCount}));
 
 		$('.delete_example').on('click', function(e) {
@@ -112,9 +123,12 @@
 
 	//setup from server-side data
 	{% for e in thisCurriculum.examples %}
-		$('#examples').html("") //empty first, since there is one there already
-		$('#examples').append(newLinkGroup({name:'example', exampleCount, }))
+		$('#examples').html(""); //empty first, since there is one there already
+		$('#examples').append(newLinkGroup({name:'example', count: exampleCount, link: "{{e.link}}", linkText: "{{e.linkText}}" }));
+		exampleCount++;
+		highestExampleCount++;
 	{% endfor %}
+	$('#highestExampleCount').val(highestExampleCount);
 
 	//After all the data-driven ones have been created bind click handlers
 	$('.delete_example').on('click', function(e) {
@@ -123,14 +137,14 @@
 		$(this).parent().remove();
 	});
 
-
+ 
 
 	//Gives me a new link + link text and remove button
 	function newLinkGroup (options) {
 		if (options.link && options.linkText) {
-			return $('<div class="form-group" id="'+options.name+ +options.count+'"><button class="delete'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="'+options.name+ +options.count+'" value="'+options.link+'" name="'+options.name+ +options.count+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text_'+options.count+'" value="'+options.linkText+'" name="'+options.name+'-text_'+options.count+'"></div>')
+			return $('<div class="form-group"><a class="delete_'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a><input type="text" class="form-control form-inline" id="'+options.name+ "_" +options.count+'" value="'+options.link+'" name="'+options.name+ "_" +options.count+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text_'+options.count+'" value="'+options.linkText+'" name="'+options.name+'-text_'+options.count+'"></div>')
 		} else {
-			return $('<div class="form-group" id="'+options.name+ +options.count+'"><button class="delete'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="'+options.name+ +options.count+'" placeholder="Link" name="'+options.name+ +options.count+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text_'+options.count+'" placeholder="Link Text" name="'+options.name+'-text_'+options.count+'"></div>')
+			return $('<div class="form-group"><a class="delete_'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a><input type="text" class="form-control form-inline" id="'+options.name+ "_" +options.count+'" placeholder="Link" name="'+options.name+ "_" +options.count+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text_'+options.count+'" placeholder="Link Text" name="'+options.name+'-text_'+options.count+'"></div>')
 		}
 		
 	}

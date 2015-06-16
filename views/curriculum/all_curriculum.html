@@ -2,10 +2,11 @@
 
 {% block body %}
 	<h1>Curriculum Listing</h1>
+	<a href="/curriculum/new" class="btn btn-primary">New</a>
 
 	{% for c in curriculum %}
 		<h2><a href="/curriculum/{{c._id}}">{{c.subject}}</a></h2>
-		_id : {{c.id}}
+		<div class="overview">{{c.overview}}</div>
 
 		<h3>Resources</h3>
 		{% for r in c.resources %}

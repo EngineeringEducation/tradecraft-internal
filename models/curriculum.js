@@ -9,18 +9,22 @@ var Assignment = require('./assignments.js');
 var curriculumSchema = mongoose.Schema({
     subject: String,
     overview: String,
-    dependencies : Array, //This might change,
+    dependencies : [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencyOf"}],
     resources : [{link: String, linkText: String}],
     examples : [{link: String, linkText: String}],
-    assignments: [{ type:mongoose.Schema.ObjectId, ref:"Assignment", childPath:"subjects" }], 
+    assignments: [{ type:mongoose.Schema.ObjectId, ref:"Assignment", childPath:"subjects" }],
+    dependencyOf: [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencies"}],
     published: Boolean,
     gif: String
 });
 
 curriculumSchema.plugin(relationship, { relationshipPathName:'assignments' });
+curriculumSchema.plugin(relationship, { relationshipPathName:'dependencies' });
+curriculumSchema.plugin(relationship, { relationshipPathName:'dependencyOf' });
 
 // on every save, add the date
 curriculumSchema.pre('save', function(next) {
+  console.log(this);
   // get the current date
   var currentDate = new Date();
   
@@ -31,7 +35,11 @@ curriculumSchema.pre('save', function(next) {
 	if (!this.created_at) {
 		this.created_at = currentDate;
 	}
-    
+
+  //Populate dependancyOf
+  // for (var i = 0; i < this.dependencies.length; i++) {
+  //   this.dependencies[i].dependancyOf.push(this._id);
+  // };
 
   next();
 });
