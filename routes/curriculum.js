@@ -74,7 +74,6 @@ router.post("/new", function(req, res, next) {
 
 
 router.get('/:id', function(req, res, next) {
-	console.log(req.user.isInstructor())
 	Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").exec(function(err, thisCurriculum) {
 		if (err) throw err;
 		Curriculum.find({}).exec(function(err, curriculum) {
