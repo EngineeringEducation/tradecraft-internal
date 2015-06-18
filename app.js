@@ -27,6 +27,7 @@ var student = require('./routes/student');
 var news = require('./routes/news');
 var community = require('./routes/community');
 var curriculum = require('./routes/curriculum');
+var assignments = require('./routes/assignments');
 
 
 //Include Models
@@ -200,6 +201,7 @@ app.use('/student', student);
 app.use('/news', news);
 app.use('/community', community);
 app.use('/curriculum', curriculum);
+app.use('/assignments', assignments);
 
 
 /// ### One-off, temporary, factor out later

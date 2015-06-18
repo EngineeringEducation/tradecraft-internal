@@ -3,7 +3,7 @@ var moment = require("moment");
 var router = express.Router();
 
 var Student = require("../models/student");
-var User = require("../models/user")
+var User = require("../models/user");
 
 
 /* GET users homepage. */

@@ -1,0 +1,108 @@
+{% extends "layouts/main.html" %}
+
+{% block body %}
+	<h1>New Assignment</h1>
+
+	<div class="row type">
+		What kind of assignment is this?
+
+		<input type="button" class="btn btn-primary type" id="type_link" value="Link / Description">
+		<input type="button" class="btn btn-danger type" id="type_reading" value="Reading">
+		<input type="button" class="btn btn-success type" id="type_walkthrough" value="Walkthrough">
+		<input type="button" class="btn btn-warning type" id="type_research" value="Research">
+	</div>
+
+	<div class="hidden type_form row type_link">
+		<div class="form-group">
+			<label for="link">Link</label>
+			<input type="url" class="form-control" id="exampleInputEmail1" placeholder="Link to assignment">
+		</div>
+		<div class="form-group">
+			<label for="link_description">Description :</label>
+			<textarea class="form-control" name="link_description" placeholder="About the link" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="hidden row type_form type_reading" class="form-control">
+		<div class="form-group">
+			<label>Link</label>
+			<input type="url" name="reading_url" class="form-control">
+		</div>
+		<div class="form-group">
+			<label>URL type</label>
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-primary active">
+					<input type="radio" name="options" id="direct" autocomplete="off" value="direct" checked> Direct Link
+				</label>
+				<label class="btn btn-primary">
+					<input type="radio" name="options" id="amazon" value="amazon" autocomplete="off"> Amazon URL
+				</label>
+				<label class="btn btn-primary">
+					<input type="radio" name="options" id="pdf" value="pdf" autocomplete="off"> PDF Download
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Reading Description</label>
+			<textarea class="form-control" name="link_description" placeholder="Instructions, reading notes, chapter assignment, etc" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="hidden row type_form type_walkthrough">
+		Prereading
+		Walkthrough (md)
+	</div>
+	<div class="hidden row type_form type_research">
+		What is the research topic
+		Do you want them to do something with the research
+			Publish it
+			Compile it
+			Deliver it as
+				Spreadsheet
+				Essay
+				Blog Post
+				Report
+			Give it to
+				Instructor
+				Client
+				Other Student
+			Use it to decide something
+		What do you want them to use for that research
+			Google
+			Interviews
+			Forms
+			Books
+			Articles
+	</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+	$("input.type").on('click', function(e) {
+		e.preventDefault();
+		$(".type").removeClass("active");
+		$(".type_form").addClass("hidden")
+
+		switch($(this).val()) {
+			case "Link / Description":
+				$(".type_link").removeClass("hidden");
+				$("#type_link").addClass("active");
+				break;
+			case "Reading":
+				$(".type_reading").removeClass("hidden");
+				$("#type_reading").addClass("active");
+				break;
+			case "Walkthrough":
+				$(".type_walkthrough").removeClass("hidden");
+				$("#type_walkthrough").addClass("active");
+				break;
+			case "Research":
+				$(".type_research").removeClass("hidden");
+				$("#type_research").addClass("active");
+				break;
+			default:
+				break;
+		}
+	});
+</script>
+{% endblock %}
