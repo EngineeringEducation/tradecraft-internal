@@ -17,8 +17,10 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
-	Curriculum.find({published: true}, function(err, curriculum) {
-		res.render("curriculum/new_subject.html", { user : req.user, curriculum: curriculum });
+	Curriculum.find({published: true}).exec(function(err, curriculum) {
+		Assignment.find({}).exec(function(err, assignments) {
+			res.render("curriculum/new.html", { user : req.user, curriculum: curriculum, assignments: assignments });
+		});
 	});
 });
 
@@ -69,18 +71,30 @@ router.post("/new", function(req, res, next) {
 
 
 router.get('/:id', function(req, res, next) {
-	Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").exec(function(err, thisCurriculum) {
+	//Edit mode
+	if (req.query["edit"]) {
+		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").exec(function(err, thisCurriculum) {
 		if (err) throw err;
 		Curriculum.find({}).exec(function(err, curriculum) {
-			//Are we editing, or are we just viewing?
-			if (err) throw err;
-			if (req.query["edit"]) {
-				res.render("curriculum/edit.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum});
-			} else {
-				res.render("curriculum/show.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum});
-			}
+				if (err) throw err;
+				Assignment.find({}).exec(function(err, assignments) {
+					if (err) console.log(err);
+					res.render("curriculum/edit.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum, "assignments" : assignments});
+				});
+			});
 		});
-	});
+	//Show mode
+	//Split these up because show mode should have populated assignments but not edit mode.
+	} else {
+		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").populate("assignments").exec(function(err, thisCurriculum) {
+			if (err) throw err;
+			Curriculum.find({}).exec(function(err, curriculum) {
+				//Are we editing, or are we just viewing?
+				if (err) throw err;
+				res.render("curriculum/show.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum});
+			});
+		});
+	}
 });
 
 /* 
@@ -89,6 +103,7 @@ To conform to good REST principles tho this should be a PUT.
 Should probably make the form be AJAX so we can have a coherent REST API. #TODO
 */
 router.post('/:id', function(req, res, next) {
+	console.log(req.body);
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,

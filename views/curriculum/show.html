@@ -44,6 +44,13 @@
 						<a class="list-group-item" href="{{e.link}}">{{e.linkText}}</a>
 				{% endfor %}
 				</div>
+
+				<div class="list-group">
+				<h3>Assignments</h3>
+				{% for a in thisCurriculum.assignments %}
+						<a class="list-group-item" href="/assignments/{{a._id}}">{{a.title}}</a>
+				{% endfor %}
+				</div>
 			</div>
 		</div>
 

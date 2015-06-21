@@ -6,9 +6,34 @@ var Curriculum = require('./curriculum.js');
 
 //Schema Definition
 var assignmentSchema = mongoose.Schema({
-    subject: String,
-    body: String,
-    dependancies : Array, //This might change
+    title: String,
+    type: String,
+    walkthrough : {
+      preReading: String,
+      walkthrough : String
+    },
+    link : {
+      link : String,
+      description : String
+    },
+    reading : {
+      link : String,
+      url_type : String,
+      description : String
+    },
+    research : {
+      topic : String,
+      task : String,
+      use : Array,
+      deliver_type : String,
+      give_type : String,
+      google : String,
+      interviews : String,
+      forms : String,
+      books : String,
+      articles : String
+    },
+    dependancies : Array,
     subjects: [{ type:mongoose.Schema.ObjectId, ref:"Curriculum", childPath:"assignments" }]
 
 });

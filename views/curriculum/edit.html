@@ -50,11 +50,9 @@
 	<p>This just ties together assignments you might want to assign students if you do this topic.</p>
 	<div id="assignments">
 		<select multiple class="form-control" name="assignments" >
-			<option>Assignment 1</option>
-			<option>Assignment 2</option>
-			<option>Assignment 3</option>
-			<option>Assignment 4</option>
-			<option>Assignment 5</option>
+			{% for assignment in assignments %}
+				<option value="{{assignment._id}}" {% if thisCurriculum.assignments.indexOf(assignment._id) > -1 %} selected="true" {%endif%}>{{assignment.title}}</option>
+			{% endfor %}
 		</select>
 	</div>
 

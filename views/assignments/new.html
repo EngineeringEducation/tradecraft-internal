@@ -2,75 +2,184 @@
 
 {% block body %}
 	<h1>New Assignment</h1>
-
-	<div class="row type">
-		What kind of assignment is this?
-
-		<input type="button" class="btn btn-primary type" id="type_link" value="Link / Description">
-		<input type="button" class="btn btn-danger type" id="type_reading" value="Reading">
-		<input type="button" class="btn btn-success type" id="type_walkthrough" value="Walkthrough">
-		<input type="button" class="btn btn-warning type" id="type_research" value="Research">
-	</div>
-
-	<div class="hidden type_form row type_link">
-		<div class="form-group">
-			<label for="link">Link</label>
-			<input type="url" class="form-control" id="exampleInputEmail1" placeholder="Link to assignment">
+	<form class="form" action="/assignments/new" method="POST">
+		<div class="row name">
+			<label>What do you call this assignment?</label>
+			<input type="text" required name="title" class="form-control" id="title">
 		</div>
-		<div class="form-group">
-			<label for="link_description">Description :</label>
-			<textarea class="form-control" name="link_description" placeholder="About the link" rows="3"></textarea>
-		</div>
-	</div>
-	<div class="hidden row type_form type_reading" class="form-control">
-		<div class="form-group">
-			<label>Link</label>
-			<input type="url" name="reading_url" class="form-control">
-		</div>
-		<div class="form-group">
-			<label>URL type</label>
+
+		<div class="row type">
+			<label>What kind of assignment is this?</label>
 			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-primary active">
-					<input type="radio" name="options" id="direct" autocomplete="off" value="direct" checked> Direct Link
-				</label>
-				<label class="btn btn-primary">
-					<input type="radio" name="options" id="amazon" value="amazon" autocomplete="off"> Amazon URL
-				</label>
-				<label class="btn btn-primary">
-					<input type="radio" name="options" id="pdf" value="pdf" autocomplete="off"> PDF Download
-				</label>
+			<label class="btn btn-primary">
+				<input class="type" type="radio" name="type" id="type_link" autocomplete="off" value="link">Link / Description
+			</label>
+			<label class="btn btn-primary">
+				<input class="type" type="radio" name="type" id="type_reading" autocomplete="off" value="reading">Reading
+			</label>
+			<label class="btn btn-primary">
+				<input class="type" type="radio" name="type" id="type_walkthrough" autocomplete="off" value="walkthrough">Walkthrough
+			</label>
+			<label class="btn btn-primary">
+				<input class="type" type="radio" name="type" id="type_research" autocomplete="off" value="research">Research
+			</label>
+			<label class="btn btn-primary">
+				<input class="type" type="radio" name="type" id="type_artifact" autocomplete="off" value="artifact">Artifact
+			</label>
+			</div>
+
+		</div>
+
+		<div class="hidden type_form row type_link">
+			<div class="form-group">
+				<label for="link">Link</label>
+				<input type="url" class="form-control" id="assignment_link" name="assignment_link" placeholder="Link to assignment">
+			</div>
+			<div class="form-group">
+				<label for="link_description">Description :</label>
+				<textarea class="form-control" name="link_description" placeholder="About the link" rows="3"></textarea>
 			</div>
 		</div>
-		<div class="form-group">
-			<label>Reading Description</label>
-			<textarea class="form-control" name="link_description" placeholder="Instructions, reading notes, chapter assignment, etc" rows="3"></textarea>
+		<div class="hidden row type_form type_reading" class="form-control">
+			<div class="form-group">
+				<label>Link</label>
+				<input type="url" name="reading_url" class="form-control">
+			</div>
+			<div class="form-group">
+				<label>URL type</label>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-primary active">
+						<input type="radio" name="url_type" id="direct" autocomplete="off" value="direct" checked> Direct Link
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="url_type" id="amazon" value="amazon" autocomplete="off"> Amazon URL
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="url_type" id="pdf" value="pdf" autocomplete="off"> PDF Download
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Reading Description</label>
+				<textarea class="form-control" name="link_description" placeholder="Instructions, reading notes, chapter assignment, etc" rows="3"></textarea>
+			</div>
 		</div>
-	</div>
-	<div class="hidden row type_form type_walkthrough">
-		Prereading
-		Walkthrough (md)
-	</div>
-	<div class="hidden row type_form type_research">
-		What is the research topic
-		Do you want them to do something with the research
-			Publish it
-			Compile it
-			Deliver it as
-				Spreadsheet
-				Essay
-				Blog Post
-				Report
-			Give it to
-				Instructor
-				Client
-				Other Student
-			Use it to decide something
-		What do you want them to use for that research
-			Google
-			Interviews
-			Forms
-			Books
-			Articles
+		<div class="hidden row type_form type_walkthrough">
+			<label>Pre-reading</label>
+			<textarea class="form-control" name="walkthrough_prereading" placeholder="Instructions, reading notes, chapter assignment, etc" rows="3"></textarea>
+			<label>Walkthrough</label>
+			<textarea class="form-control" name="walkthrough_text" placeholder="Walkthrough text (Markdown Compatable)" rows="15"></textarea>
+		</div>
+		<div class="hidden row type_form type_research">
+			<div class="form-group">
+				<label>What is the research topic?</label>
+				<textarea class="form-control" name="research_prompt" placeholder="Research prompt" rows="3"></textarea>
+			</div>
+			<div class="form-group">
+			<label>Do you want them to do something with the research?</label>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-primary active">
+						<input class="research_goal" type="radio" name="research_goal" id="publish" autocomplete="off" value="publish" checked>Publish it
+					</label>
+					
+					<label class="btn btn-primary">
+						<input class="research_goal" type="radio" name="research_goal" id="compile" autocomplete="off" value="compile">Compile it
+					</label>
+					
+					<label class="btn btn-primary">
+						<input class="research_goal" type="radio" name="research_goal" id="deliver" autocomplete="off" value="deliver">Deliver it as
+					</label>
+						
+					<label class="btn btn-primary">
+						<input class="research_goal" type="radio" name="research_goal" id="give" autocomplete="off" value="give">Give it to
+					</label>
+						
+					<label class="btn btn-primary">
+						<input class="research_goal" type="radio" name="research_goal" id="decide" autocomplete="off" value="decide">Use it to decide something
+					</label>
+				</div>
+
+				<div class="btn-group deliver_type hidden" data-toggle="buttons">
+					<label class="btn btn-primary">
+						<input type="radio" name="deliver_type" id="spreadsheet" autocomplete="off" value="spreadsheet">Spreadsheet
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="deliver_type" id="essay" autocomplete="off" value="essay">Essay
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="deliver_type" id="blog_post" autocomplete="off" value="blog_post">Blog Post
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="deliver_type" id="report" autocomplete="off" value="report">Report
+					</label>
+				</div>
+
+				<div class="btn-group give_type hidden" data-toggle="buttons">
+					<label class="btn btn-primary">
+						<input type="radio" name="give_type" id="instructor" autocomplete="off" value="instructor">Instructor
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="give_type" id="client" autocomplete="off" value="client">Client
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="give_type" id="other_student" autocomplete="off" value="other_student">Other Student
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+			<label>What do you want them to use for that research?</label>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-primary use active">
+						<input type="checkbox" name="use" id="google" autocomplete="off" value="google" checked>Google
+					</label>
+					<label class="btn btn-primary use">
+						<input type="checkbox" name="use" id="interviews" autocomplete="off" value="interviews">Interviews
+					</label>
+					<label class="btn btn-primary use">
+						<input type="checkbox" name="use" id="forms" autocomplete="off" value="forms">Forms
+					</label>
+					<label class="btn btn-primary use">
+						<input type="checkbox" name="use" id="books" autocomplete="off" value="books">Books
+					</label>
+					<label class="btn btn-primary use">
+						<input type="checkbox" name="use" id="articles" autocomplete="off" value="articles">Articles
+					</label>
+				</div>
+
+				<div class="form-group" id="research_google_keywords">
+					<textarea class="form-control" name="google_keywords" placeholder="relavent google keywords" rows="3"></textarea>
+				</div>
+
+				<div class="form-group hidden" id="research_interviews">
+					<textarea class="form-control" name="interviews" placeholder="Interview sources, notes on interviewing" rows="3"></textarea>
+				</div>
+
+				<div class="form-group hidden" id="research_forms">
+					<textarea class="form-control" name="forms" placeholder="Links to forms, data to collect, links to resources" rows="3"></textarea>
+				</div>
+
+				<div class="form-group hidden" id="research_books">
+					<textarea class="form-control" name="books" placeholder="Links to books, pdfs, titles of books" rows="3"></textarea>
+				</div>
+
+				<div class="form-group hidden" id="research_articles">
+					<textarea class="form-control" name="books" placeholder="Links to articles and papers, names of papers, abstract keyword search terms" rows="3"></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="hidden row type_form type_artifact">
+			<label>Description</label>
+			<textarea class="form-control" name="artifact_description" placeholder="Instructions on what to produce, such as '3 UI Sketches' or 'a portfolio page'" rows="3"></textarea>
+		</div>
+
+		<div class="row assets">
+			<label>Assets</label>
+			<button class="btn btn-success"><span class="glyphicon glyphicon-plus" id="new_asset"></span></button>
+			<input type="file" class="form-control" name="asset">
+		</div>
+		<button class="btn btn-success">Save</button>
+	</form>
 	</div>
 
 {% endblock %}
@@ -78,31 +187,78 @@
 
 {% block javascript %}
 <script type="text/javascript">
-	$("input.type").on('click', function(e) {
+	//Switch out forms
+	$("input.type").on('change', function(e) {
 		e.preventDefault();
-		$(".type").removeClass("active");
 		$(".type_form").addClass("hidden")
 
 		switch($(this).val()) {
-			case "Link / Description":
+			case "link":
 				$(".type_link").removeClass("hidden");
 				$("#type_link").addClass("active");
 				break;
-			case "Reading":
+			case "reading":
 				$(".type_reading").removeClass("hidden");
 				$("#type_reading").addClass("active");
 				break;
-			case "Walkthrough":
+			case "walkthrough":
 				$(".type_walkthrough").removeClass("hidden");
 				$("#type_walkthrough").addClass("active");
 				break;
-			case "Research":
+			case "research":
 				$(".type_research").removeClass("hidden");
 				$("#type_research").addClass("active");
+				break;
+			case "artifact":
+				$(".type_artifact").removeClass("hidden");
+				$("#type_artifact").addClass("active");
 				break;
 			default:
 				break;
 		}
 	});
+
+	$("#deliver").on('change', function(e) {
+		$('.deliver_type').removeClass('hidden');
+		$('.give_type').addClass('hidden');
+	});
+
+	$("#give").on('change', function(e) {
+		$('.give_type').removeClass('hidden');
+		$('.deliver_type').addClass('hidden');
+	});
+
+	$('.research_goal:not(#deliver):not(#give)').on('change', function() {
+		$('.give_type').addClass('hidden');
+		$('.deliver_type').addClass('hidden');
+	});
+
+
+	$('#google').on('change', function(e) {
+		$('#research_google_keywords').toggleClass('hidden');
+	});
+	$('#interviews').on('change', function(e) {
+		$('#research_interviews').toggleClass('hidden');
+	});
+	$('#forms').on('change', function(e) {
+		$('#research_forms').toggleClass('hidden');
+	});
+	$('#books').on('change', function(e) {
+		$('#research_books').toggleClass('hidden');
+	});
+	$('#articles').on('change', function(e) {
+		$('#research_articles').toggleClass('hidden');
+	});
+	
+	//assets
+	$('#new_asset').on('click', function(e) {
+		e.preventDefault();
+		$('.assets').append($('<input type="file" class="form-control" name="asset">'));
+	});
+
+	//#TODO implement actual image upload to cloudinary http://cloudinary.com/documentation/node_image_upload#direct_uploading_from_the_browser
+	
+	
+	
 </script>
 {% endblock %}
