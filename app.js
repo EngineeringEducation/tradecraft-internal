@@ -9,6 +9,8 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var _ = require('underscore');
 
 //Persistance
 var pg = require("pg");
@@ -26,10 +28,11 @@ var student = require('./routes/student');
 var news = require('./routes/news');
 var community = require('./routes/community');
 var curriculum = require('./routes/curriculum');
+var assignments = require('./routes/assignments');
 
 
 //Include Models
-var User = require('./models/user.js')
+var User = require('./models/user')
 
 var app = express();
 
@@ -38,6 +41,12 @@ var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ 
+        dest: './uploads/', 
+        rename: function (fieldname, filename) {
+            return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+        }
+    }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -53,7 +62,8 @@ nunjucks.configure('views', {
     express: app
 });
 
-// Connects to postgres once, on server start
+// PERSISTENCE RELATED
+//Yeah, we're using two database engines. We'll switch over to mongo over a few weeks.
 var conString = process.env.DATABASE_URL || "postgres://localhost:5432/tradecraft";
 var db;
 pg.connect(conString, function(err, client) {
@@ -63,10 +73,21 @@ pg.connect(conString, function(err, client) {
     db = client;
   }
 });
+//MongoDB
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/tradecraft');
+var mongo = mongoose.connection;
+//Which uses event based stuff
+mongo.on('error', console.error.bind(console, 'connection error:'));
+mongo.once('open', function (callback) {
+  console.log("'I am open.' -mongodb")
+});
+
 
 //Keep the DB accessible
 app.use(function(req, res, next) {
     req.db = db;
+    req.mongo = mongo;
     next();
 });
 
@@ -95,7 +116,7 @@ app.use(function(req, res, next) {
     }))
 
     // Passport setup
-    //OK YOU GOTTA ENABLE GOOGLE+ or this shit don't work 
+    // OK YOU GOTTA ENABLE GOOGLE+ or this shit don't work 
     // https://github.com/jaredhanson/passport-google-oauth/issues/46
     passport.use(new GoogleStrategy({ 
             clientID: GOOGLE_CLIENT_ID,
@@ -103,10 +124,33 @@ app.use(function(req, res, next) {
             callbackURL: GOOGLE_CALLBACK_URL
         },
         function(accessToken, refreshToken, profile, done) {
-            console.log("User " + profile.displayName + " verified login from Google.")
-            var user = new User({'loginProfile' : profile, 'db': db});
-            user.findOrCreate(function(err, user) {
-                done(err, user);
+            console.log("User from google: ", profile);
+            User.find({provider_id: profile.id}, function(err, user) {
+                if (err) throw err;
+                console.log("In User.find: ", user, err);
+                if (user.length > 0) {
+                    done(err, user[0]);
+                } else {
+                    var newUser = new User({
+                        name: profile.name,
+                        provider: "google",
+                        provider_id: profile.id,
+                        displayName: profile.displayName,
+                        photos: profile.photos,
+                        gender: profile.gender,
+                        created_at: new Date(),
+                        updated_at: new Date(),
+                        last_seen: new Date()
+                    });
+
+                    newUser.emails.push(profile.emails[0]);
+
+
+                    newUser.save(function(err) {
+                        console.log("err:", err);
+                        done(err, newUser);
+                    });
+                }
             });
         }
     ));
@@ -116,16 +160,21 @@ app.use(function(req, res, next) {
 
     //// ### OTHER RANDOM SHIT
     passport.serializeUser(function(user, done) {
-        console.log("serializeUser");
-        //Gotta get rid of the DB in order to serialize due to circular references
-        delete user.db;
-        console.log(user.email)
         done(null, JSON.stringify(user));
     });
 
     passport.deserializeUser(function(user, callback){
-        console.log("deserializeUser")
-        callback(null, JSON.parse(user));
+        user = JSON.parse(user);
+        if (user) {
+            User.findById(user._id, function(err, user) {
+                if (err) throw err;
+                console.log(user, " deserializeUser")
+                callback(null, user);
+            });
+        } else {
+            callback(err, null);
+        }
+        
     });
 
     //## AUTHENTICATION ROUTES ##
@@ -142,17 +191,8 @@ app.use(function(req, res, next) {
     app.use('/oauth2callback',
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
-        if (req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.user.status == "student") {
-            res.redirect('/student');
-        } else if (req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.user.status != "student") {
-            res.redirect('/');
-        } else {
-            //People who aren't TCers shouldn't be able to login.
-            res.render('error', {
-                message: "Login Fail",
-                error: " : ( "
-            });
-        }
+        console.log("oauth2callback")
+        res.redirect('/');
       }
     );
 
@@ -161,29 +201,6 @@ app.use(function(req, res, next) {
         res.redirect('/');
     });
 
-    function ensureAuthenticated(req, res, next) {
-        if (req.isAuthenticated() && req.user.loginProfile['_json'].domain == "tradecrafted.com" && req.path != "/") { return next(); }
-        res.redirect('/');
-    }
-
-    //Let's make the user on req.user an actual user
-    app.use(function(req, res, next) {
-        //Put the DB on the user, that's how I set up the user model, make it not klugey later
-        if (req.user) {
-            req.user.db = req.db;
-            //Gimmie them methods
-            var user = new User(req.user);
-            user.findOrCreate(function(err, user) {
-                //Gimmie dat data
-                req.user = user;
-                next();
-            });
-        } else {
-            next();
-        }
-    });
-
-
 
 /// #### CONTROLLERS
 app.use('/',  routes);
@@ -191,6 +208,7 @@ app.use('/student', student);
 app.use('/news', news);
 app.use('/community', community);
 app.use('/curriculum', curriculum);
+app.use('/assignments', assignments);
 
 
 /// ### One-off, temporary, factor out later

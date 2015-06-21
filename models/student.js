@@ -2,7 +2,7 @@
 var _ = require("underscore");
 var moment = require('moment');
 var news = require('../models/news');
-var community = require('../models/community');
+var Community = require('../models/community');
 
 
 var student = function (config) {
@@ -10,7 +10,8 @@ var student = function (config) {
 	if (!this.db) {
 		console.log("Oh, gotta get a DB on that sucker.");
 	}
-	console.log("Student Initialized");
+	
+	this.community = new Community();
 }
 
 
@@ -40,7 +41,7 @@ student.prototype.getToday = function(cb) {
 
 	}
 
-	community.getTopSubmissionsWrittenByMembers(db, user, 1, function(err, submissions) {
+	this.community.getTopSubmissionsWrittenByMembers(db, user, 1, function(err, submissions) {
 		if (err) {
 			console.log(err);
 			return;
