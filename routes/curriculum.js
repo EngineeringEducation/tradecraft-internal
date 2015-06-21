@@ -43,21 +43,37 @@ router.post("/new", function(req, res, next) {
 		gif: req.body.gif
 	});
 
-	for (var i = 0; i < req.body.resource.length; i++) {
+	if (typeof req.body.resource == 'Array') {
+		for (var i = 0; i < req.body.resource.length; i++) {
+			var resource = {
+				link : req.body.resource[i],
+				linkText : req.body['resource-text'][i]
+			}
+			curriculum.resources.push(resource);
+		}
+	} else {
 		var resource = {
-			link : req.body.resource[i],
-			linkText : req.body['resource-text'][i]
+			link : req.body.resource || "",
+			linkText : req.body['resource-text']|| ""
 		}
 		curriculum.resources.push(resource);
-	};
-
-	for (var i = 0; i < req.body.example.length; i++) {
-		var example = {
-			link : req.body.example[i],
-			linkText : req.body['example-text'][i]
+	}
+	
+	if (typeof req.body.examples == 'Array') {
+		for (var i = 0; i < req.body.example.length; i++) {
+			var example = {
+				link : req.body.example[i],
+				linkText : req.body['example-text'][i]
+			}
+			curriculum.examples.push(example);
 		}
-		curriculum.examples.push(example);
-	};
+	} else {
+		var example = {
+			link : req.body.example || "",
+			linkText : req.body['example-text'] || ""
+		}
+		curriculum.examples.push(example);	
+	}
 
 	curriculum.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
