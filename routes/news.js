@@ -37,12 +37,10 @@ router.post('/new', function(req, res, next) {
 
 //Has to come after /new or it will match /new and try to interpret it as an ID
 router.get('/:id', function(req, res, next) {
-	news.findById(req.params.id, function(err, news) {
-		if (!err) {
-			res.render("news/all_news.html", { "news": news });
-		}
-		
-	}, req.params.id)
+	News.findById(req.params.id, function(err, news) {
+		if (err) console.log(err);
+		res.render("news/all_news.html", { "news": [news] });
+	});
 });
 
 module.exports = router;
