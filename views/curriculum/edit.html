@@ -25,23 +25,21 @@
 	</div>
 
 	<h3>Resources</h3>
-	<input type="hidden" id="highestResourceCount" value="1" name="highestResourceCount">
 	<div id="resources" class="form-inline">
-		<div class="form-group" id="resource_1">
+		<div class="form-group">
 			<a class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
-		    <input type="url" class="form-control form-inline" id="resource_1" placeholder="Link" name="resource_1">
-		    <input type="text" class="form-control form-inline" id="resource-text_1" placeholder="Link Text" name="resource-text_1">
+		    <input type="url" class="form-control form-inline" id="resource" placeholder="Link" name="resource">
+		    <input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text" name="resource-text">
 		</div>
 	</div>
 	<a id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
 
 	<h3>Examples</h3>
-	<input type="hidden" value="1" id="highestExampleCount" name="highestExampleCount">
 	<div id="examples" class="form-inline">
-		<div class="form-group" id="example_1">
+		<div class="form-group" id="example">
 			<a id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
-		    <input type="url" class="form-control form-inline" id="example_1" placeholder="Link" name="example_1">
-		    <input type="text" class="form-control form-inline" id="example-text_1" placeholder="Link Text" name="example-text_1">
+		    <input type="url" class="form-control form-inline" id="example" placeholder="Link" name="example">
+		    <input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text" name="example-text">
 		</div>
 	</div>
 	<a id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
@@ -70,18 +68,12 @@
 <script type="text/javascript">
 
 	//Resources, event handlers and new dom element creation
-	var resourceCount = 1;
-	var highestResourceCount = 1;
 	$('#new_resource').on('click', function(e) {
 		e.preventDefault();
-		resourceCount++;
-		highestResourceCount++;
-		$('#highestResourceCount').val(highestResourceCount); // Increment the count to the biggest number we've seen (for server-side parsing. I'm aware this is janky as hell.)
-		$('#resources').append(newLinkGroup({name: 'resource', count: resourceCount}));
+		$('#resources').append(newLinkGroup({name: 'resource'}));
 
 		$('.delete_resource').on('click', function(e) {
 			e.preventDefault();
-			resourceCount--;
 			$(this).parent().remove();
 		});
 	});
@@ -89,32 +81,22 @@
 	//setup from server-side data
 	{% for r in thisCurriculum.resources %}
 		$('#resources').html("") //empty first, since there is one there already
-		$('#resources').append(newLinkGroup({name:'resource', count: resourceCount, link: "{{r.link}}", linkText: "{{r.linkText}}" }));
-		resourceCount++;
-		highestResourceCount++;
+		$('#resources').append(newLinkGroup({name:'resource', link: "{{r.link}}", linkText: "{{r.linkText}}" }));
 	{% endfor %}
-	$('#highestResourceCount').val(highestResourceCount);
 
 	//After all the data-driven ones have been created bind click handlers
 	$('.delete_resource').on('click', function(e) {
 		e.preventDefault();
-		resourceCount--;
 		$(this).parent().remove();
 	});
 
 	//Examples, event handlers and new dom element creation
-	var exampleCount = 1;
-	var highestExampleCount = 1;
 	$('#new_example').on('click', function(e) {
 		e.preventDefault();
-		exampleCount++;
-		highestExampleCount++;
-		$('#highestExampleCount').val(highestExampleCount); // Increment the count to the biggest number we've seen (for server-side parsing. I'm aware this is janky as hell.)
-		$('#examples').append(newLinkGroup({name: 'example', count: exampleCount}));
+		$('#examples').append(newLinkGroup({name: 'example'}));
 
 		$('.delete_example').on('click', function(e) {
 			e.preventDefault();
-			exampleCount--;
 			$(this).parent().remove();
 		});
 	});
@@ -122,16 +104,12 @@
 	//setup from server-side data
 	{% for e in thisCurriculum.examples %}
 		$('#examples').html(""); //empty first, since there is one there already
-		$('#examples').append(newLinkGroup({name:'example', count: exampleCount, link: "{{e.link}}", linkText: "{{e.linkText}}" }));
-		exampleCount++;
-		highestExampleCount++;
+		$('#examples').append(newLinkGroup({name:'example', link: "{{e.link}}", linkText: "{{e.linkText}}" }));
 	{% endfor %}
-	$('#highestExampleCount').val(highestExampleCount);
 
 	//After all the data-driven ones have been created bind click handlers
 	$('.delete_example').on('click', function(e) {
 		e.preventDefault();
-		exampleCount--;
 		$(this).parent().remove();
 	});
 
@@ -140,14 +118,12 @@
 	//Gives me a new link + link text and remove button
 	function newLinkGroup (options) {
 		if (options.link && options.linkText) {
-			return $('<div class="form-group"><a class="delete_'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a><input type="text" class="form-control form-inline" id="'+options.name+ "_" +options.count+'" value="'+options.link+'" name="'+options.name+ "_" +options.count+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text_'+options.count+'" value="'+options.linkText+'" name="'+options.name+'-text_'+options.count+'"></div>')
+			return $('<div class="form-group"><a class="delete_'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a><input type="text" class="form-control form-inline" id="'+options.name+'" value="'+options.link+'" name="'+options.name+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text" value="'+options.linkText+'" name="'+options.name+'-text"></div>')
 		} else {
-			return $('<div class="form-group"><a class="delete_'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a><input type="text" class="form-control form-inline" id="'+options.name+ "_" +options.count+'" placeholder="Link" name="'+options.name+ "_" +options.count+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text_'+options.count+'" placeholder="Link Text" name="'+options.name+'-text_'+options.count+'"></div>')
+			return $('<div class="form-group"><a class="delete_'+options.name+' btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a><input type="text" class="form-control form-inline" id="'+options.name+'" placeholder="Link" name="'+options.name+'"><input type="text" class="form-control form-inline" id="'+options.name+'-text" placeholder="Link Text" name="'+options.name+'-text"></div>')
 		}
 		
 	}
-
-	//#TODO add an event to the urls(examples and resources) that make sure that there is link text (just add state required to the box when someone puts text into the field)
 </script>
 
 {% endblock %}

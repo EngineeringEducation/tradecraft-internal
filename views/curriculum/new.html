@@ -12,7 +12,7 @@
 
 	<div class="form-group">
 	    <label for="overview">Overview:</label>
-	    <textarea class="form-control" name="overview" id="overview" rows="3">Summary of topic.</textarea>
+	    <textarea class="form-control" name="overview" id="overview" rows="3" placeholder="Summary of topic."></textarea>
 	</div>
 
 	<div class="form-group">
@@ -27,20 +27,20 @@
 	<h3>Resources</h3>
 	<div id="resources">
 		<button id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
-		<div class="form-group" id="resource_1">
+		<div class="form-group">
 			<button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-		    <input type="url" class="form-control form-inline" id="resource_1" placeholder="Link" name="resource_1">
-		    <input type="text" class="form-control form-inline" id="resource-text_1" placeholder="Link Text" name="resource-text_1">
+		    <input type="url" class="form-control form-inline" id="resource" placeholder="Link" name="resource">
+		    <input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text" name="resource-text">
 		</div>
 	</div>
 
 	<h3>Examples</h3>
 	<div id="examples">
 		<button id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
-		<div class="form-group" id="example_1">
+		<div class="form-group">
 			<button id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-		    <input type="url" class="form-control form-inline" id="example_1" placeholder="Link" name="example_1">
-		    <input type="text" class="form-control form-inline" id="example-text_1" placeholder="Link Text" name="example-text_1">
+		    <input type="url" class="form-control form-inline" id="example" placeholder="Link" name="example">
+		    <input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text" name="example-text">
 		</div>
 	</div>
 
@@ -48,7 +48,7 @@
 	<p>This just ties together assignments you might want to assign students if you do this topic.</p>
 	<div id="assignments">
 		<select multiple class="form-control" name="assignments">
-		{% for assignment in assigments %}
+		{% for assignment in assignments %}
 			<option value="{{assignment._id}}">{{assignment.title}}</option>
 		{% endfor %}
 		</select>
@@ -68,46 +68,37 @@
 <script type="text/javascript">
 
 	//Resources
-	var resourceCount = 1;
 	$('#new_resource').on('click', function(e) {
 		e.preventDefault();
-		resourceCount++;
-		$('#resources').append('<div class="form-group" id="resource_'+resourceCount+'"><button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="resource_'+resourceCount+'" placeholder="Link" name="resource_'+resourceCount+'"><input type="text" class="form-control form-inline" id="resource-text_'+resourceCount+'" placeholder="Link Text" name="resource-text_'+resourceCount+'"></div>');
+		$('#resources').append('<div class="form-group" id="resource"><button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="url" class="form-control form-inline" id="resource" placeholder="Link" name="resource"><input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text" name="resource-text"></div>');
 
 		$('.delete_resource').on('click', function(e) {
 			e.preventDefault();
-			resourceCount--;
 			$(this).parent().remove();
 		});
 	});
 
 	$('.delete_resource').on('click', function(e) {
 		e.preventDefault();
-		resourceCount--;
 		$(this).parent().remove();
 	});
 
 	//Examples
-	var exampleCount = 1;
 	$('#new_example').on('click', function(e) {
 		e.preventDefault();
-		exampleCount++;
-		$('#examples').append('<div class="form-group" id="example_'+exampleCount+'"><button class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="text" class="form-control form-inline" id="example_'+exampleCount+'" placeholder="Link" name="example_'+exampleCount+'"><input type="text" class="form-control form-inline" id="example-text_'+exampleCount+'" placeholder="Link Text" name="example-text_'+exampleCount+'"></div>');
+		$('#examples').append('<div class="form-group" id="example"><button class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="url" class="form-control form-inline" id="example" placeholder="Link" name="example"><input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text" name="example-text"></div>');
 
 		$('.delete_example').on('click', function(e) {
 			e.preventDefault();
-			exampleCount--;
 			$(this).parent().remove();
 		});
 	});
 
 	$('.delete_example').on('click', function(e) {
 		e.preventDefault();
-		exampleCount--;
 		$(this).parent().remove();
 	});
 
-	//#TODO add an event to the urls(examples and resources) that make sure that there is link text (just add state required to the box when someone puts text into the field)
 </script>
 
 {% endblock %}

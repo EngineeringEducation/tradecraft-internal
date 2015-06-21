@@ -24,10 +24,14 @@ router.get("/new", function(req, res, next) {
 	});
 });
 
-router.post("/new", function(req, res, next) {
+/* 
+Create a new curriculum
 	//#TODO Error Checking
 	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
+*/
+router.post("/new", function(req, res, next) {
 
+	console.log("Form body: ",req.body);
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
 		subject : req.body.subject,
@@ -39,26 +43,20 @@ router.post("/new", function(req, res, next) {
 		gif: req.body.gif
 	});
 
-	//make a new example link for each one submitted
-	var i = 1;
-	while (req.body["example_" + i]) {
-		var example = {
-			link : req.body["example_" + i],
-			linkText : req.body["example-text_" + i]
-		}
-		curriculum.examples.push(example);
-		i++;
-	};
-
-	//make a new resource link for each one submitted
-	var i = 1;
-	while (req.body["resource_" + i]) {
+	for (var i = 0; i < req.body.resource.length; i++) {
 		var resource = {
-			link : req.body["resource_" + i],
-			linkText : req.body["resource-text_" + i]
+			link : req.body.resource[i],
+			linkText : req.body['resource-text'][i]
 		}
 		curriculum.resources.push(resource);
-		i++;
+	};
+
+	for (var i = 0; i < req.body.example.length; i++) {
+		var example = {
+			link : req.body.example[i],
+			linkText : req.body['example-text'][i]
+		}
+		curriculum.examples.push(example);
 	};
 
 	curriculum.save(function(err) {
@@ -98,52 +96,42 @@ router.get('/:id', function(req, res, next) {
 });
 
 /* 
-THIS IS AN EDIT FUNCTION ONLY, NOT FOR NEW 
-To conform to good REST principles tho this should be a PUT. 
-Should probably make the form be AJAX so we can have a coherent REST API. #TODO
+Edit existing curriculum
+To conform to good REST principles tho this should be a PUT but eh, html forms. What can ya do. 
+Probably make this respond to PUT as well.
 */
 router.post('/:id', function(req, res, next) {
 	console.log(req.body);
+
+	var resources = [];
+	for (var i = 0; i < req.body.resource.length; i++) {
+		var resource = {
+			link : req.body.resource[i],
+			linkText : req.body['resource-text'][i]
+		}
+		resources.push(resource);
+	};
+
+	var examples = [];
+	for (var i = 0; i < req.body.example.length; i++) {
+		var example = {
+			link : req.body.example[i],
+			linkText : req.body['example-text'][i]
+		}
+		examples.push(example);
+	};
+
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,
 		dependencies : _.compact(req.body.dependencies),
 		dependencyOf : _.compact(req.body.dependencyOf),
 		assignments : _.compact(req.body.assignments),
+		examples : examples,
+		resources : resources,
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};
-
-	//Get the examples - we might have deleted one in the middle.
-	var exampleCount = Number(req.body.highestExampleCount || 1);
-	var submittedExamples = [];
-	for (var i=1; i<=exampleCount; i++) {
-		console.log(i, req.body["example_" + i], req.body["example-text_" + i]);
-		if (req.body["example_" + i] && req.body["example-text_" + i]) {
-			submittedExamples.push({
-				link : req.body["example_" + i],
-				linkText : req.body["example-text_" + i]
-			});
-		}
-		
-	}
-
-	curriculum.examples = _.compact(submittedExamples);
-	
-	//Get the resources - we might have deleted one in the middle.
-	var resourceCount = Number(req.body.highestResourceCount || 1);
-	var submittedResources = [];
-	for (var i=1; i<=resourceCount; i++) {
-		console.log(i, req.body["resource_" + i], req.body["resource-text_" + i])
-		if (req.body["resource_" + i] && req.body["resource-text_" + i]){
-			submittedResources.push({
-				link : req.body["resource_" + i],
-				linkText : req.body["resource-text_" + i]
-			});
-		}
-	}
-
-	curriculum.resources = _.compact(submittedResources);
 
 	Curriculum.findByIdAndUpdate(req.params.id, curriculum, function(err) {
 		res.redirect("/curriculum/" + req.params.id);
