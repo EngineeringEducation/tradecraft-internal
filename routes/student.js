@@ -19,6 +19,8 @@ router.get("/", function(req, res, next) {
 		completedQueryCount++;
 		done(params);
 	});
+
+	
 	
 
 	function done (params) {
