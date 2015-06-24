@@ -9,29 +9,33 @@ var User = require("../models/user");
 
 /* GET users homepage. */
 router.get("/", function(req, res, next) {
-	var params = {};
+	req.locals = {};
 	var queryCount = 1;
 	var completedQueryCount = 0;
 
 	News.find({}).sort({created: -1}).exec(function(err, news) {
 		if (err) console.log(err);
-		params.news = news;
+		req.locals.news = news;
 		completedQueryCount++;
-		done(params);
+		done();
 	});
 
 	
 	
 
-	function done (params) {
+	function done () {
 		if (queryCount == completedQueryCount) {
-			res.render("student_home.html", params);
+			res.render("student_home.html", req);
 		}
 	}
 });
 
+router.get("/student/onboarding", function(req, res) {
+	res.render("onboarding.html", req);
+});
+
 router.get("/profile", function (req, res) {
-	res.render("student_profile.html", {"user": req.user});
-})
+	res.render("student_profile.html", req);
+});
 
 module.exports = router;
