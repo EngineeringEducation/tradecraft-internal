@@ -15,54 +15,54 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="new">
-    	{% for s in newest %}
+    	{% for s in newestSubmissions %}
 			<div class="submission row">
 				<div class="col-sm-2">
-					<div class="vote"  id="new_{{s.id}}">
-						<span class="h5 up up_{{s.id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
-						<span class="h5 down down_{{s.id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					<div class="vote"  id="new_{{s._id}}">
+						<span class="h5 up up_{{s._id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{s._id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 					</div>
-					<div class="h4 well count count_{{s.id}}">{{s.votes}}</div>
+					<div class="h4 well count count_{{s._id}}">{{s.upvotes}}</div>
 				</div>
 				<div class="col-sm-10">
 					<div class="col-sm-11">
-						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s.id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div> 
+						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s._id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div> 
 					</div>
 				</div>
 			</div>
 		{% endfor %}
     </div>
     <div role="tabpanel" class="tab-pane" id="publishers">
-    	{% for s in topMembers %}
+    	{% for s in topPublishers %}
 			<div class="submission row">
 				<div class="col-sm-2">
-					<div class="vote" id="publisher_{{s.id}}">
-						<span class="h5 up up_{{s.id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
-						<span class="h5 down down_{{s.id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					<div class="vote" id="publisher_{{s._id}}">
+						<span class="h5 up up_{{s._id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{s._id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 					</div>
-					<div class="h4 well count count_{{s.id}}">{{s.votes}}</div>
+					<div class="h4 well count count_{{s._id}}">{{s.upvotes}}</div>
 				</div>
 				<div class="col-sm-10">
 					<div class="col-sm-11">
-						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s.id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div>  
+						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s._id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div>  
 					</div>
 				</div>
 			</div>
 		{% endfor %}
     </div>
     <div role="tabpanel" class="tab-pane" id="links">
-    	{% for s in topOthers %}
+    	{% for s in topSubmissions %}
 			<div class="submission row">
 				<div class="col-sm-2">
-					<div class="vote" id="links_{{s.id}}">
-						<span class="h5 up up_{{s.id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
-						<span class="h5 down down_{{s.id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
+					<div class="vote" id="links_{{s._id}}">
+						<span class="h5 up up_{{s._id}} {% if upvote %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
+						<span class="h5 down down_{{s._id}} {% if downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 					</div>
-					<div class="h4 well count count_{{s.id}}">{{s.votes}}</div>
+					<div class="h4 well count count_{{s._id}}">{{s.upvotes}}</div>
 				</div>
 				<div class="col-sm-10">
 					<div class="col-sm-11">
-						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s.id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div>  
+						<div class="h3" class="community_title"><a href="{{s.link}}">{{s.title}}</a> (<a href="/community/{{s._id}}">discussion</a>) {% if author %} by {{s.author}} {% endif %}</div>  
 					</div>
 				</div>
 			</div>
@@ -117,8 +117,8 @@
 					<label for="tweet_data">Tweet</label>
 				</div>
 				<div class="col-sm-4">
-					<input type="radio" value="tweet_link_option" id="tweet_link_option" name="tweet_data_type"> Tweet Link (to RT an already-created tweet) <br>
-					<input type="radio" value="tweet_new_option" id="tweet_new_option" name="tweet_data_type" checked> Tweet Text (so they can uniquely tweet their own tweet)
+					<input type="radio" value="link" id="tweet_link_option" name="tweet_data_type"> Tweet Link (to RT an already-created tweet) <br>
+					<input type="radio" value="new" id="tweet_new_option" name="tweet_data_type" checked> Tweet Text (so they can uniquely tweet their own tweet)
 				</div>
 				<div class="col-sm-6">
 					<input type="text" id="tweet_data" name="tweet_data" class="form-control" placeholder="A great read! bit.ly/awesomeTC h/t @tradecraft #killingit">
@@ -129,11 +129,7 @@
 				<div class="col-sm-1">
 					<label for="tweet_data">Facebook</label>
 				</div>
-				<div class="col-sm-4">
-					<input type="radio" value="fb_link_option" id="fb_link_option" name="fb_data_type"> FB Link (to share an already-created FB Post) <br>
-					<input type="radio" value="fb_new_option" id="fb_new_option" name="fb_data_type" checked> Post Text (so they can uniquely post their own fb post (link from article will be link shared))
-				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-10">
 					<input type="text" id="fb_data" name="fb_data" class="form-control" placeholder="Tradecraft killing it again with this awesome post. Gotta love this great content!">
 				</div>
 			</div>
