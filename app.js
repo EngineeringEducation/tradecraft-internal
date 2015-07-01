@@ -127,7 +127,6 @@ app.use(function(req, res, next) {
             console.log("User from google: ", profile);
             User.find({provider_id: profile.id}, function(err, user) {
                 if (err) throw err;
-                console.log("In User.find: ", user, err);
                 if (user.length > 0) {
                     done(err, user[0]);
                 } else {
@@ -191,8 +190,12 @@ app.use(function(req, res, next) {
     app.use('/oauth2callback',
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
-        console.log("oauth2callback")
-        res.redirect('/');
+        console.log("oauth2callback");
+        if (!req.user.track) {
+            res.redirect('/student/onboarding')
+        } else {
+            res.redirect('/');
+        }
       }
     );
 
