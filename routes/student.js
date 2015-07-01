@@ -30,8 +30,30 @@ router.get("/", function(req, res, next) {
 	}
 });
 
-router.get("/student/onboarding", function(req, res) {
-	res.render("onboarding.html", req);
+router.get("/onboarding", function(req, res) {
+	res.render("student/onboarding.html", req);
+});
+
+router.post("/onboarding", function(req, res) {
+	console.log(req.body);
+	User.findById(req.user._id, function(err, user) {
+		if (err) console.log(err);
+		user.emails.push({"value": req.body.email, type: "Personal"});
+		user.photos.push({"value": req.body.photo});
+		user.track = req.body.track
+		user.cohort = req.body.cohort
+		user.social = {
+			linkedin: req.body.linkedin,
+			twitter: req.body.twitter,
+			medium: req.body.medium,
+			blog: req.body.blog,
+			github: req.body.github
+	    };
+	    user.mtbi = req.body.mtbi;
+	    user.bio = req.body.bio;
+	    user.strengthsfinder = req.body.strengths;
+	})
+	res.redirect("/student/profile");
 });
 
 router.get("/profile", function (req, res) {

@@ -1,0 +1,41 @@
+{% extends "layouts/main.html" %}
+{% block body %}
+<div class="row">
+	<div class="col-md-3">
+		<img class="img" id="google_plus" src="{{user.getImageURL(250)}}">
+	</div>
+	<div class="col-md-6">
+		<h1>{{user.displayName}} ({{user.track}}) ({{user.cohort}})</h1>
+		<div>TC Email : {{user.emails[0]}}</div>
+		<div>Personal Email : {{user.emails[1]}}</div>
+		<div>Phone : {{user.phone[0].value}}</div>
+		<div>Personal Email : {{user.emails[1]}}</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<a href="http://twitter.com/{{user.social.twitter}}"><span class="social social-twitter" aria-hidden="true" style="font-size:24px;"></span></a>
+		<a href="{{user.social.facebook}}"><span class="social social-facebook" aria-hidden="true" style="font-size:24px;"></span></a>
+		<a href="{{user.social.linkedin}}"><span class="social social-linked-in" aria-hidden="true" style="font-size:24px;"></span></a>
+		<a href="{{user.social.medium}}"><span class="social social-rss" aria-hidden="true" style="font-size:24px;"></span></a>
+		<a href="{{user.social.github}}"><span class="social social-github" aria-hidden="true" style="font-size:24px;"></span></a>
+		<a href="{{user.social.blog}}"><span class="social social-blogger" aria-hidden="true" style="font-size:24px;"></span></a>
+
+	</div>
+	<div class="col-md-6">
+		<markdown>{{user.bio}}</markdown>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<h3>Strengthsfinder</h3>
+		{% for strength in user.strengthsfinder %}
+			<a class="list-group-item" href="http://www.strengthstest.com/strengthsfinderthemes/strengths-themes.html">{{strength}}</a>
+		{% endfor %}
+		<h3>Myers-Briggs</h3>
+		<a class="list-group-item">{{user.mtbi}}</a>
+	</div>
+	<div class="col-md-6"></div>
+</div>
+
+{% endblock %}

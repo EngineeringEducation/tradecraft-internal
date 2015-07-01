@@ -1,0 +1,95 @@
+{% extends 'layouts/main.html' %}
+
+{% block body %}
+<h1>Interstitial New User Page</h1>
+{{user.displayName}}, we need some additional information:
+<form class="form" method="POST" action="/student/onboarding">
+<label>Phone</label>
+<input type="phone" class="form-control" name="phone" required>
+<label>Email (Personal)</label>
+<input type="email" class="form-control" name="email" required>
+<label>What track are you in?</label>
+<select required name="track" class="form-control" required>
+	<option disabled selected value="">Select One</option>
+	<option>Product Design</option>
+	<option>Engineering</option>
+	<option>Sales</option>
+	<option>Growth</option>
+</select>
+<label>What cohort are you in?</label>
+<select required name="cohort" class="form-control" required>
+	<option disabled selected value="">Select One</option>
+	<option>TC13</option>
+	<option>TC14</option>
+	<option>TC15</option>
+	<option>TC16</option>
+	<option>TC17</option>
+	<option>TC18</option>
+	<option>TC19</option>
+</select>
+
+<label>Linkedin</label>
+<input type="url" class="form-control" name="linkedin" required>
+<label>Twitter</label>
+<input type="text" class="form-control" name="twitter" required>
+<label>Medium</label>
+<input type="url" class="form-control" name="medium" required>
+<label>Github</label>
+<input type="text" class="form-control" name="github" required>
+<label>Blog / Website</label>
+<input type="url" class="form-control" name="blog">
+<label>Myers-Briggs</label>
+<input type="text" class="form-control" name="MTBI" required>
+<label>Photo Link</label>
+<input type="url" class="form-control" name="photo">
+<label>Video Story Link</label>
+<input type="url" class="form-control" name="video">
+<label>Bio</label>
+<textarea class="form-control" name="bio" required></textarea>
+
+<label>Strengthsfinder Strengths</label>
+{% for i in [0,1,2,3,4] %}
+	<select name="strengths" class="form-control" required>
+		<option value="" disabled selected>Select One</option>
+		<option value="Achiever">Achiever</option>
+		<option value="Activator">Activator</option>
+		<option value="Adaptability">Adaptability</option>
+		<option value="Analytical">Analytical</option>
+		<option value="Arranger">Arranger</option>
+		<option value="Belief">Belief</option>
+		<option value="Command">Command</option>
+		<option value="Communication">Communication</option>
+		<option value="Competition">Competition</option>
+		<option value="Connectedness">Connectedness</option>
+		<option value="Consistency">Consistency</option>
+		<option value="Context">Context</option>
+		<option value="Deliberative">Deliberative</option>
+		<option value="Developer">Developer</option>
+		<option value="Discipline">Discipline</option>
+		<option value="Empathy">Empathy</option>
+		<option value="Focus">Focus</option>
+		<option value="Futuristic">Futuristic</option>
+		<option value="Harmony">Harmony</option>
+		<option value="Ideation">Ideation</option>
+		<option value="Inclusiveness / Includer">Inclusiveness / Includer</option>
+		<option value="Individualization">Individualization</option>
+		<option value="Input">Input</option>
+		<option value="Intellection">Intellection</option>
+		<option value="Learner">Learner</option>
+		<option value="Maximizer">Maximizer</option>
+		<option value="Positivity">Positivity</option>
+		<option value="Relator">Relator</option>
+		<option value="Responsibility">Responsibility</option>
+		<option value="Restorative">Restorative</option>
+		<option value="Self-Assurance">Self-Assurance</option>
+		<option value="Significance">Significance</option>
+		<option value="Strategic">Strategic</option>
+		<option value="Woo">Woo</option>
+	</select>
+	<br>
+{% endfor %}
+<button class="btn btn-success">Submit</button>
+</form>
+
+
+{% endblock %}

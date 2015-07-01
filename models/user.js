@@ -7,16 +7,30 @@ var relationship = require('mongoose-relationship');
 
 //Schema Definition
 var userSchema = mongoose.Schema({
-    name: {familyName: String, givenName: String},
-    provider: String,
-    provider_id: {type: String, required: true, unique: true},
-    displayName: String,
-    emails: [{ value: String, type: String }],
-    photos: [{ value: String}],
-    gender: String,
-    created_at: Date,
-  	updated_at: Date,
-  	last_seen: Date
+		name: {familyName: String, givenName: String},
+		provider: String,
+		provider_id: {type: String, required: true, unique: true},
+		displayName: String,
+		emails: [],
+		photos: [{ value: String}],
+		phone: [{ value: String}],
+		track: String,
+		cohort: String,
+		social: {
+			linkedin: String,
+			twitter: String,
+			medium: String,
+			blog: String,
+			github: String
+		},
+		strengthsfinder: [],
+		mtbi: String,
+		video: String,
+		bio: String,
+		gender: String,
+		created_at: Date,
+		updated_at: Date,
+		last_seen: Date
 });
 
 //This is gonna get complex if we add other logins.
@@ -36,19 +50,19 @@ userSchema.methods.getImageURL = function(size) {
 };
 
 userSchema.pre('save', function(next) {
-  console.log(this);
-  // get the current date
-  var currentDate = new Date();
-  
-  // change the updated_at field to current date
-  this.updated_at = currentDate;
+	console.log(this);
+	// get the current date
+	var currentDate = new Date();
+	
+	// change the updated_at field to current date
+	this.updated_at = currentDate;
 
-  // if created_at doesn't exist, add to that field
+	// if created_at doesn't exist, add to that field
 	if (!this.created_at) {
 		this.created_at = currentDate;
 	}
 
-  next();
+	next();
 });
 
 userSchema.methods.isInstructor = function() {
