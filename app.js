@@ -66,7 +66,7 @@ nunjucks.configure('views', {
 
 //MongoDB
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/tradecraft');
+mongoose.connect(process.env["MONGODB_URL"] || 'mongodb://localhost/tradecraft');
 var mongo = mongoose.connection;
 //Which uses event based stuff
 mongo.on('error', console.error.bind(console, 'connection error:'));
