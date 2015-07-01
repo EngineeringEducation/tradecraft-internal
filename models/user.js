@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
 		provider: String,
 		provider_id: {type: String, required: true, unique: true},
 		displayName: String,
-		emails: [{ value: String, type: String }],
+		emails: [],
 		photos: [{ value: String}],
 		phone: [{ value: String}],
 		track: String,

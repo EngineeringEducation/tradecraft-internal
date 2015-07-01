@@ -119,18 +119,12 @@ app.use(function(req, res, next) {
                 if (user.length > 0) {
                     done(err, user[0]);
                 } else {
-                    console.log(typeof profile.emails)
-                    if (typeof profile.emails == 'object') {
-                        var emails = profile.emails
-                        profile.emails = [];
-                        profile.emails.push(emails);
-                    }
                     var newUser = new User({
                         name: profile.name,
                         provider: "google",
                         provider_id: profile.id,
                         displayName: profile.displayName,
-                        emails: profile.emails,
+                        emails: [profile.emails[0].value],
                         photos: profile.photos,
                         gender: profile.gender,
                         created_at: new Date(),
