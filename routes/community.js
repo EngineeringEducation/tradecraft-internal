@@ -114,7 +114,7 @@ router.post("/:id/vote", function(req, res, next) {
 });
 
 router.post("/:id/comment", function(req, res, next) {
-	community.saveComment(req.db, req.params.id, req.user, req.body.title, req.body.body, function(err) {
+	community.saveComment(req.params.id, req.user, req.body.title, req.body.body, function(err) {
 		if (err) {console.log(err)};
 		res.redirect("/community/"+req.params.id);
 	});

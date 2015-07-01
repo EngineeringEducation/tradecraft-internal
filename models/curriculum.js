@@ -36,11 +36,6 @@ curriculumSchema.pre('save', function(next) {
 		this.created_at = currentDate;
 	}
 
-  //Populate dependancyOf
-  // for (var i = 0; i < this.dependencies.length; i++) {
-  //   this.dependencies[i].dependancyOf.push(this._id);
-  // };
-
   next();
 });
 
