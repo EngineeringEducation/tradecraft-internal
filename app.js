@@ -63,16 +63,7 @@ nunjucks.configure('views', {
 });
 
 // PERSISTENCE RELATED
-//Yeah, we're using two database engines. We'll switch over to mongo over a few weeks.
-var conString = process.env.DATABASE_URL || "postgres://localhost:5432/tradecraft";
-var db;
-pg.connect(conString, function(err, client) {
-  if (err) {
-    console.log(err);
-  } else {
-    db = client;
-  }
-});
+
 //MongoDB
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tradecraft');
@@ -80,13 +71,11 @@ var mongo = mongoose.connection;
 //Which uses event based stuff
 mongo.on('error', console.error.bind(console, 'connection error:'));
 mongo.once('open', function (callback) {
-  console.log("'I am open.' -mongodb")
+  console.log("'I am open.' -mongodb");
 });
-
 
 //Keep the DB accessible
 app.use(function(req, res, next) {
-    req.db = db;
     req.mongo = mongo;
     next();
 });
@@ -130,20 +119,24 @@ app.use(function(req, res, next) {
                 if (user.length > 0) {
                     done(err, user[0]);
                 } else {
+                    console.log(typeof profile.emails)
+                    if (typeof profile.emails == 'object') {
+                        var emails = profile.emails
+                        profile.emails = [];
+                        profile.emails.push(emails);
+                    }
                     var newUser = new User({
                         name: profile.name,
                         provider: "google",
                         provider_id: profile.id,
                         displayName: profile.displayName,
+                        emails: profile.emails,
                         photos: profile.photos,
                         gender: profile.gender,
                         created_at: new Date(),
                         updated_at: new Date(),
                         last_seen: new Date()
                     });
-
-                    newUser.emails.push(profile.emails[0]);
-
 
                     newUser.save(function(err) {
                         console.log("err:", err);
