@@ -37,7 +37,7 @@ var assignments = require('./routes/assignments');
 
 
 //Include Models
-var User = require('./models/user')
+var User = require('./models/user');
 
 var app = express();
 
@@ -82,7 +82,7 @@ nunjucks.configure('views', {
 
 //MongoDB
 var mongoose = require('mongoose');
-mongoose.connect(process.env["MONGODB_URL"] || 'mongodb://localhost/tradecraft');
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/tradecraft');
 var mongo = mongoose.connection;
 //Which uses event based stuff
 mongo.on('error', console.error.bind(console, 'connection error:'));
@@ -114,12 +114,10 @@ app.use(function(req, res, next) {
       secret: process.env.SESSION_SECRET,
       secure: true,
       store: new RedisSessionStore({
-        host: redisURL.hostname,
-        port: redisURL.port,
-        pass: redisURL.password
+        client: client
       }),
       resave: true
-    }))
+    }));
 
     // Passport setup
     // OK YOU GOTTA ENABLE GOOGLE+ or this shit don't work 
@@ -132,7 +130,7 @@ app.use(function(req, res, next) {
         function(accessToken, refreshToken, profile, done) {
             console.log("User from google: ", profile);
             User.find({provider_id: profile.id}, function(err, user) {
-                if (err) throw err;
+                if (err) {throw err;}
                 if (user.length > 0) {
                     done(err, user[0]);
                 } else {
@@ -170,12 +168,12 @@ app.use(function(req, res, next) {
         user = JSON.parse(user);
         if (user) {
             User.findById(user._id, function(err, user) {
-                if (err) throw err;
-                console.log(user, " deserializeUser")
+                if (err) {throw err;}
+                console.log(user, " deserializeUser");
                 callback(null, user);
             });
         } else {
-            callback(err, null);
+            callback("User couldn't be parsed because it is falsey", null);
         }
         
     });
@@ -186,7 +184,7 @@ app.use(function(req, res, next) {
         'https://www.googleapis.com/auth/plus.profile.emails.read',
         'https://www.googleapis.com/auth/calendar'] }),
         function(req, res){
-            console.log("response after scopes")
+            console.log("response after scopes");
         } 
     );
 
@@ -222,8 +220,8 @@ app.use('/assignments', assignments);
 /// ### One-off, temporary, factor out later
 ///These will turn into full-blown controllers later
 app.get("/career", function(req, res, next) {
-    res.render("career_development.html")
-})
+    res.render("career_development.html");
+});
 app.use('/tradecraft-brand', function (req, res ) {
   res.render('tradecraft_brand.html');
 });
