@@ -59,7 +59,7 @@ router.post("/onboarding", function(req, res) {
 });
 
 router.get("/profile", function (req, res) {
-	res.render("student_profile.html", req);
+	res.render("student/student_profile.html", req);
 });
 
 module.exports = router;
