@@ -11,6 +11,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var _ = require('underscore');
+var url = require('url');
 
 //Persistance
 var pg = require("pg");
@@ -55,6 +56,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+var RedisUrl = url.parse(process.env.REDIS_URL)
 
 // view engine setup
 nunjucks.configure('views', {
@@ -90,7 +92,6 @@ app.use(function(req, res, next) {
     //Sets the app secret, in order to hash things
     //Sets the session to be secure, indicating people shouldn't be able to spoof each other's sessions
     //Sets up a session store, an instance of a Redis client, to hold on to the actual data in sessions, rather than sending an increasing amount of data back to the browser every time.
-    //Once we deploy this probably has use https://github.com/ddollar/redis-url to parse
     app.use(session({
       saveUninitialized: true,
       genid: function(req) {
@@ -99,8 +100,9 @@ app.use(function(req, res, next) {
       secret: process.env.SESSION_SECRET,
       secure: true,
       store: new RedisSessionStore({
-        host: process.env.REDIS_SESSION_HOST,
-        port: process.env.REDIS_SESSION_PORT
+        host: RedisUrl.hostname,
+        port: RedisUrl.port,
+        pass: RedisUrl.password
       }),
       resave: true
     }))

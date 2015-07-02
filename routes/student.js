@@ -54,8 +54,10 @@ router.post("/onboarding", function(req, res) {
 	    user.mtbi = req.body.mtbi;
 	    user.bio = req.body.bio;
 	    user.strengthsfinder = req.body.strengths;
+	});
+	user.save(function(err, user) {
+		res.redirect("/student/profile");
 	})
-	res.redirect("/student/profile");
 });
 
 router.get("/profile", function (req, res) {
