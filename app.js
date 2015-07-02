@@ -178,6 +178,7 @@ app.use(function(req, res, next) {
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
         console.log("oauth2callback");
+        console.log("req.user: ", req.user);
         if (!req.user.track) {
             res.redirect('/student/onboarding')
         } else {
