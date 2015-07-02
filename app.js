@@ -16,6 +16,10 @@ var url = require('url');
 //Persistance
 var pg = require("pg");
 
+//Test Redis
+var redis = require('redis');
+
+
 //These are all for login stuff
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -56,7 +60,17 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
-var RedisUrl = url.parse(process.env.REDIS_URL)
+var RedisUrl = url.parse(process.env.REDIS_URL);
+
+//Test Redis
+var client = redis.createClient(redisURL.port, redisURL.hostname);
+client.auth(redisURL.auth.split(":")[1]);
+
+client.on("error", function (err) {
+    console.log("Error " + err);
+});
+
+client.set("string key", "string val", redis.print);
 
 // view engine setup
 nunjucks.configure('views', {
