@@ -11,9 +11,14 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var _ = require('underscore');
+var url = require('url');
 
 //Persistance
 var pg = require("pg");
+
+//Instantiate redis for passing into session store later
+var redis = require('redis');
+
 
 //These are all for login stuff
 var cookieParser = require('cookie-parser');
@@ -32,7 +37,7 @@ var assignments = require('./routes/assignments');
 
 
 //Include Models
-var User = require('./models/user')
+var User = require('./models/user');
 
 var app = express();
 
@@ -55,6 +60,18 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+var redisURL = url.parse(process.env.REDIS_URL);
+
+//configure redis client to make interface more flexible
+var client = redis.createClient(redisURL.port, redisURL.hostname);
+client.auth(redisURL.auth.split(":")[1]);
+
+client.on("error", function (err) {
+    console.log("Error " + err);
+});
+
+//This triggers an error if there are problems, otherwise no error is triggered (wtf)
+client.set("string key", "string val", redis.print);
 
 // view engine setup
 nunjucks.configure('views', {
@@ -66,7 +83,7 @@ nunjucks.configure('views', {
 
 //MongoDB
 var mongoose = require('mongoose');
-mongoose.connect(process.env["MONGODB_URL"] || 'mongodb://localhost/tradecraft');
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/tradecraft');
 var mongo = mongoose.connection;
 //Which uses event based stuff
 mongo.on('error', console.error.bind(console, 'connection error:'));
@@ -77,6 +94,7 @@ mongo.once('open', function (callback) {
 //Keep the DB accessible
 app.use(function(req, res, next) {
     req.mongo = mongo;
+    console.log(req.session);
     next();
 });
 
@@ -89,7 +107,6 @@ app.use(function(req, res, next) {
     //Sets the app secret, in order to hash things
     //Sets the session to be secure, indicating people shouldn't be able to spoof each other's sessions
     //Sets up a session store, an instance of a Redis client, to hold on to the actual data in sessions, rather than sending an increasing amount of data back to the browser every time.
-    //Once we deploy this probably has use https://github.com/ddollar/redis-url to parse
     app.use(session({
       saveUninitialized: true,
       genid: function(req) {
@@ -98,11 +115,10 @@ app.use(function(req, res, next) {
       secret: process.env.SESSION_SECRET,
       secure: true,
       store: new RedisSessionStore({
-        host: process.env.REDIS_SESSION_HOST,
-        port: process.env.REDIS_SESSION_PORT
+        client: client
       }),
       resave: true
-    }))
+    }));
 
     // Passport setup
     // OK YOU GOTTA ENABLE GOOGLE+ or this shit don't work 
@@ -115,7 +131,7 @@ app.use(function(req, res, next) {
         function(accessToken, refreshToken, profile, done) {
             console.log("User from google: ", profile);
             User.find({provider_id: profile.id}, function(err, user) {
-                if (err) throw err;
+                if (err) {throw err;}
                 if (user.length > 0) {
                     done(err, user[0]);
                 } else {
@@ -153,12 +169,12 @@ app.use(function(req, res, next) {
         user = JSON.parse(user);
         if (user) {
             User.findById(user._id, function(err, user) {
-                if (err) throw err;
-                console.log(user, " deserializeUser")
+                if (err) {throw err;}
+                console.log(user, " deserializeUser");
                 callback(null, user);
             });
         } else {
-            callback(err, null);
+            callback("User couldn't be parsed because it is falsey", null);
         }
         
     });
@@ -169,7 +185,7 @@ app.use(function(req, res, next) {
         'https://www.googleapis.com/auth/plus.profile.emails.read',
         'https://www.googleapis.com/auth/calendar'] }),
         function(req, res){
-            console.log("response after scopes")
+            console.log("response after scopes");
         } 
     );
 
@@ -178,8 +194,9 @@ app.use(function(req, res, next) {
       passport.authenticate('google', { failureRedirect: '/login_fail'}),
       function(req, res) {
         console.log("oauth2callback");
+        console.log("req.user: ", req.user);
         if (!req.user.track) {
-            res.redirect('/student/onboarding')
+            res.render("student/onboarding.html", req);
         } else {
             res.redirect('/');
         }
@@ -204,8 +221,8 @@ app.use('/assignments', assignments);
 /// ### One-off, temporary, factor out later
 ///These will turn into full-blown controllers later
 app.get("/career", function(req, res, next) {
-    res.render("career_development.html")
-})
+    res.render("career_development.html");
+});
 app.use('/tradecraft-brand', function (req, res ) {
   res.render('tradecraft_brand.html');
 });
