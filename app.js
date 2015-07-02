@@ -180,7 +180,7 @@ app.use(function(req, res, next) {
         console.log("oauth2callback");
         console.log("req.user: ", req.user);
         if (!req.user.track) {
-            res.redirect('/student/onboarding')
+            res.render("student/onboarding.html", req);
         } else {
             res.redirect('/');
         }
