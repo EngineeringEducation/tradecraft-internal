@@ -31,6 +31,8 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/onboarding", function(req, res) {
+	console.log("On to onboarding page.")
+	console.log("The user on this page: ", req.user)
 	res.render("student/onboarding.html", req);
 });
 
