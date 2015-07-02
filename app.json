@@ -1,0 +1,34 @@
+{
+  "name":"tradecraft-internal",
+  "scripts":{},
+  "env":{
+    "GOOGLE_CALLBACK_URL":{
+      "required":true
+    },
+    "GOOGLE_CLIENT_ID":{
+      "required":true
+    },
+    "GOOGLE_CLIENT_SECRET":{
+      "required":true
+    },
+    "MONGODB_URL":{
+      "required":true
+    },
+    "REDIS_SESSION_HOST":{
+      "required":true
+    },
+    "REDIS_SESSION_PORT":{
+      "required":true
+    },
+    "REDIS_URL":{
+      "required":true
+    },
+    "SESSION_SECRET":{
+      "required":true
+    }
+  },
+  "addons":[
+    "heroku-redis",
+    "mongolab"
+  ]
+}
