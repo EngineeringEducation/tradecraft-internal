@@ -40,7 +40,7 @@ router.post("/onboarding", function(req, res) {
 	console.log(req.body);
 	User.findById(req.user._id, function(err, user) {
 		if (err) {console.log(err);}
-		user.emails.push({"value": req.body.email, type: "Personal"});
+		user.emails.push(req.body.email);
 		user.photos.push({"value": req.body.photo});
 		user.track = req.body.track;
 		user.cohort = req.body.cohort;
