@@ -60,7 +60,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
-var RedisUrl = url.parse(process.env.REDIS_URL);
+var redisURL = url.parse(process.env.REDIS_URL);
 
 //Test Redis
 var client = redis.createClient(redisURL.port, redisURL.hostname);
@@ -70,7 +70,7 @@ client.on("error", function (err) {
     console.log("Error " + err);
 });
 
-client.set("string key", "string val", redis.print);
+client.set("string key", "string val", redis.print);g
 
 // view engine setup
 nunjucks.configure('views', {
@@ -114,9 +114,9 @@ app.use(function(req, res, next) {
       secret: process.env.SESSION_SECRET,
       secure: true,
       store: new RedisSessionStore({
-        host: RedisUrl.hostname,
-        port: RedisUrl.port,
-        pass: RedisUrl.password
+        host: redisURL.hostname,
+        port: redisURL.port,
+        pass: redisURL.password
       }),
       resave: true
     }))
