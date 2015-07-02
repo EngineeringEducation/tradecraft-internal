@@ -77,6 +77,7 @@ mongo.once('open', function (callback) {
 //Keep the DB accessible
 app.use(function(req, res, next) {
     req.mongo = mongo;
+    console.log(req.session);
     next();
 });
 
