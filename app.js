@@ -70,7 +70,7 @@ client.on("error", function (err) {
     console.log("Error " + err);
 });
 
-client.set("string key", "string val", redis.print);g
+client.set("string key", "string val", redis.print);
 
 // view engine setup
 nunjucks.configure('views', {
