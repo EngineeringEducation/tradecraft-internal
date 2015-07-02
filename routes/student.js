@@ -44,6 +44,7 @@ router.post("/onboarding", function(req, res) {
 		user.photos.push({"value": req.body.photo});
 		user.track = req.body.track;
 		user.cohort = req.body.cohort;
+		user.phone.push(req.body.phone);
 		user.social = {
 			linkedin: req.body.linkedin,
 			twitter: req.body.twitter,
@@ -51,7 +52,7 @@ router.post("/onboarding", function(req, res) {
 			blog: req.body.blog,
 			github: req.body.github
 	    };
-	    user.mtbi = req.body.mtbi;
+	    user.mtbi = req.body.MTBI;
 	    user.bio = req.body.bio;
 	    user.strengthsfinder = req.body.strengths;
 	    user.save(function(err, user) {

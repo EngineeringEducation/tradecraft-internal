@@ -62,9 +62,12 @@ var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
 var redisURL = url.parse(process.env.REDIS_URL);
 
+
 //configure redis client to make interface more flexible
 var client = redis.createClient(redisURL.port, redisURL.hostname);
-client.auth(redisURL.auth.split(":")[1]);
+if (redisURL.auth) {
+    client.auth(redisURL.auth.split(":")[1]);
+}
 
 client.on("error", function (err) {
     console.log("Error " + err);
