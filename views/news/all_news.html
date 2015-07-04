@@ -2,9 +2,9 @@
 {% block body %}
 <h1>News</h1>
 <a href="/news/new"><button class="btn btn-primary btn-sm">New</button></a>
-{% for n in news %}
-<h2>{{n.title}}</h2>
-<div class="well">
+{% for n in data.news %}
+<h1>{{n.title}}</h1>
+<div class="panel">
 <markdown>
 {{n.body}}
 </markdown>
@@ -12,4 +12,7 @@
 {% endfor %}
 
 {% endblock %}
+
+{% block javascript %}
 <script type="text/javascript" src="/javascripts/markdown.js"></script>
+{% endblock %}

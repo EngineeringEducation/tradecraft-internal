@@ -10,6 +10,34 @@
 	{% endif %}
 	{% if user %}
 		<h1>Hello, {{user.displayName}}</h1>
+		<p>Currently, we're working on this app and it's in alpha. This page is going to serve as the state of the app until we're in a more usable state. Here's what works, what doesn't, and what's on the roadmap.</p>
+
+		<h3>What Works</h3>
+		<ul>
+			<li><a href="/curriculum/new">Create Curriculum</a></li>
+			<li><a href="/curriculum/all">See All Curriculum</a></li>
+			<li><a href="/assignments/new">Create Assignments</a></li>
+			<li><a href="/assignments/">See All Assignments</a></li>
+			<li><a href="/news/new">Create News</a></li>
+			<li><a href="/today">View News on the Today thing</a></li>
+			<li><a href="/community">Post "Community" Link (ie share something cool you found / learned from)</a></li>
+			<li><a href="/community">Post "Publisher" Link (ie share something you wrote and solicit feedback)</a></li>
+			<li><a href="/community">View "Community" vs "Publisher" links along with a "Newest"(mixed feed) of them.</a></li>
+			<li><a href="/community">Comment on an individual link (click on the discussion thing)</a></li>
+		</ul>
+
+		<h3>What's Next</h3>
+		<ul>
+			<li>New interface for planning individual curriculum (<a href="https://files.slack.com/files-pri/T024FAMAH-F0755S3UN/curriculum-app-sketch-1.png">sketch</a>)</li>
+			<li>Distinctify Curriculum from Units (ie, Functions from Models in IA-parlance)</li>
+			<li>Allow scheduling of Units</li>
+			<li>Allow instructors to assign assignments (or auto-assign assignments) (or allow students to declare they have started on an assignment if it's like, a choose-your-own adventure thing)</li>
+			<li>Add more meaningful onboarding, integrate with actual onboarding insights so we have that stuff written down and have more in software about the tn+1 / tn+2 student profiles</li>
+			<li>Add resources model, and have a listing of resources that are related to different entities (functions, models, assignments, discussions, "playlists", etc)</li>
+			<li>Bug reporting form</li>
+			<li>Feature request form</li>
+			<li>Skills Profiles</li>
+		</ul>
 	{% endif %}
 
 {% endblock %}

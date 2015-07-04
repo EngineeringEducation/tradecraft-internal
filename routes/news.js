@@ -9,10 +9,12 @@ var News = require("../models/news");
 router.get('/', function(req, res, next) {
 	News.find({}, function(err, news) {
 		if (!err) {
-			res.render("news/all_news.html", { "news": news });
+			req.data = {
+				news: news
+			};
+			res.render("news/all_news.html", req);
 		}
-		
-	})
+	});
 });
 
 router.get('/new', function(req, res, next) {
@@ -29,7 +31,7 @@ router.post('/new', function(req, res, next) {
 		});
 
 		news.save(function(err) {
-			if (err) console.log(err);
+			if (err) {console.log(err);}
 			res.redirect("/news");
 		});
 	}
@@ -38,8 +40,11 @@ router.post('/new', function(req, res, next) {
 //Has to come after /new or it will match /new and try to interpret it as an ID
 router.get('/:id', function(req, res, next) {
 	News.findById(req.params.id, function(err, news) {
-		if (err) console.log(err);
-		res.render("news/all_news.html", { "news": [news] });
+		if (err) {console.log(err);}
+		req.data = {
+			news : news
+		};
+		res.render("news/all_news.html", req);
 	});
 });
 
