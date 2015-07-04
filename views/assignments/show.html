@@ -1,7 +1,9 @@
 {% extends "layouts/main.html" %}
 
 {% block body %}
+	{% if user.instructor or user.staff %}
 	{{assignment}}
+	{% endif %}
 
 	<h1>{{assignment.title}}</h1>
 	{% if assignment.type == "link" %}
