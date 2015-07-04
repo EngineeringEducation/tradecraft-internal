@@ -1,0 +1,77 @@
+{% extends "layouts/main.html" %}
+
+{% block body %}
+
+	{% for assignment in data.assignments %}
+
+		<h1>{{assignment.title}}</h1>
+		<h4>{{assignment.type | capitalize}}</h4>
+		{% if assignment.type == "link" %}
+			<a href="{{assignment.link.link}}">{{assignment.title}}</a>
+			<markdown>{{assignment.link.description}}</markdown>
+		{% endif %}
+		{% if assignment.type == "reading" %}
+			{% if assignment.reading.url_type == "direct" %}
+				<a href="{{assignment.reading.link}}">{{assignment.title}}</a>
+			{% endif %}
+			{% if assignment.reading.url_type == "pdf" %}
+				<a href="{{assignment.reading.link}}"><span class="glyphicon glyphicon-file" style="font-size:45px"></span></a>
+			{% endif %}
+			<markdown>{{assignment.reading.description}}</markdown>
+		{% endif %}
+		{% if assignment.type == "walkthrough" %}
+			{% if assignment.walkthrough.preReading %}
+			<h3>Prereading</h3>
+			<markdown>{{assignment.walkthrough.preReading}}</markdown>
+			{% endif %}
+			<markdown>{{assignment.walkthrough.walkthrough}}</markdown>
+		{% endif %}
+		{% if assignment.type == "research" %}
+			<div class="topic">{{assignment.research.topic}}</div>
+			<div class="task">{{assignment.research.task}}</div>
+			{% if assignment.research.task == "deliver" %}
+						<h3>Deliverable:</h3> 
+						{% if assignment.research.deliver_type == "blog_post" %}
+							<markdown>A blog post summarizing the research or interviews you've done. We officially reccomend <a href="http://medium.com">Medium</a> for publishing industry research.</markdown>
+						{% endif %}
+
+						{{assignment.research.deliver_type}}
+			{% endif %}
+
+			{% if assignment.research.task == "give" %}
+						{{assignment.research.give_type}}
+			{% endif %}
+			<h3>Resources</h3>
+
+			{% if assignment.research.google != "" %}
+				<h3>Google Keywords</h3>
+				<div class="">{{assignment.research.google}}</div>
+			{% endif %}
+			{% if assignment.research.interviews != "" %}
+				<h3>Interviews</h3>
+				<div class="">{{assignment.research.interviews}}</div>
+			{% endif %}
+			{% if assignment.research.forms != "" %}
+				<h3>Forms</h3>
+				<div class="">{{assignment.research.forms}}</div>
+			{% endif %}
+			{% if assignment.research.books != "" %}
+				<h3>Books</h3>
+				<div class="">{{assignment.research.books}}</div>
+			{% endif %}
+			{% if assignment.research.article != "" %}
+				<h3>Articles</h3>
+				<div class="">{{assignment.research.articles}}</div>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/4.2.1/markdown-it.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js" type="text/javascript"></script>
+    <script src="/javascripts/markdown.js"></script>
+{% endblock %}
+

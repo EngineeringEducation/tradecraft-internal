@@ -97,7 +97,6 @@ mongo.once('open', function (callback) {
 //Keep the DB accessible
 app.use(function(req, res, next) {
     req.mongo = mongo;
-    console.log(req.session);
     next();
 });
 
@@ -132,7 +131,6 @@ app.use(function(req, res, next) {
             callbackURL: GOOGLE_CALLBACK_URL
         },
         function(accessToken, refreshToken, profile, done) {
-            console.log("User from google: ", profile);
             User.find({provider_id: profile.id}, function(err, user) {
                 if (err) {throw err;}
                 if (user.length > 0) {

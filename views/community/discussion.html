@@ -11,7 +11,7 @@
 				<span class="h5 up up_{{data._id}} {% if data.votes[data.votes.indexOf(user._id)] %}text-primary{% endif %}"><span class="glyphicon glyphicon-arrow-up"></span></span> <br>
 				<span class="h5 down down_{{data._id}} {% if data.downvote %}text-danger{% endif %}"><span class="glyphicon glyphicon-arrow-down"></span></span>
 			</div>
-			<div class="h4 well count count_{{data._id}}">{{data.votes}}</div>
+			<div class="h4 well count count_{{data._id}}">{{data.upvotes - data.downvotes}}</div>
 		</div>
 		<div class="col-sm-10">
 			<div class="h1" class="community_title">{{data.title}} {% if author %} By {{data.author}} {% endif %}</div>
@@ -22,10 +22,10 @@
 </div>
 
 <div class="container">
-	{% for comment in comments %}
+	{% for comment in data.comments %}
 	<div class="row">
-		<div class="comment_title h5">{{data.comment.title}} by {{data.comment.author}}</div>
-		<div class="comment_body">{{data.comment.body}}</div>
+		<div class="comment_title h5">{{comment.title}} by {{comment.submitter.displayName}}</div>
+		<div class="comment_body">{{comment.comment}}</div>
 	</div>
 	{% endfor %}
 </div>

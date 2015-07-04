@@ -8,7 +8,13 @@ var User = require("../models/user");
 
 
 router.get("/", function(req, res) {
-	res.render("assignments/show.html", {user: req.user});
+	
+	Assignment.find({}, function(err, assignments) {
+		req.data = {
+			assignments : assignments
+		};
+		res.render("assignments/all.html", req);
+	});
 });
 
 /* GET new assignment maker */

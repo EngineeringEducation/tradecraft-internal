@@ -8,6 +8,8 @@ var relationship = require('mongoose-relationship');
 //Schema Definition
 var userSchema = mongoose.Schema({
 		name: {familyName: String, givenName: String},
+		instructor: Boolean,
+		staff: Boolean,
 		provider: String,
 		provider_id: {type: String, required: true, unique: true},
 		displayName: String,
