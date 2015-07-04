@@ -4,7 +4,7 @@
 
 	{% for assignment in data.assignments %}
 
-		<h1>{{assignment.title}}</h1>
+		<h1><a href="/assignments/{{assignment._id}}">{{assignment.title}}</a></h1>
 		<h4>{{assignment.type | capitalize}}</h4>
 		{% if assignment.type == "link" %}
 			<a href="{{assignment.link.link}}">{{assignment.title}}</a>
