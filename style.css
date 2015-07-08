@@ -1,0 +1,171 @@
+/*///// TC color palette (as of 7/7/2015) /////*/
+
+body {
+  background: #f2f2f4;
+  color: #585b60;
+  font-family: 'proxima-nova', Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+a {
+  color: #cb9c59;
+}
+
+a:hover {
+  color: #a26116;
+}
+
+a.glyphicon:hover {
+  text-decoration: none;
+}
+
+p {
+  font-size: 18px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7,
+small,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 60px;
+  line-height: 75px;
+  margin-bottom: 30px;
+}
+
+h1, 
+h2 {
+  font-family: 'Libre Baskerville', Georgia, Palatino, serif;
+}
+
+h2 {
+  font-size: 30px;
+  line-height: 45px;
+  margin-bottom: 30px;
+}
+
+h1, 
+h2, 
+h3 {
+  color: #25272a;
+}
+
+h3 {
+  font-size: 27px;
+  line-height: 30px;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+h4, 
+small, 
+caption {
+  color: #a0a1a5;
+}
+
+hr {
+  margin: 30px 0;
+}
+
+hr,
+input,
+.panel-default {
+  border-color: #ccc;
+}
+
+/*///// COMMENCE CSSing! /////*/
+
+body {
+  padding-top: 30px;
+}
+
+.panel {
+  margin-bottom: 30px;
+  box-shadow: 0 1px 2px #e1e1e5;
+}
+
+.panel-default>.panel-heading {
+  background-color: #e7e8ec;
+}
+
+.draggable {
+  cursor: move;
+  position: relative;
+}
+
+.draggable:active {
+  outline: 2px solid #a0a1a5;
+  background-color: #dcdce0;
+}
+
+.draggable .panel-title::before {
+  content: "\e235\e235";
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  display: inline-block;
+  height: 100%;
+  font-size: 0.85em;
+  color: #A0A1A5;
+  margin: 0 12px 0 -8px;
+  line-height: 1;
+  letter-spacing: -8px;
+}
+
+.panel-title .glyphicon {
+  font-size: 1em;
+  color: #A0A1A5;
+  line-height: 1.6;
+}
+
+.panel-title .glyphicon::before {
+  margin: 0 12px 0 -8px;
+  line-height: 1;
+  letter-spacing: -8px;
+}
+
+.icon-filled::before {
+  color: #25272A;
+}
+
+.label {
+  font-family: 'proxima-nova', Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 15px;
+  font-size: 11px;
+  border-radius: 0;
+  padding: 0.35em 0.85em;
+  letter-spacing: 0.75px;
+}
+
+.card-edit .glyphicon:hover {
+  color: #25272A;
+}
+
+.bg-info {
+  background-color: #d9edf7 !important;
+}
+
+.card-edit {
+  padding: 0 10px;
+}
+
+.panel-title .card-edit .glyphicon::before {
+  margin: 0;
+}
