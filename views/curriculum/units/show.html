@@ -27,7 +27,7 @@
 				<h3>Prerequisites</h3>
 				<div class="list-group">
 				{% for d in data.unit.dependencies %}
-					<a class="list-group-item" href="/curriculum/units/{{d._id}}">{{d.subject}}</a>
+					<a class="list-group-item" href="/units/{{d._id}}">{{d.name}}</a>
 				{% endfor %}
 				</div>
 
@@ -50,7 +50,12 @@
 				{% for a in data.unit.assignments %}
 						<a class="list-group-item" href="/assignments/{{a._id}}">{{a.title}}</a>
 				{% endfor %}
-				</div>
+
+				<div class="list-group">
+				<h3>Related</h3>
+				{% for a in data.unit.related %}
+						<a class="list-group-item" href="/assignments/{{a._id}}">{{a.name}}</a>
+				{% endfor %}
 			</div>
 		</div>
 

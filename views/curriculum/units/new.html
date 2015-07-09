@@ -33,6 +33,15 @@
 		</select>
 	</div>
 
+	<div class="form-group">
+	    <label for="related">Units that are related:</label>
+	    <select multiple class="form-control" name="related" id="related">
+		    {% for c in data.units %}
+				<option value="{{c._id}}">{{c.name}}</option>
+			{% endfor %}
+		</select>
+	</div>
+
 	<h3>Resources</h3>
 	<div id="resources" class="row">
 	</div>
@@ -64,9 +73,6 @@
 	    <input type="url" class="form-control" id="gif_link" placeholder="Gif Link Here" name="gif">
 	</div>
 </form>
-
-
-<!-- Button trigger modal -->
 
 
 <!-- Modal -->

@@ -57,9 +57,9 @@ router.post("/new", function(req, res, next) {
 		name : req.body.name,
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
-		dependencyOf : req.body.dependencyOf,
 		assignments : req.body.assignments, 
 		resources : req.body.resources, 
+		related : req.body.related, 
 		examples : req.body.examples, 
 		published: true, // hard coded for now
 		gif: req.body.gif
@@ -69,7 +69,7 @@ router.post("/new", function(req, res, next) {
 
 	unit.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
-		if (err) {throw err;}
+		if (err) {throw err};
 		res.redirect("/units/"+ unit._id);
 	});
 
@@ -133,9 +133,9 @@ function saveExistingUnit(req, res, next) {
 		name : req.body.name,
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
-		dependencyOf : req.body.dependencyOf,
 		assignments : req.body.assignments, 
 		resources : req.body.resources, 
+		related : req.body.related, 
 		examples : req.body.examples, 
 		published: true, // hard coded for now
 		gif: req.body.gif
