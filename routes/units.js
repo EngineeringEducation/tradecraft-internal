@@ -78,94 +78,71 @@ router.post("/new", function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
 	req.data = {};
-
-	//Edit mode
-	if (req.query.edit) {
-		Unit.findById(req.params.id)
-		.populate("subject")
-		.populate("assignments")
-		.populate("dependencies")
-		.populate("dependencyOf")
-		.populate("related")
-		.populate("examples")
-		.populate("resources")
-		.exec(function(err, unit) {
+	if (req.query.publish == "true") {
+		Unit.findByIdAndUpdate(req.params.id, {published: true});
+		res.redirect("/units/" + req.params.id);
+	}
+	if (req.query.publish == "false") {
+		Unit.findByIdAndUpdate(req.params.id, {published: false});
+		res.redirect("/units/" + req.params.id);
+	}
+	Unit.findById(req.params.id)
+	.populate("subject")
+	.populate("assignments")
+	.populate("dependencies")
+	.populate("dependencyOf")
+	.populate("related")
+	.populate("examples")
+	.populate("resources")
+	.exec(function(err, unit) {
 		if (err) {throw err;}
 		req.data.unit = unit;
 		Unit.find({}).exec(function(err, units) {
 				if (err) {throw err;}
 				req.data.units = units;
+
 				Assignment.find({}).exec(function(err, assignments) {
 					if (err) {console.log(err);}
 					req.data.assignments = assignments;
-					res.render("curriculum/units/edit.html", req);
+					Curriculum.find({}).exec(function(err, curriculum) {
+						if (err) {console.log(err);}
+						req.data.curriculum = curriculum;
+						if (req.query.edit) {
+							res.render("curriculum/units/edit.html", req);
+						} else {
+							res.render("curriculum/units/show.html", req);
+						}
+					});
 				});
 			});
 		});
-	//Show mode
-	//Split these up because show mode should have populated assignments but not edit mode.
-	} else {
-		Unit.findById(req.params.id)
-		.populate("dependencies")
-		.populate("dependencyOf")
-		.populate("assignments")
-		.populate("related")
-		.populate("examples")
-		.populate("resources")
-		.exec(function(err, unit) {
-			if (err) {throw err;}
-			req.data.unit = unit;
-			Unit.find({}).exec(function(err, units) {
-				if (err) {throw err;}
-				req.data.units = units;
-				res.render("curriculum/units/show.html", req);
-			});
-		});
-	}
-});
+	});
 
 /* 
 Edit existing unit
 To conform to good REST principles tho this should be a PUT only but eh, html forms. What can ya do. 
 */
-router.post('/:id', saveExistingUnit)
-router.put('/:id', saveExistingUnit)
+router.post('/:id', saveExistingUnit);
+router.put('/:id', saveExistingUnit);
 
 function saveExistingUnit(req, res, next) {
 	console.log(req.body);
 
-	var resources = [];
-	for (var i = 0; i < req.body.resource.length; i++) {
-		var resource = {
-			link : req.body.resource[i],
-			linkText : req.body['resource-text'][i]
-		};
-		resources.push(resource);
-	}
-
-	var examples = [];
-	for (var i = 0; i < req.body.example.length; i++) {
-		var example = {
-			link : req.body.example[i],
-			linkText : req.body['example-text'][i]
-		};
-		examples.push(example);
-	}
-
-	var curriculum = {
+	var unit = {
 		subject : req.body.subject,
+		name : req.body.name,
 		overview : req.body.overview,
-		dependencies : _.compact(req.body.dependencies),
-		dependencyOf : _.compact(req.body.dependencyOf),
-		assignments : _.compact(req.body.assignments),
-		examples : examples,
-		resources : resources,
+		dependencies : req.body.dependencies,
+		dependencyOf : req.body.dependencyOf,
+		assignments : req.body.assignments, 
+		resources : req.body.resources, 
+		examples : req.body.examples, 
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};
 
-	Curriculum.findByIdAndUpdate(req.params.id, curriculum, function(err) {
-		res.redirect("/curriculum/" + req.params.id);
+	Unit.findByIdAndUpdate(req.params.id, unit, function(err) {
+		res.redirect("/units/" + req.params.id);
 	});
 };
 

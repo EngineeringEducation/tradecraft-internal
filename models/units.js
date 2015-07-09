@@ -22,6 +22,7 @@ var unitSchema = mongoose.Schema({
     points: Number
 });
 
+unitSchema.plugin(relationship, { relationshipPathName:'subject' });
 unitSchema.plugin(relationship, { relationshipPathName:'assignments' });
 unitSchema.plugin(relationship, { relationshipPathName:'dependencies' });
 unitSchema.plugin(relationship, { relationshipPathName:'dependencyOf' });

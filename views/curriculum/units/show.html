@@ -4,7 +4,7 @@
 	<h1><a href="/curriculum/{{data.unit.subject._id}}">{{data.unit.subject.subject}}</a></h1>
 		<div class="row">
 			<div class="col-md-6">
-				<h2>{{unit.name}}</h2>
+				<h2>{{data.unit.name}}</h2>
 				{% if user.isInstructor() %}
 				<a class="btn btn-success btn-sm" href="/units/new">New</a>
 				<a class="btn btn-primary btn-sm" href="/units/{{data.unit._id}}?edit=true">Edit</a>
