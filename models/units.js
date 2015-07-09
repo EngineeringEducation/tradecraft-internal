@@ -12,8 +12,8 @@ var unitSchema = mongoose.Schema({
     name: String,
     overview: String,
     dependencies : [{type: mongoose.Schema.ObjectId, ref: "Unit", childPath: "dependencyOf"}],
-    resources : [{link: String, linkText: String}],
-    examples : [{link: String, linkText: String}],
+    resources : [{type: mongoose.Schema.ObjectId, ref: "Resource", childPath: "units"}],
+    examples : [{type: mongoose.Schema.ObjectId, ref: "Example", childPath: "units"}],
     assignments: [{ type:mongoose.Schema.ObjectId, ref:"Assignment", childPath:"units" }],
     dependencyOf: [{type: mongoose.Schema.ObjectId, ref: "Unit", childPath: "dependencies"}],
     related: [{type: mongoose.Schema.ObjectId, ref: "Unit", childPath: "related"}],
@@ -22,10 +22,11 @@ var unitSchema = mongoose.Schema({
     points: Number
 });
 
-//todo
 unitSchema.plugin(relationship, { relationshipPathName:'assignments' });
 unitSchema.plugin(relationship, { relationshipPathName:'dependencies' });
 unitSchema.plugin(relationship, { relationshipPathName:'dependencyOf' });
+unitSchema.plugin(relationship, { relationshipPathName:'examples' });
+unitSchema.plugin(relationship, { relationshipPathName:'resources' });
 
 // on every save, add the date
 unitSchema.pre('save', function(next) {
