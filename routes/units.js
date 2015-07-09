@@ -1,32 +1,41 @@
 var express = require('express');
 var router = express.Router();
-var _ = require('underscore')
+var _ = require('underscore');
 
 var Curriculum = require('../models/curriculum');
+var Unit = require('../models/units');
 var Assignment = require('../models/assignments');
-var Units = require('../models/units');
 
 /* GET curriculum page. */
 router.get('/', function(req, res, next) {
-  res.render("curriculum.html", { user : req.user });
+  res.render("unit.html", req);
 });
 
 router.get('/all', function(req, res, next) {
-	Curriculum.find({}, function(err, curriculum) {
-		res.render("curriculum/all_curriculum.html", { user : req.user, curriculum: curriculum });
+	Unit.find({}, function(err, units) {
+		req.data = {
+			units: units
+		};
+		res.render("curriculum/units/all_units.html", req);
 	});
 });
 
 router.get("/new", function(req, res, next) {
-	Curriculum.find({published: true}).exec(function(err, curriculum) {
+	req.data = {}
+	Curriculum.find().exec(function(err, curriculum) {
+		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
-			res.render("curriculum/new.html", { user : req.user, curriculum: curriculum, assignments: assignments });
+			req.data.assignments = assignments
+			Unit.find({}).exec(function(err, units) {
+				req.data.units = units
+				res.render("curriculum/units/new.html", req);
+			});
 		});
 	});
 });
 
 /* 
-Create a new curriculum
+Create a new unit
 	//#TODO Error Checking
 	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
 */
@@ -49,7 +58,7 @@ router.post("/new", function(req, res, next) {
 			var resource = {
 				link : req.body.resource[i],
 				linkText : req.body['resource-text'][i]
-			}
+			};
 			curriculum.resources.push(resource);
 		}
 	} else {
@@ -59,13 +68,13 @@ router.post("/new", function(req, res, next) {
 		};
 		curriculum.resources.push(resource);
 	}
-	
-	if (typeof req.body.examples == 'Array') {
+
+	if (typeof req.body.examples === 'Array') {
 		for (var i = 0; i < req.body.example.length; i++) {
 			var example = {
 				link : req.body.example[i],
 				linkText : req.body['example-text'][i]
-			}
+			};
 			curriculum.examples.push(example);
 		}
 	} else {
@@ -78,8 +87,8 @@ router.post("/new", function(req, res, next) {
 
 	curriculum.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
-		if (err) throw err;
-		res.redirect("/curriculum/"+ curriculum._id)
+		if (err) {throw err;}
+		res.redirect("/curriculum/"+ curriculum._id);
 	});
 
 });
@@ -87,13 +96,13 @@ router.post("/new", function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
 	//Edit mode
-	if (req.query["edit"]) {
+	if (req.query.edit) {
 		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").exec(function(err, thisCurriculum) {
-		if (err) throw err;
+		if (err) {throw err;}
 		Curriculum.find({}).exec(function(err, curriculum) {
-				if (err) throw err;
+				if (err) {throw err;}
 				Assignment.find({}).exec(function(err, assignments) {
-					if (err) console.log(err);
+					if (err) {console.log(err);}
 					res.render("curriculum/edit.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum, "assignments" : assignments});
 				});
 			});
@@ -102,10 +111,10 @@ router.get('/:id', function(req, res, next) {
 	//Split these up because show mode should have populated assignments but not edit mode.
 	} else {
 		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").populate("assignments").exec(function(err, thisCurriculum) {
-			if (err) throw err;
+			if (err) {throw err;}
 			Curriculum.find({}).exec(function(err, curriculum) {
 				//Are we editing, or are we just viewing?
-				if (err) throw err;
+				if (err) {throw err;}
 				res.render("curriculum/show.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum});
 			});
 		});
@@ -125,18 +134,18 @@ router.post('/:id', function(req, res, next) {
 		var resource = {
 			link : req.body.resource[i],
 			linkText : req.body['resource-text'][i]
-		}
+		};
 		resources.push(resource);
-	};
+	}
 
 	var examples = [];
 	for (var i = 0; i < req.body.example.length; i++) {
 		var example = {
 			link : req.body.example[i],
 			linkText : req.body['example-text'][i]
-		}
+		};
 		examples.push(example);
-	};
+	}
 
 	var curriculum = {
 		subject : req.body.subject,

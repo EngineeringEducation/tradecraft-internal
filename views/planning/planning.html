@@ -1,0 +1,22 @@
+{% extends "layouts/main.html" %}
+
+{% block body %}
+<div class="row">
+	<div class="col-md-9">
+		{% for c in data.curriculum %}
+		<div class="col-md-3">
+			<span><a>Eng</a> > <a href="/curriculum/{{c._id}}">{{c.subject}}</a></span>
+			<h3>{{c.subject}}</h3>
+			<h5>1 Unit</h5>
+			<p>{{c.overview}}<a>MORE</a></p>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="col-md-3">
+		<h3>Schedule</h3>
+		{% for block in data.schedule %}
+		<div class="list-group-item">{{block.day}} {{block.start}} - {{block.end}}</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

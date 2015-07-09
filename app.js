@@ -33,7 +33,10 @@ var student = require('./routes/student');
 var news = require('./routes/news');
 var community = require('./routes/community');
 var curriculum = require('./routes/curriculum');
+var units = require('./routes/units');
 var assignments = require('./routes/assignments');
+var examples = require('./routes/examples');
+var resources = require('./routes/resources');
 
 
 //Include Models
@@ -216,7 +219,10 @@ app.use('/student', student);
 app.use('/news', news);
 app.use('/community', community);
 app.use('/curriculum', curriculum);
+app.use('/units', units);
 app.use('/assignments', assignments);
+app.use('/examples', examples);
+app.use('/resources', resources);
 
 
 /// ### One-off, temporary, factor out later
