@@ -8,7 +8,7 @@ var Units = require('../models/units');
 
 /* GET curriculum page. */
 router.get('/', function(req, res, next) {
-  res.render("curriculum.html", { user : req.user });
+  res.render("curriculum.html", req);
 });
 
 router.get('/all', function(req, res, next) {
@@ -78,7 +78,7 @@ router.post("/new", function(req, res, next) {
 
 	curriculum.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
-		if (err) throw err;
+		if (err) {console.log(err);}
 		res.redirect("/curriculum/"+ curriculum._id)
 	});
 
@@ -86,30 +86,39 @@ router.post("/new", function(req, res, next) {
 
 
 router.get('/:id', function(req, res, next) {
-	//Edit mode
-	if (req.query["edit"]) {
-		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").exec(function(err, thisCurriculum) {
-		if (err) throw err;
-		Curriculum.find({}).exec(function(err, curriculum) {
-				if (err) throw err;
-				Assignment.find({}).exec(function(err, assignments) {
-					if (err) console.log(err);
-					res.render("curriculum/edit.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum, "assignments" : assignments});
-				});
-			});
-		});
-	//Show mode
-	//Split these up because show mode should have populated assignments but not edit mode.
-	} else {
-		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").populate("assignments").exec(function(err, thisCurriculum) {
-			if (err) throw err;
-			Curriculum.find({}).exec(function(err, curriculum) {
-				//Are we editing, or are we just viewing?
-				if (err) throw err;
-				res.render("curriculum/show.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum});
-			});
-		});
+	req.data = {};
+	if (req.query.publish == "true") {
+		Curriculum.findByIdAndUpdate(req.params.id, {published: true});
+		res.redirect("/curriculum/" + req.params.id);
 	}
+	if (req.query.publish == "false") {
+		Curriculum.findByIdAndUpdate(req.params.id, {published: false});
+		res.redirect("/curriculum/" + req.params.id);
+	}
+	Curriculum.findById(req.params.id)
+	.populate("dependencies")
+	.populate("dependencyOf")
+	.populate("assignments")
+	.populate("units")
+	.populate("examples")
+	.populate("resources")
+	.exec(function(err, curricula) {
+	if (err) {console.log(err);}
+	req.data.curricula = curricula;
+	Curriculum.find({}).exec(function(err, curriculum) {
+			if (err) {console.log(err);}
+			req.data.curriculum = curriculum;
+			Assignment.find({}).exec(function(err, assignments) {
+				if (err) {console.log(err);}
+				req.data.assignments = assignments;
+				if (req.query.edit) {
+					res.render("curriculum/edit.html", req);
+				} else {
+					res.render("curriculum/show.html", req);
+				}
+			});
+		});
+	});
 });
 
 /* 
@@ -119,33 +128,14 @@ Probably make this respond to PUT as well.
 */
 router.post('/:id', function(req, res, next) {
 	console.log(req.body);
-
-	var resources = [];
-	for (var i = 0; i < req.body.resource.length; i++) {
-		var resource = {
-			link : req.body.resource[i],
-			linkText : req.body['resource-text'][i]
-		}
-		resources.push(resource);
-	};
-
-	var examples = [];
-	for (var i = 0; i < req.body.example.length; i++) {
-		var example = {
-			link : req.body.example[i],
-			linkText : req.body['example-text'][i]
-		}
-		examples.push(example);
-	};
-
+	
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,
-		dependencies : _.compact(req.body.dependencies),
-		dependencyOf : _.compact(req.body.dependencyOf),
-		assignments : _.compact(req.body.assignments),
-		examples : examples,
-		resources : resources,
+		dependencies : req.body.dependencies.isArray() ? req.body.dependencies : [req.body.dependencies],
+		assignments : req.body.assignments.isArray() ? req.body.assignments : [req.body.assignments], 
+		resources : req.body.resources.isArray() ? req.body.resources : [req.body.resources], 
+		examples : req.body.examples.isArray() ? req.body.examples : [req.body.examples],
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};

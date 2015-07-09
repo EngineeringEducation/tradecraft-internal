@@ -10,6 +10,7 @@ router.post("/new", function(req, res, next) {
 		linkText: req.body.linkText
 	});
 	example.save(function(err, example) {
+		if (err) {console.log(err)};
 		res.send(example);
 	});
 });
@@ -18,6 +19,7 @@ router.post("/new", function(req, res, next) {
 router.get('/:id', function(req, res, next) {
 	//Edit mode
 	Example.findById(req.params.id, function(err, example) {
+		if (err) {console.log(err)};
 		res.send(example);
 	});
 });
