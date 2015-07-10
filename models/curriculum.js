@@ -3,6 +3,7 @@ var relationship = require('mongoose-relationship');
 
 //Models with relationships
 var Assignment = require('./assignments.js');
+var Unit = require('./units.js');
 
 
 //Schema Definition
@@ -13,11 +14,13 @@ var curriculumSchema = mongoose.Schema({
     resources : [{type: mongoose.Schema.ObjectId, ref: "Resource", childPath: "units"}],
     assignments: [{ type:mongoose.Schema.ObjectId, ref:"Assignment", childPath:"subjects" }],
     dependencyOf: [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencies"}],
+    units: [{type: mongoose.Schema.ObjectId, ref: "Unit", childPath: "subject"}],
     published: Boolean,
     gif: String
 });
 
 curriculumSchema.plugin(relationship, { relationshipPathName:'assignments' });
+curriculumSchema.plugin(relationship, { relationshipPathName:'units' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'dependencies' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'dependencyOf' });
 

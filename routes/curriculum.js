@@ -38,56 +38,31 @@ Create a new curriculum
 	//#TODO Error Checking
 	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
 */
-router.post("/new", function(req, res, next) {
+router.post("/", function(req, res, next) {
 
-	console.log("Form body: ",req.body);
+	console.log(req.body);
+
+	req.body.examples = _.toArray(req.body.examples);
+	req.body.resources = _.toArray(req.body.resources);
+	req.body.assignments = _.toArray(req.body.assignments);
+	req.body.units = _.toArray(req.body.units);
+
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
 		subject : req.body.subject,
 		overview : req.body.overview,
-		dependencies : req.body.dependencies, //make sure this is an array
+		dependencies : req.body.dependencies,
 		dependencyOf : req.body.dependencyOf,
-		assignments : req.body.assignments, //this too
+		assignments : req.body.assignments, 
+		units : req.body.units, 
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
 
-	if (typeof req.body.resource == 'Array') {
-		for (var i = 0; i < req.body.resource.length; i++) {
-			var resource = {
-				link : req.body.resource[i],
-				linkText : req.body['resource-text'][i]
-			}
-			curriculum.resources.push(resource);
-		}
-	} else {
-		var resource = {
-			link : req.body.resource || "",
-			linkText : req.body['resource-text']|| ""
-		};
-		curriculum.resources.push(resource);
-	}
-	
-	if (typeof req.body.examples == 'Array') {
-		for (var i = 0; i < req.body.example.length; i++) {
-			var example = {
-				link : req.body.example[i],
-				linkText : req.body['example-text'][i]
-			}
-			curriculum.examples.push(example);
-		}
-	} else {
-		var example = {
-			link : req.body.example || "",
-			linkText : req.body['example-text'] || ""
-		};
-		curriculum.examples.push(example);	
-	}
-
 	curriculum.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
 		if (err) {console.log(err);}
-		res.redirect("/curriculum/"+ curriculum._id)
+		res.redirect("/curriculum/"+ curriculum._id);
 	});
 
 });

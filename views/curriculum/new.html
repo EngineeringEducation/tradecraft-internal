@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1>New Subject</h1>
-<form class="form" id="newSubject" action="/curriculum/new" method="POST">
+<form class="form" id="newSubject" action="/curriculum" method="POST">
 	<button class="btn btn-success">Save</button>
 
 	<div class="form-group">
@@ -107,7 +107,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="modalUnitTitle">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -126,16 +126,15 @@
 
 
 <script class="hide" id="unitTemplate" type="xx-template/underscore">
-	<div class="panel panel-success">
+	<div class="panel panel-default">
 		<div class="panel-heading">
+			<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h3 class="panel-title"><%=name %></h3>
 		</div>
 		<div class="panel-body">
-			<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<input name="examples" type="hidden" value="<%=_id%>">
+			<input name="units" type="hidden" value="<%=_id%>">
 			<div class="panel-body">
-				<strong>0</strong>
-				<p><%=overview%></p>
+				<p><%=overview.slice(0,50) %> ...</p>
 			</div>
 		</div>
 	</div>
@@ -223,12 +222,6 @@ function newExample (data) {
 	return div;
 }
 
-//Unit Select
-$('.unitBox').on("click", function(e) {
-	
-});
-
-
 //Unit Model, Collection, View (factor out when done.)
 var Unit = Backbone.Model.extend({
 	idAttribute: "_id",
@@ -251,10 +244,9 @@ var UnitView = Backbone.View.extend({
 	},
 	events: {
 		'click' : function(e) {
-			$(this).toggleClass("panel-default");
-			$(this).toggleClass("panel-success");
-		},
-		
+			this.$(".panel").toggleClass("panel-default");
+			this.$(".panel").toggleClass("panel-info");
+		}
 	},
 	template: _.template($("#unitTemplate").text()),
 	render: function() {
@@ -268,27 +260,37 @@ var UnitCollectionView = Backbone.View.extend({
 	attributes : {
 		"class" : "units"
 	},
-	events : {
-		'click .close' : function(e) {
-			//$(this).remove();
-			console.log(e);
-		}
+	events: {
+		'click .close' : 'remove'
 	},
 	render : function() {
+		this.$el.empty();
 		this.collection.each(function(unit) {
 			var unitView = new UnitView({model: unit});
 			unitView.render();
 			this.$el.append(unitView.$el);
 		}, this);
+		//WHY DO I HAVE TO REDELEGATE EVENTS MANUALLY
+		this.delegateEvents(this.events);
+	},
+	remove: function() {
+		//Find what one was clicked
+		var id = this.$("input").val();
+		//Remove it from the collection
+		this.collection.remove(id);
+		//Rerender and replace
+		var p = this.el.parent;
+		this.render();
+		$(p).append(this.$el);
 	}
 });
 
 //Instances
-var units = new Units();
-var unitsView = new UnitCollectionView({collection: units});
-units.fetch({ 
+var allUnits = new Units();
+var unitsView = new UnitCollectionView({collection: allUnits});
+allUnits.fetch({ 
 	success : function(err, results) {
-		units.add(results);
+		allUnits.add(results);
 		unitsView.render();
 	},
 	error: function(err) {
@@ -296,14 +298,24 @@ units.fetch({
 	}
 });
 
-
+//On the edit page, we'll need add a "selectedUnits" thing that is populated server-side
+var selectedUnits = new Units();
 
 $("#unitModal").on('show.bs.modal', function(e) {
 	$("#modalUnitBody").append(unitsView.$el);
 });
 
-////// TODO ADD UNITS
 $("#addUnits").on("click", function(e) {
+	var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
+	
+	$("#modalUnitBody .panel-info input").each(function(i, e) {
+		var id = $(e).val();
+		var u = allUnits.where({'_id': id});
+		selectedUnits.add(u);
+	});
+
+	selectedUnitsView.render();
+	$("#units").html(selectedUnitsView.$el);
 	
 });
 

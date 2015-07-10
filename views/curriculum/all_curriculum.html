@@ -1,21 +1,16 @@
 {% extends "layouts/main.html" %}
 
 {% block body %}
-	<h1>Curriculum Listing</h1>
+	<h1>Subject List View</h1>
 	<a href="/curriculum/new" class="btn btn-primary">New</a>
 
 	{% for c in curriculum %}
-		<h2><a href="/curriculum/{{c._id}}">{{c.subject}}</a></h2>
+		<h2><a href="/curriculum/{{c._id}}">Subject: {{c.subject}}</a></h2>
 		<div class="overview">{{c.overview}}</div>
 
-		<h3>Resources</h3>
-		{% for r in c.resources %}
-			<a href="{{r.link}}">{{r.linkText}}</a>
+		{% for u in c.units %}
+			Unit: <h3><a href="/units/{{u._id}}">{{u.name}}</a></h3>
 		{% endfor %}
 
-		<h3>Examples</h3>
-		{% for e in c.examples %}
-			<a href="{{e.link}}">{{e.linkText}}</a>
-		{% endfor %}
 	{% endfor %}
 {% endblock %}
