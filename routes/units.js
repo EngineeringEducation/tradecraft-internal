@@ -8,7 +8,13 @@ var Assignment = require('../models/assignments');
 
 /* GET curriculum page. */
 router.get('/', function(req, res, next) {
-  res.render("unit.html", req);
+	if (req.accepts(['json', 'text'])) {
+		Unit.find({}, function(err, units) {
+			res.send(units);
+		})
+	} else {
+  		res.render("unit.html", req);
+	}
 });
 
 router.get('/all', function(req, res, next) {
@@ -39,7 +45,7 @@ Create a new unit
 	//#TODO Error Checking
 	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
 */
-router.post("/new", function(req, res, next) {
+router.post("/", function(req, res, next) {
 
 	console.log(req.body)
 	if (typeof req.body.examples !== 'Array') {

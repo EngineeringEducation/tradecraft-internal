@@ -18,9 +18,17 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
+	req.data = {}
 	Curriculum.find({published: true}).exec(function(err, curriculum) {
+		if (err) {console.log(err)};
+		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
-			res.render("curriculum/new.html", { user : req.user, curriculum: curriculum, assignments: assignments });
+			if (err) {console.log(err)};
+			req.data.assignments = assignments;
+			Units.find({}).exec(function (err, units) {
+				req.data.units = units;
+				res.render("curriculum/new.html", req);
+			})
 		});
 	});
 });
