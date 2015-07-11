@@ -8,6 +8,7 @@ var Unit = require('./units.js');
 
 //Schema Definition
 var curriculumSchema = mongoose.Schema({
+    track : String,
     subject: String,
     overview: String,
     dependencies : [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencyOf"}],

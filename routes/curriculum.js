@@ -42,6 +42,8 @@ router.post("/", function(req, res, next) {
 
 	console.log(req.body);
 
+	req.body.dependencies = _.toArray(req.body.dependencies);
+	req.body.dependencyOf = _.toArray(req.body.dependencyOf);
 	req.body.examples = _.toArray(req.body.examples);
 	req.body.resources = _.toArray(req.body.resources);
 	req.body.assignments = _.toArray(req.body.assignments);
@@ -49,12 +51,15 @@ router.post("/", function(req, res, next) {
 
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
+		track : req.body.track,
 		subject : req.body.subject,
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
 		dependencyOf : req.body.dependencyOf,
 		assignments : req.body.assignments, 
-		units : req.body.units, 
+		resources : req.body.resources, 
+		examples : req.body.examples, 
+		units : req.body.units,  
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
@@ -111,17 +116,43 @@ Probably make this respond to PUT as well.
 */
 router.post('/:id', function(req, res, next) {
 	console.log(req.body);
+	if (typeof req.body.dependencies !== "String") {
+		req.body.dependencies = _.toArray(req.body.dependencies);
+	}
+		
+	if (typeof req.body.dependencyOf !== "String") {
+		req.body.dependencyOf = _.toArray(req.body.dependencyOf);
+	}
+		
+	if (typeof req.body.examples !== "String") {
+		req.body.examples = _.toArray(req.body.examples);
+	}
+		
+	if (typeof req.body.resources !== "String") {
+		req.body.resources = _.toArray(req.body.resources);
+	}
+		
+	if (typeof req.body.assignments !== "String") {
+		req.body.assignments = _.toArray(req.body.assignments);
+	}
+		
+	if (typeof req.body.units !== "String") {
+		req.body.units = _.toArray(req.body.units);
+	}
 	
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,
-		dependencies : req.body.dependencies.isArray() ? req.body.dependencies : [req.body.dependencies],
-		assignments : req.body.assignments.isArray() ? req.body.assignments : [req.body.assignments], 
-		resources : req.body.resources.isArray() ? req.body.resources : [req.body.resources], 
-		examples : req.body.examples.isArray() ? req.body.examples : [req.body.examples],
+		dependencies : req.body.dependencies,
+		dependencyOf : req.body.dependencyOf,
+		assignments : req.body.assignments, 
+		resources : req.body.resources, 
+		examples : req.body.examples, 
+		units : req.body.units, 
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};
+	console.log("THE CURRICULM LOOKS LIKE THIS PRIOR TO UPDATE: ", curriculum);
 
 	Curriculum.findByIdAndUpdate(req.params.id, curriculum, function(err) {
 		res.redirect("/curriculum/" + req.params.id);

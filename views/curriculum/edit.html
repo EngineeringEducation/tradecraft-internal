@@ -15,6 +15,12 @@
 	    <textarea class="form-control" name="overview" id="overview" rows="3">{{data.curricula.overview}}</textarea>
 	</div>
 
+	<h3>Units</h3>
+	<div id="units" class="row"></div>
+	<a id="new_resource" class="btn btn-success btn-lg" data-toggle="modal" data-target="#unitModal">
+		<span class="glyphicon glyphicon-plus"></span> Add Units
+	</a>
+
 	<div class="form-group">
 	    <label for="dependancies">Dependencies:</label>
 	    <select multiple class="form-control" name="dependencies" id="dependencies">
@@ -101,9 +107,43 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="modalUnitTitle">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalUnitTitle">Add Unit</h4>
+      </div>
+      <div class="modal-body" id="modalUnitBody">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="addUnits" data-dismiss="modal">Add Unit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script class="hide" id="unitTemplate" type="xx-template/underscore">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h3 class="panel-title"><%=name %></h3>
+		</div>
+		<div class="panel-body">
+			<input name="units" type="hidden" value="<%=_id%>">
+			<div class="panel-body">
+				<p><%=overview.slice(0,50) %> ...</p>
+			</div>
+		</div>
+	</div>
+</script>
 {% endblock %}
 
 {% block javascript %}
+<script type="text/javascript" src="/javascripts/units.js"></script>
 <script type="text/javascript">
 //Dynamically populate resources and examples
 
@@ -198,6 +238,45 @@ function newExample (data) {
 	div.append(panel)
 	return div;
 }
+
+
+//Instances
+var allUnits = new Units();
+var unitsView = new UnitCollectionView({collection: allUnits});
+allUnits.fetch({ 
+	success : function(err, results) {
+		allUnits.add(results);
+		unitsView.render();
+	},
+	error: function(err) {
+		console.log("oh no, ", err);
+	}
+});
+
+//On the edit page, we'll need add a "selectedUnits" thing that is populated server-side
+var selectedUnits = new Units({{data.curricula.units}});
+var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
+selectedUnitsView.render();
+$("#units").html(selectedUnitsView.$el);
+
+$("#unitModal").on('show.bs.modal', function(e) {
+	$("#modalUnitBody").append(unitsView.$el);
+});
+
+$("#addUnits").on("click", function(e) {
+	var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
+	
+	$("#modalUnitBody .panel-info input").each(function(i, e) {
+		var id = $(e).val();
+		var u = allUnits.where({'_id': id});
+		selectedUnits.add(u);
+	});
+
+	selectedUnitsView.render();
+	$("#units").html(selectedUnitsView.$el);
+	
+});
+
 </script>
 
 {% endblock %}

@@ -6,6 +6,17 @@
 	<button class="btn btn-success">Save</button>
 
 	<div class="form-group">
+		<label>What track is this for?</label>
+		<select required name="track" class="form-control" required>
+			<option disabled selected value="">Select One</option>
+			<option>Product Design</option>
+			<option>Engineering</option>
+			<option>Sales</option>
+			<option>Growth</option>
+		</select>
+	</div>
+
+	<div class="form-group">
 	    <label for="new_subject_name">Subject:</label>
 	    <input type="text" class="form-control" required id="new_subject_name" placeholder="New Subject" autofocus name="subject">
 	</div>
@@ -106,14 +117,39 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="modalUnitTitle">
+<div class="modal fade" id="unitModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalUnitTitle">Add Unit</h4>
-      </div>
-      <div class="modal-body" id="modalUnitBody">
+    	<div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        	<span aria-hidden="true">&times;</span>
+	        </button>
+	        <ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#modalUnitAddExisting" aria-controls="modalUnitAddExisting" role="tab" data-toggle="tab">
+						<h4 class="modal-title">Add Existing</h4>
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="#modalNewUnit" aria-controls="modalNewUnit" role="tab" data-toggle="tab">
+						<h4 class="modal-title">New Unit</h4>
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="#modalOtherTracks" aria-controls="modalOtherTracks" role="tab" data-toggle="tab">
+						<h4 class="modal-title">Other Tracks' Units</h4>
+					</a>
+				</li>
+			</ul>
+        
+    	</div>
+		<div class="modal-body" id="modalUnitBody">
+	    <div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="modalUnitAddExisting">
+			</div>
+			<div role="tabpanel" class="tab-pane" id="modalNewUnit">{% include 'curriculum/units/new_form.html' %}</div>
+			<div role="tabpanel" class="tab-pane" id="modalOtherTracks">...</div>
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -123,6 +159,13 @@
   </div>
 </div>
 
+
+<div>
+
+  <!-- Tab panes -->
+	
+
+</div>
 
 
 <script class="hide" id="unitTemplate" type="xx-template/underscore">
@@ -143,6 +186,7 @@
 {% endblock %}
 
 {% block javascript %}
+<script type="text/javascript" src="/javascripts/units.js"></script>
 <script type="text/javascript">
 //This is a case for Backbone.js #TODO
 var $=$; //just to make jslint shut up.
@@ -222,69 +266,6 @@ function newExample (data) {
 	return div;
 }
 
-//Unit Model, Collection, View (factor out when done.)
-var Unit = Backbone.Model.extend({
-	idAttribute: "_id",
-	render: function() {
-		var unitTemplate = $("#unitTemplate").html();
-		this.compiledTemplate = _.template(unitTemplate);
-		this.compiledTemplate(this.attributes);
-	}
-});
-
-var Units = Backbone.Collection.extend({
-	url: "/units",
-	model: Unit
-});
-
-var UnitView = Backbone.View.extend({
-	tagname: 'div',
-	attributes : {
-		"class" : "col-md-3"
-	},
-	events: {
-		'click' : function(e) {
-			this.$(".panel").toggleClass("panel-default");
-			this.$(".panel").toggleClass("panel-info");
-		}
-	},
-	template: _.template($("#unitTemplate").text()),
-	render: function() {
-		this.$el.html(this.template(this.model.attributes));
-    	return this;
-	}
-});
-
-var UnitCollectionView = Backbone.View.extend({
-	tagname: 'div',
-	attributes : {
-		"class" : "units"
-	},
-	events: {
-		'click .close' : 'remove'
-	},
-	render : function() {
-		this.$el.empty();
-		this.collection.each(function(unit) {
-			var unitView = new UnitView({model: unit});
-			unitView.render();
-			this.$el.append(unitView.$el);
-		}, this);
-		//WHY DO I HAVE TO REDELEGATE EVENTS MANUALLY
-		this.delegateEvents(this.events);
-	},
-	remove: function() {
-		//Find what one was clicked
-		var id = this.$("input").val();
-		//Remove it from the collection
-		this.collection.remove(id);
-		//Rerender and replace
-		var p = this.el.parent;
-		this.render();
-		$(p).append(this.$el);
-	}
-});
-
 //Instances
 var allUnits = new Units();
 var unitsView = new UnitCollectionView({collection: allUnits});
@@ -298,11 +279,10 @@ allUnits.fetch({
 	}
 });
 
-//On the edit page, we'll need add a "selectedUnits" thing that is populated server-side
 var selectedUnits = new Units();
 
 $("#unitModal").on('show.bs.modal', function(e) {
-	$("#modalUnitBody").append(unitsView.$el);
+	$("#modalUnitAddExisting").append(unitsView.$el);
 });
 
 $("#addUnits").on("click", function(e) {

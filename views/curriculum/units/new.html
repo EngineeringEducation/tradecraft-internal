@@ -2,77 +2,8 @@
 
 {% block body %}
 <h1>New Unit</h1>
-<form class="form" id="newSubject" action="/units/" method="POST">
-	<button class="btn btn-success">Save</button>
 
-	<div class="form-group">
-	    <label for="new_subject_name">Subject:</label>
-	    <select class="form-control" required id="subject" placeholder="Choose One" autofocus name="subject">
-	    {% for c in data.curriculum %}
-				<option value="{{c._id}}">{{c.subject}}</option>
-			{% endfor %}
-	    </select>
-	</div>
-
-	<div class="form-group">
-	    <label for="new_subject_name">Unit Title:</label>
-	    <input class="form-control" required id="name" placeholder="Name" autofocus name="name">
-	</div>
-
-	<div class="form-group">
-	    <label for="overview">Overview:</label>
-	    <textarea class="form-control" name="overview" id="overview" rows="3" placeholder="Summary of topic."></textarea>
-	</div>
-
-	<div class="form-group">
-	    <label for="dependancies">Units that this unit depends on:</label>
-	    <select multiple class="form-control" name="dependencies" id="dependencies">
-		    {% for u in data.units %}
-				<option value="{{u._id}}">{{u.name}}</option>
-			{% endfor %}
-		</select>
-	</div>
-
-	<div class="form-group">
-	    <label for="related">Units that are related:</label>
-	    <select multiple class="form-control" name="related" id="related">
-		    {% for c in data.units %}
-				<option value="{{c._id}}">{{c.name}}</option>
-			{% endfor %}
-		</select>
-	</div>
-
-	<h3>Resources</h3>
-	<div id="resources" class="row">
-	</div>
-	<a id="new_resource" class="btn btn-success btn-lg" data-toggle="modal" data-target="#resourceModal">
-		Add Resource
-	</a>
-
-	<h3>Examples</h3>
-	<div id="examples" class="row">
-	</div>
-	<a id="new_example" class="btn btn-success btn-lg" data-toggle="modal" data-target="#exampleModal">
-		Add Example
-	</a>
-
-	<h3>Related Assignments</h3>
-	<p>This just ties together assignments you might want to assign students if you do this topic.</p>
-	<div id="assignments">
-		<select multiple class="form-control" name="assignments">
-		{% for assignment in data.assignments %}
-			<option value="{{assignment._id}}">{{assignment.title}}</option>
-		{% endfor %}
-		</select>
-	</div>
-
-
-	<div class="form-group">
-	    <label for="new_subject_name">Awesome Gif:</label>
-	    <p>All learning is better with an awesome gif. Find or make one and it will appear to the side of the title.</p>
-	    <input type="url" class="form-control" id="gif_link" placeholder="Gif Link Here" name="gif">
-	</div>
-</form>
+{% include "curriculum/units/new_form.html" %}
 
 
 <!-- Modal -->
