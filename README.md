@@ -3,21 +3,27 @@ internal intranet of goodness
 
 
 ### To get started:
-clone the repository  
-`git clone git@github.com:TradecraftEngineering/tradecraft-internal.git`  
 
-Install nodemon  
+Open a terminal window and navigate to the folder within which you want your tradecraft-internal folder to be created :)
+
+Clone the tradecraft-internal repository
+`git clone git@github.com:TradecraftEngineering/tradecraft-internal.git`
+
+Open dat new folder
+`cd tradecraft-internal`
+
+Install nodemon globally with NPM
 `npm install -g nodemon`
 
-Create the database   
-`psql -h localhost -f schema.sql`
-(should drop any existing database you have called Tradecraft! So. Make sure that's not important to you.)
+Install node third-party library dependencies of the tradecraft-internal project (whose folder you should now be within)
+`npm install`
 
-Seed the database (not in production)  
-`psql -h localhost -f seed.sql`
+Install MongoDB globally with Homebrew, for the data holdings
+`brew install mongo`
 
-To get login working, you have to setup Redis  
-Install Redis  
+Set up Redis for the logins
+First, open another terminal tab and navigate to a directory within which you'd like the redis program's directory to be created
+Then, install Redis with these commands:
 ```shell
 	wget http://download.redis.io/redis-stable.tar.gz
 	tar xvzf redis-stable.tar.gz
@@ -25,9 +31,13 @@ Install Redis
 	make
 ```
 
-Start Redis  
+Start Redis and Mongo in their own terminal tabs and leave them there :)
 `redis-server`
+`mongo`
 
+And finally, ...get help from Liz or Janardan configuring your .env file properly. :E
 
 ## Run it
-`nodemon bin/www`
+
+From the tradecraft-internal directory:
+`foreman start`
