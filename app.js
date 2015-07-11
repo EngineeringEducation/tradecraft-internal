@@ -30,7 +30,7 @@ var passport = require('passport');
 // Include Controllers
 var routes = require('./routes/index');
 var student = require('./routes/student');
-var news = require('./routes/news');
+var announcements = require('./routes/announcements');
 var community = require('./routes/community');
 var curriculum = require('./routes/curriculum');
 var assignments = require('./routes/assignments');
@@ -213,7 +213,7 @@ app.use(function(req, res, next) {
 /// #### CONTROLLERS
 app.use('/',  routes);
 app.use('/student', student);
-app.use('/news', news);
+app.use('/announcements', announcements);
 app.use('/community', community);
 app.use('/curriculum', curriculum);
 app.use('/assignments', assignments);

@@ -30,11 +30,11 @@
         {% endfor %}
     {% endif %}
 
-    {% if news.length > 0 %}
-        <h2><a href="/news">News</a></h2>
-        {% for new in news %}
-        <div class="news">
-          <a href="/news/{{new.id}}"><strong>{{new.title}}</strong></a> 
+    {% if data.announcements.length > 0 %}
+        <h2><a href="/announcements">Announcements</a></h2>
+        {% for announcement in data.announcements %}
+        <div class="announcements">
+          <a href="/announcement/{{announcement.id}}"><strong>{{announcement.title}}</strong></a> 
         </div>
         {% endfor %}
     {% endif %}

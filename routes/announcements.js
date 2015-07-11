@@ -1,50 +1,50 @@
+
 var express = require('express');
 var router = express.Router();
 
-
-var News = require("../models/news");
+var Announcements = require("../models/announcements");
 
 /* GET home page. */
 // I typed the word "news" too many times for this and now it looks weird.
 router.get('/', function(req, res, next) {
-	News.find({}, function(err, news) {
+	Announcements.find({}, function(err, announcements) {
 		if (!err) {
 			req.data = {
-				news: news
+				announcements: announcements
 			};
-			res.render("news/all_news.html", req);
+			res.render("announcements/all.html", req);
 		}
 	});
 });
 
 router.get('/new', function(req, res, next) {
-	res.render("news/new_news.html");
+	res.render("announcements/new.html", req);
 });
 
-router.post('/new', function(req, res, next) {
+router.post('/', function(req, res, next) {
 	if (req.body.title && req.body.body) {
-		var news = new News({
+		var announcement = new Announcements({
 			title : req.body.title,
 			body : req.body.body,
 			created : Date.now(),
 			author : req.user._id
 		});
 
-		news.save(function(err) {
+		announcement.save(function(err, announcement) {
 			if (err) {console.log(err);}
-			res.redirect("/news");
+			res.redirect("/announcements");
 		});
 	}
 });
 
 //Has to come after /new or it will match /new and try to interpret it as an ID
 router.get('/:id', function(req, res, next) {
-	News.findById(req.params.id, function(err, news) {
+	Announcements.findById(req.params.id, function(err, announcements) {
 		if (err) {console.log(err);}
 		req.data = {
-			news : news
+			announcements : announcements
 		};
-		res.render("news/all_news.html", req);
+		res.render("announcements/all.html", req);
 	});
 });
 
