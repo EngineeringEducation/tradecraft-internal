@@ -4,15 +4,17 @@ var router = express.Router();
 
 var Announcements = require("../models/announcements");
 
-/* GET home page. */
-// I typed the word "news" too many times for this and now it looks weird.
 router.get('/', function(req, res, next) {
 	Announcements.find({}, function(err, announcements) {
 		if (!err) {
 			req.data = {
 				announcements: announcements
 			};
-			res.render("announcements/all.html", req);
+			if (!req.accepts("application/html")) {
+				res.send(announcements);
+			} else {
+				res.render("announcements/all.html", req);
+			}
 		}
 	});
 });
