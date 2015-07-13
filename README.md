@@ -33,7 +33,7 @@ Then, install Redis with these commands:
 
 Start Redis and Mongo in their own terminal tabs and leave them there :)  
 `redis-server`  
-`mongo`
+`mongod`
 
 And finally, ...get help from Liz or Janardan configuring your .env file properly. :E
 
