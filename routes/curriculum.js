@@ -4,10 +4,11 @@ var _ = require('underscore')
 
 var Curriculum = require('../models/curriculum');
 var Assignment = require('../models/assignments');
+var Units = require('../models/units');
 
 /* GET curriculum page. */
 router.get('/', function(req, res, next) {
-  res.render("curriculum.html", { user : req.user });
+  res.render("curriculum.html", req);
 });
 
 router.get('/all', function(req, res, next) {
@@ -17,98 +18,116 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
+	req.data = {}
 	Curriculum.find({published: true}).exec(function(err, curriculum) {
+		if (err) {console.log(err)};
+		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
-			res.render("curriculum/new.html", { user : req.user, curriculum: curriculum, assignments: assignments });
+			if (err) {console.log(err)};
+			req.data.assignments = assignments;
+			Units.find({}).exec(function (err, units) {
+				req.data.units = units;
+				res.render("curriculum/new.html", req);
+			})
 		});
 	});
 });
 
 /* 
 Create a new curriculum
-	//#TODO Error Checking
-	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
+	//#TODO 
+	//Error Checking
+	//REST this up
 */
-router.post("/new", function(req, res, next) {
+router.post("/", function(req, res, next) {
 
-	console.log("Form body: ",req.body);
+	console.log(req.body);
+
+	if (req.body.examples && !req.body.examples.push) {
+		req.body.examples = [req.body.examples];
+	}
+
+	if (req.body.resources && !req.body.resources.push) {
+		req.body.resources = [req.body.resources];
+	}
+
+	if (req.body.dependencies && !req.body.dependencies.push) {
+		req.body.dependencies = [req.body.dependencies];
+	}
+
+	if (req.body.dependencyOf && !req.body.dependencyOf.push) {
+		req.body.dependencyOf = [req.body.dependencyOf];
+	}
+
+	if (req.body.related && !req.body.related.push) {
+		req.body.related = [req.body.related];
+	}
+
+	if (req.body.assignments && !req.body.assignments.push) {
+		req.body.assignments = [req.body.assignments];
+	}
+
+	console.log(req.body)
+
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
+		track : req.body.track,
 		subject : req.body.subject,
 		overview : req.body.overview,
-		dependencies : req.body.dependencies, //make sure this is an array
+		dependencies : req.body.dependencies,
 		dependencyOf : req.body.dependencyOf,
-		assignments : req.body.assignments, //this too
+		assignments : req.body.assignments, 
+		resources : req.body.resources, 
+		examples : req.body.examples, 
+		units : req.body.units,  
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
 
-	if (typeof req.body.resource == 'Array') {
-		for (var i = 0; i < req.body.resource.length; i++) {
-			var resource = {
-				link : req.body.resource[i],
-				linkText : req.body['resource-text'][i]
-			}
-			curriculum.resources.push(resource);
-		}
-	} else {
-		var resource = {
-			link : req.body.resource || "",
-			linkText : req.body['resource-text']|| ""
-		}
-		curriculum.resources.push(resource);
-	}
-	
-	if (typeof req.body.examples == 'Array') {
-		for (var i = 0; i < req.body.example.length; i++) {
-			var example = {
-				link : req.body.example[i],
-				linkText : req.body['example-text'][i]
-			}
-			curriculum.examples.push(example);
-		}
-	} else {
-		var example = {
-			link : req.body.example || "",
-			linkText : req.body['example-text'] || ""
-		}
-		curriculum.examples.push(example);	
-	}
-
 	curriculum.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
-		if (err) throw err;
-		res.redirect("/curriculum/"+ curriculum._id)
+		if (err) {console.log(err);}
+		res.redirect("/curriculum/"+ curriculum._id);
 	});
 
 });
 
 
 router.get('/:id', function(req, res, next) {
-	//Edit mode
-	if (req.query["edit"]) {
-		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").exec(function(err, thisCurriculum) {
-		if (err) throw err;
-		Curriculum.find({}).exec(function(err, curriculum) {
-				if (err) throw err;
-				Assignment.find({}).exec(function(err, assignments) {
-					if (err) console.log(err);
-					res.render("curriculum/edit.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum, "assignments" : assignments});
-				});
-			});
-		});
-	//Show mode
-	//Split these up because show mode should have populated assignments but not edit mode.
-	} else {
-		Curriculum.findById(req.params.id).populate("dependencies").populate("dependencyOf").populate("assignments").exec(function(err, thisCurriculum) {
-			if (err) throw err;
-			Curriculum.find({}).exec(function(err, curriculum) {
-				//Are we editing, or are we just viewing?
-				if (err) throw err;
-				res.render("curriculum/show.html", { "user" : req.user, "thisCurriculum": thisCurriculum, "curriculum": curriculum});
-			});
-		});
+	req.data = {};
+	if (req.query.publish == "true") {
+		Curriculum.findByIdAndUpdate(req.params.id, {published: true});
+		res.redirect("/curriculum/" + req.params.id);
 	}
+	if (req.query.publish == "false") {
+		Curriculum.findByIdAndUpdate(req.params.id, {published: false});
+		res.redirect("/curriculum/" + req.params.id);
+	}
+	Curriculum.findById(req.params.id)
+	.populate("dependencies")
+	.populate("dependencyOf")
+	.populate("assignments")
+	.populate("units")
+	.populate("examples")
+	.populate("resources")
+	.exec(function(err, curricula) {
+	if (err) {console.log(err);}
+	req.data.curricula = curricula;
+	console.log(curricula);
+	Curriculum.find({}).exec(function(err, curriculum) {
+			if (err) {console.log(err);}
+			req.data.curriculum = curriculum;
+			Assignment.find({}).exec(function(err, assignments) {
+				if (err) {console.log(err);}
+				req.data.assignments = assignments;
+				if (req.query.edit) {
+					res.render("curriculum/edit.html", req);
+				} else {
+					res.render("curriculum/show.html", req);
+				}
+			});
+		});
+	});
 });
 
 /* 
@@ -118,36 +137,43 @@ Probably make this respond to PUT as well.
 */
 router.post('/:id', function(req, res, next) {
 	console.log(req.body);
-
-	var resources = [];
-	for (var i = 0; i < req.body.resource.length; i++) {
-		var resource = {
-			link : req.body.resource[i],
-			linkText : req.body['resource-text'][i]
-		}
-		resources.push(resource);
-	};
-
-	var examples = [];
-	for (var i = 0; i < req.body.example.length; i++) {
-		var example = {
-			link : req.body.example[i],
-			linkText : req.body['example-text'][i]
-		}
-		examples.push(example);
-	};
-
+	if (typeof req.body.dependencies !== "String") {
+		req.body.dependencies = _.toArray(req.body.dependencies);
+	}
+		
+	if (typeof req.body.dependencyOf !== "String") {
+		req.body.dependencyOf = _.toArray(req.body.dependencyOf);
+	}
+		
+	if (typeof req.body.examples !== "String") {
+		req.body.examples = _.toArray(req.body.examples);
+	}
+		
+	if (typeof req.body.resources !== "String") {
+		req.body.resources = _.toArray(req.body.resources);
+	}
+		
+	if (typeof req.body.assignments !== "String") {
+		req.body.assignments = _.toArray(req.body.assignments);
+	}
+		
+	if (typeof req.body.units !== "String") {
+		req.body.units = _.toArray(req.body.units);
+	}
+	
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,
-		dependencies : _.compact(req.body.dependencies),
-		dependencyOf : _.compact(req.body.dependencyOf),
-		assignments : _.compact(req.body.assignments),
-		examples : examples,
-		resources : resources,
+		dependencies : req.body.dependencies,
+		dependencyOf : req.body.dependencyOf,
+		assignments : req.body.assignments, 
+		resources : req.body.resources, 
+		examples : req.body.examples, 
+		units : req.body.units, 
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};
+	console.log("THE CURRICULM LOOKS LIKE THIS PRIOR TO UPDATE: ", curriculum);
 
 	Curriculum.findByIdAndUpdate(req.params.id, curriculum, function(err) {
 		res.redirect("/curriculum/" + req.params.id);

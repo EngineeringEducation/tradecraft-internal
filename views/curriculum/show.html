@@ -1,53 +1,63 @@
 {% extends "layouts/main.html" %}
 
 {% block body %}
-	<h1><a href="/curriculum/all">Curriculum</a></h1>
+	<ol class="breadcrumb">
+		<li><a href="#">Engineering</a></li>
+		<li><a href="/curriculum/all">Curriculum</a></li>
+		<li class="active"><a href="/curriculum/{{data.curricula._id}}">{{data.curricula.subject}}</a></li>
+	</ol>
 		<div class="row">
 			<div class="col-md-6">
-				<h2>{{thisCurriculum.subject}}</h2>
+				
 				{% if user.isInstructor() %}
 				<a class="btn btn-success btn-sm" href="/curriculum/new">New</a>
-				<a class="btn btn-primary btn-sm" href="/curriculum/{{thisCurriculum._id}}?edit=true">Edit</a>
-				<a class="btn btn-primary btn-sm" href="/curriculum/{{thisCurriculum._id}}?publish=true">Publish</a>
-				<a class="btn btn-warning btn-sm" href="/curriculum/{{thisCurriculum._id}}?publish=false">Unpublish</a>
+				<a class="btn btn-primary btn-sm" href="/curriculum/{{data.curricula._id}}?edit=true">Edit</a>
+				<a class="btn btn-primary btn-sm" href="/curriculum/{{data.curricula._id}}?publish=true">Publish</a>
+				<a class="btn btn-warning btn-sm" href="/curriculum/{{data.curricula._id}}?publish=false">Unpublish</a>
 				{% endif %}
 			</div>
-			{% if thisCurriculum.gif %}
+			{% if data.curricula.gif %}
 			<div class="col-md-6">
-				<img src="{{thisCurriculum.gif}}">
+				<img src="{{data.curricula.gif}}">
 			</div>
 			{% endif %}
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<h3>Overview</h3>
-				<div class="container">{{thisCurriculum.overview}}</div>
+				<div class="container">{{data.curricula.overview}}</div>
+				<h3>Units</h3>
+				<div class="list-group">
+				{% for u in data.curricula.units %}
+					<a class="list-group-item" href="/units/{{u._id}}">{{u.name}}</a>
+				{% endfor %}
+				</div>
 			</div>
 			<div class="col-md-6">
 				<h3>Prerequisites</h3>
 				<div class="list-group">
-				{% for d in thisCurriculum.dependencies %}
+				{% for d in data.curricula.dependencies %}
 					<a class="list-group-item" href="/curriculum/{{d._id}}">{{d.subject}}</a>
 				{% endfor %}
 				</div>
 
 				<div class="list-group">
 				<h3>Resources</h3>
-				{% for r in thisCurriculum.resources %}
+				{% for r in data.curricula.resources %}
 						<a class="list-group-item" href="{{r.link}}">{{r.linkText}}</a>
 				{% endfor %}
 				</div>
 
 				<div class="list-group">
 				<h3>Examples</h3>
-				{% for e in thisCurriculum.examples %}
+				{% for e in data.curricula.examples %}
 						<a class="list-group-item" href="{{e.link}}">{{e.linkText}}</a>
 				{% endfor %}
 				</div>
 
 				<div class="list-group">
 				<h3>Assignments</h3>
-				{% for a in thisCurriculum.assignments %}
+				{% for a in data.curricula.assignments %}
 						<a class="list-group-item" href="/assignments/{{a._id}}">{{a.title}}</a>
 				{% endfor %}
 				</div>

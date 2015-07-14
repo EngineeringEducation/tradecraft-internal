@@ -1,31 +1,44 @@
 {% extends "layouts/main.html" %}
 
 {% block body %}
-<h1>{{data.curricula.subject}}</h1>
-<form class="form" id="newSubject" action="/curriculum/{{data.curricula._id}}" method="POST">
+<h1><a href="/curriculum/{{data.unit.subject._id}}">{{data.unit.subject.subject}}</a> > <a a href="/units/{{data.unit._id}}">{{data.unit.name}}</a></h1>
+<form class="form" id="newSubject" action="/units/{{data.unit._id}}" method="POST">
 	<button class="btn btn-success">Save</button>
 
 	<div class="form-group">
 	    <label for="new_subject_name">Subject:</label>
-	    <input type="text" class="form-control" required id="new_subject_name" value="{{data.curricula.subject}}" autofocus name="subject">
+	    <select class="form-control" required id="subject" placeholder="Choose One" autofocus name="subject">
+
+	    {% for c in data.curriculum %}
+				<option value="{{c._id}}"{{ 'selected="true"' if c._id|string() == data.unit.subject._id|string() }}>{{c.subject}}</option>
+			{% endfor %}
+	    </select>
+	</div>
+
+	<div class="form-group">
+	    <label for="new_subject_name">Unit Title:</label>
+	    <input class="form-control" required id="name" placeholder="Name" autofocus name="name" value="{{data.unit.name}}">
 	</div>
 
 	<div class="form-group">
 	    <label for="overview">Overview:</label>
-	    <textarea class="form-control" name="overview" id="overview" rows="3">{{data.curricula.overview}}</textarea>
+	    <textarea class="form-control" name="overview" id="overview" rows="3">{{data.unit.overview}}</textarea>
 	</div>
 
-	<h3>Units</h3>
-	<div id="units" class="row"></div>
-	<a id="new_resource" class="btn btn-success btn-lg" data-toggle="modal" data-target="#unitModal">
-		<span class="glyphicon glyphicon-plus"></span> Add Units
-	</a>
+	<div class="form-group">
+	    <label for="dependencies">Units that come before this one:</label>
+	    <select multiple class="form-control" name="dependencies" id="dependencies">
+		    {% for c in data.units %}
+				<option value="{{c._id}}" id="optDependency_{{c._id}}">{{c.name}}</option>
+			{% endfor %}
+		</select>
+	</div>
 
 	<div class="form-group">
-	    <label for="dependancies">Dependencies:</label>
-	    <select multiple class="form-control" name="dependencies" id="dependencies">
-		    {% for c in data.curriculum %}
-				<option value="{{c.id}}">{{c.subject}}</option>
+	    <label for="related">Units that are related:</label>
+	    <select multiple class="form-control" name="related" id="related">
+		    {% for c in data.units %}
+				<option value="{{c._id}}" id="optRelated_{{c._id}}">{{c.name}}</option>
 			{% endfor %}
 		</select>
 	</div>
@@ -49,7 +62,7 @@
 	<div id="assignments">
 		<select multiple class="form-control" name="assignments" >
 			{% for assignment in data.assignments %}
-				<option value="{{assignment._id}}" {% if data.curricula.assignments.indexOf(assignment._id) > -1 %} selected="true" {%endif%}>{{assignment.title}}</option>
+				<option value="{{assignment._id}}" id="optAssignment_{{assignment._id}}">{{assignment.title}}</option>
 			{% endfor %}
 		</select>
 	</div>
@@ -107,62 +120,31 @@
     </div>
   </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="modalUnitTitle">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalUnitTitle">Add Unit</h4>
-      </div>
-      <div class="modal-body" id="modalUnitBody">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="addUnits" data-dismiss="modal">Add Unit</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script class="hide" id="unitTemplate" type="xx-template/underscore">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h3 class="panel-title"><%=name %></h3>
-		</div>
-		<div class="panel-body">
-			<input name="units" type="hidden" value="<%=_id%>">
-			<div class="panel-body">
-				<p><%=overview.slice(0,50) %> ...</p>
-			</div>
-		</div>
-	</div>
-</script>
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript" src="/javascripts/units.js"></script>
 <script type="text/javascript">
 //Dynamically populate resources and examples
 
-{% for r in data.curricula.resources %}
+{% for r in data.unit.resources %}
 	$("#resources").append(newResource({"_id": "{{r._id}}", link:"{{r.link}}", "linkText": "{{r.linkText}}"}));
 {% endfor %}
 
-{% for e in data.curricula.examples %}
+{% for e in data.unit.examples %}
 	$("#examples").append(newExample({"_id": "{{e._id}}", link:"{{e.link}}", "linkText": "{{e.linkText}}"}));
 {% endfor %}
 
-{% for a in data.curricula.assignments %}
+{% for a in data.unit.assignments %}
 	$("#optAssignment_{{a._id}}").attr("selected", true)
 {% endfor %}
 
-{% for a in data.curricula.dependencies %}
+{% for a in data.unit.dependencies %}
 	$("#optDependency_{{a._id}}").attr("selected", true)
 {% endfor %}
 
+{% for a in data.unit.related %}
+	$("#optRelated_{{a._id}}").attr("selected", true)
+{% endfor %}
 
 //Resources
 $("#saveResource").on("click", function(e) {
@@ -239,42 +221,8 @@ function newExample (data) {
 	return div;
 }
 
-
-//Instances
-var allUnits = new Units();
-var unitsView = new UnitCollectionView({collection: allUnits});
-allUnits.fetch({ 
-	success : function(err, results) {
-		allUnits.add(results);
-		unitsView.render();
-	},
-	error: function(err) {
-		console.log("oh no, ", err);
-	}
-});
-
-//On the edit page, we'll need add a "selectedUnits" thing that is populated server-side
-var selectedUnits = new Units({{data.curricula.units}});
-var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
-selectedUnitsView.render();
-$("#units").html(selectedUnitsView.$el);
-
-$("#unitModal").on('show.bs.modal', function(e) {
-	$("#modalUnitBody").append(unitsView.$el);
-});
-
-$("#addUnits").on("click", function(e) {
-	var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
-	
-	$("#modalUnitBody .panel-info input").each(function(i, e) {
-		var id = $(e).val();
-		var u = allUnits.where({'_id': id});
-		selectedUnits.add(u);
-	});
-
-	selectedUnitsView.render();
-	$("#units").html(selectedUnitsView.$el);
-	
+$('.close').on("click", function(e) {
+	$(this).parent().parent().remove();
 });
 
 </script>

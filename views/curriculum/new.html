@@ -2,8 +2,19 @@
 
 {% block body %}
 <h1>New Subject</h1>
-<form class="form" id="newSubject" action="/curriculum/new" method="POST">
+<form class="form" id="newSubject" action="/curriculum" method="POST">
 	<button class="btn btn-success">Save</button>
+
+	<div class="form-group">
+		<label>What track is this for?</label>
+		<select required name="track" class="form-control" required>
+			<option disabled selected value="">Select One</option>
+			<option>Product Design</option>
+			<option>Engineering</option>
+			<option>Sales</option>
+			<option>Growth</option>
+		</select>
+	</div>
 
 	<div class="form-group">
 	    <label for="new_subject_name">Subject:</label>
@@ -15,40 +26,38 @@
 	    <textarea class="form-control" name="overview" id="overview" rows="3" placeholder="Summary of topic."></textarea>
 	</div>
 
+	<h3>Units</h3>
+	<div id="units" class="row"></div>
+	<a id="new_units" class="btn btn-success btn-lg" data-toggle="modal" data-target="#unitModal">
+		<span class="glyphicon glyphicon-plus"></span> Add Units
+	</a>
+
 	<div class="form-group">
 	    <label for="dependancies">Dependencies:</label>
 	    <select multiple class="form-control" name="dependencies" id="dependencies">
-		    {% for c in curriculum %}
+		    {% for c in data.curriculum %}
 				<option value="{{c._id}}">{{c.subject}}</option>
 			{% endfor %}
 		</select>
 	</div>
 
 	<h3>Resources</h3>
-	<div id="resources">
-		<button id="new_resource" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
-		<div class="form-group">
-			<button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-		    <input type="url" class="form-control form-inline" id="resource" placeholder="Link" name="resource">
-		    <input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text" name="resource-text">
-		</div>
-	</div>
+	<div id="resources" class="row"></div>
+	<a id="new_resource" class="btn btn-success btn-lg">
+		Add Resource
+	</a>
 
 	<h3>Examples</h3>
-	<div id="examples">
-		<button id="new_example" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
-		<div class="form-group">
-			<button id="delete_example" class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-		    <input type="url" class="form-control form-inline" id="example" placeholder="Link" name="example">
-		    <input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text" name="example-text">
-		</div>
-	</div>
+	<div id="examples" class="row"></div>
+	<a id="new_example" class="btn btn-success btn-lg">
+		Add Example
+	</a>
 
 	<h3>Related Assignments</h3>
 	<p>This just ties together assignments you might want to assign students if you do this topic.</p>
 	<div id="assignments">
 		<select multiple class="form-control" name="assignments">
-		{% for assignment in assignments %}
+		{% for assignment in data.assignments %}
 			<option value="{{assignment._id}}">{{assignment.title}}</option>
 		{% endfor %}
 		</select>
@@ -62,43 +71,229 @@
 	</div>
 </form>
 
+<!-- Modal -->
+<div class="modal fade" id="unitModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    	<div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        	<span aria-hidden="true">&times;</span>
+	        </button>
+	        <ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#modalUnitAddExisting" aria-controls="modalUnitAddExisting" role="tab" data-toggle="tab" id="existingUnitTab">
+						<h4 class="modal-title">Add Existing</h4>
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="#modalNewUnit" aria-controls="modalNewUnit" role="tab" data-toggle="tab" id="newUnitTab">
+						<h4 class="modal-title">New Unit</h4>
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="#modalOtherTracks" aria-controls="modalOtherTracks" role="tab" data-toggle="tab">
+						<h4 class="modal-title">Other Tracks' Units</h4>
+					</a>
+				</li>
+			</ul>
+        
+    	</div>
+		<div class="modal-body" id="modalUnitBody">
+		    <div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="modalUnitAddExisting">
+				</div>
+				<div role="tabpanel" class="tab-pane" id="modalNewUnit">
+					<form class="form" id="newUnit" action="/units/" method="POST">
+						<button class="btn btn-primary" id="unitSave" data-dismiss="modal">Add Unit</button>
+						{% include 'curriculum/units/new_form.html' %}
+					</form>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="modalOtherTracks">...</div>
+			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="addUnits" data-dismiss="modal">Add Unit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script class="hide" id="newResourceForm" type="xx-template/underscore">
+{% include "resources/new.html" %}
+</script>
+
+<script class="hide" id="resourceTemplate" type="xx-template/underscore">
+{% include "resources/show.html" %}
+</script>
+
+<script class="hide" id="newExampleForm" type="xx-template/underscore">
+{% include "examples/new.html" %}
+</script>
+
+<script class="hide" id="exampleTemplate" type="xx-template/underscore">
+{% include "examples/show.html" %}
+</script>
+
+<script class="hide" id="unitTemplate" type="xx-template/underscore">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h3 class="panel-title"><%=name %></h3>
+		</div>
+		<div class="panel-body">
+			<input name="units" type="hidden" value="<%=_id%>">
+			<div class="panel-body">
+				<p><%=overview.slice(0,50) %> ...</p>
+			</div>
+		</div>
+	</div>
+</script>
+
 {% endblock %}
 
 {% block javascript %}
+<script type="text/javascript" src="/javascripts/units.js"></script>
+<script type="text/javascript" src="/javascripts/resources.js"></script>
+<script type="text/javascript" src="/javascripts/examples.js"></script>
 <script type="text/javascript">
 
-	//Resources
-	$('#new_resource').on('click', function(e) {
-		e.preventDefault();
-		$('#resources').append('<div class="form-group" id="resource"><button class="delete_resource btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="url" class="form-control form-inline" id="resource" placeholder="Link" name="resource"><input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text" name="resource-text"></div>');
+//Resources
+var resources = new Resources();
 
-		$('.delete_resource').on('click', function(e) {
-			e.preventDefault();
-			$(this).parent().remove();
-		});
+$("#new_resource").on("click", function(e) {
+	var newForm = new NewResourceFormView({collection: resources});
+	newForm.render();
+	$("#resources").prepend(newForm.$el)
+});
+
+
+//Examples
+var examples = new Examples();
+
+$("#new_example").on("click", function(e) {
+	var newForm = new NewExampleFormView({collection: examples});
+	newForm.render();
+	$("#examples").prepend(newForm.$el)
+});
+
+
+//Seperate instance for the new unit form
+//Resources
+var unitResources = new Resources();
+
+$("#new_unit_resource").on("click", function(e) {
+	var newForm = new NewResourceFormView({collection: unitResources});
+	newForm.collectionLocation = "#unitResources";
+	newForm.render();
+	$("#unitResources").prepend(newForm.$el)
+});
+
+
+//Examples
+var unitExamples = new Examples();
+
+$("#new_unit_example").on("click", function(e) {
+	var newForm = new NewExampleFormView({collection: unitExamples});
+	newForm.collectionLocation = "#unitExamples";
+	newForm.render();
+	$("#unitExamples").prepend(newForm.$el)
+});
+
+
+
+//Instances
+var allUnits = new Units();
+var unitsView = new UnitCollectionView({collection: allUnits});
+allUnits.fetch({ 
+	success : function(err, results) {
+		allUnits.add(results);
+		unitsView.render();
+	},
+	error: function(err) {
+		console.log("oh no, ", err);
+	}
+});
+
+var selectedUnits = new Units();
+
+$("#unitModal").on('show.bs.modal', function(e) {
+	$("#modalUnitAddExisting").append(unitsView.$el);
+});
+
+
+
+$('#newUnitTab').click(function() {
+	$(".modal-footer").addClass("hide");
+});
+
+$('#existingUnitTab').click(function() {
+	$(".modal-footer").removeClass("hide");
+});
+
+//To save new units created in the units modal
+$("#unitSave").on("click", function(e) {
+	e.preventDefault();
+	var  form = {};
+	_.each($("#newUnit").serializeArray(), function(e, i, l) {
+		//#TODO This seems hacky and like I shouldn't have to do this.
+		//Probably just not finding a good form serializer
+		if (!form[e.name]) {
+			form[e.name] = e.value;
+		} else {
+			if (typeof form[e.name] === "Array") {
+				form[e.name].push(e.value);
+			} else {
+				form[e.name] = [form[e.name], e.value];
+			}
+		}
 	});
 
-	$('.delete_resource').on('click', function(e) {
-		e.preventDefault();
-		$(this).parent().remove();
+	console.log(form);
+
+	$.ajax({
+		data : JSON.stringify(form),
+		method: "POST",
+		url : "/units/",
+		headers: {          
+		     Accept : "application/json; charset=utf-8",         
+		    "Content-Type": "application/json; charset=utf-8"   
+		},
+		success : function(response) {
+			selectedUnits.add(response);
+			refreshSelectedUnits();
+			var unitsView = new UnitCollectionView({collection: allUnits});
+			allUnits.fetch({ 
+				success : function(err, results) {
+					allUnits.add(results);
+					unitsView.render();
+				},
+				error: function(err) {
+					console.log("oh no, ", err);
+				}
+			});
+			
+		}
+	});
+});
+
+$("#addUnits").on("click", refreshSelectedUnits);
+function refreshSelectedUnits () {
+	var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
+	
+	$("#modalUnitBody .panel-info input").each(function(i, e) {
+		var id = $(e).val();
+		var u = allUnits.where({'_id': id});
+		selectedUnits.add(u);
 	});
 
-	//Examples
-	$('#new_example').on('click', function(e) {
-		e.preventDefault();
-		$('#examples').append('<div class="form-group" id="example"><button class="delete_example btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button><input type="url" class="form-control form-inline" id="example" placeholder="Link" name="example"><input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text" name="example-text"></div>');
+	selectedUnitsView.render();
+	$("#units").html(selectedUnitsView.$el);
+	
+}
 
-		$('.delete_example').on('click', function(e) {
-			e.preventDefault();
-			$(this).parent().remove();
-		});
-	});
 
-	$('.delete_example').on('click', function(e) {
-		e.preventDefault();
-		$(this).parent().remove();
-	});
+
 
 </script>
-
 {% endblock %}

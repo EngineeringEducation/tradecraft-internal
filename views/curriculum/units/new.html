@@ -1,0 +1,49 @@
+{% extends "layouts/main.html" %}
+
+{% block body %}
+<h1>New Unit</h1>
+<form class="form" id="newUnit" action="/units/" method="POST">
+	<button class="btn btn-success" id="unitSave">Save</button>
+
+	<div class="form-group">
+	    <label for="new_subject_name">Subject:</label>
+	    <select class="form-control" required id="subject" placeholder="Choose One" autofocus name="subject">
+	    {% for c in data.curriculum %}
+				<option value="{{c._id}}">{{c.subject}}</option>
+			{% endfor %}
+	    </select>
+	</div>
+{% include "curriculum/units/new_form.html" %}
+</form>
+{% endblock %}
+
+{% block javascript %}
+
+
+
+
+<script type="text/javascript">
+
+//Seperate instance for the new unit form
+//Resources
+var unitResources = new Resources();
+
+$("#new_unit_resource").on("click", function(e) {
+	var newForm = new NewResourceFormView({collection: unitResources, collectionLocation: "#unitResources"});
+	newForm.render();
+	$("#unitResources").prepend(newForm.$el)
+});
+
+
+//Examples
+var unitExamples = new Examples();
+
+$("#new_unit_example").on("click", function(e) {
+	var newForm = new NewExampleFormView({collection: unitExamples, collectionLocation: "#unitExamples"});
+	newForm.render();
+	$("#unitExamples").prepend(newForm.$el)
+});
+
+</script>
+
+{% endblock %}

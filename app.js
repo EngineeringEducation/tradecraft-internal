@@ -33,7 +33,10 @@ var student = require('./routes/student');
 var announcements = require('./routes/announcements');
 var community = require('./routes/community');
 var curriculum = require('./routes/curriculum');
+var units = require('./routes/units');
 var assignments = require('./routes/assignments');
+var examples = require('./routes/examples');
+var resources = require('./routes/resources');
 
 
 //Include Models
@@ -171,7 +174,7 @@ app.use(function(req, res, next) {
         if (user) {
             User.findById(user._id, function(err, user) {
                 if (err) {throw err;}
-                console.log(user, " deserializeUser");
+                //console.log(user, " deserializeUser");
                 callback(null, user);
             });
         } else {
@@ -216,7 +219,10 @@ app.use('/student', student);
 app.use('/announcements', announcements);
 app.use('/community', community);
 app.use('/curriculum', curriculum);
+app.use('/units', units);
 app.use('/assignments', assignments);
+app.use('/examples', examples);
+app.use('/resources', resources);
 
 
 /// ### One-off, temporary, factor out later
