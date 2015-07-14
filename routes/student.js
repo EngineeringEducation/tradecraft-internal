@@ -2,20 +2,20 @@ var express = require("express");
 var moment = require("moment");
 var router = express.Router();
 
-var News = require("../models/news");
+var Announcements = require("../models/announcements");
 var User = require("../models/user");
 
 
 
 /* GET users homepage. */
 router.get("/", function(req, res, next) {
-	req.locals = {};
+	req.data = {};
 	var queryCount = 1;
 	var completedQueryCount = 0;
 
-	News.find({}).sort({created: -1}).exec(function(err, news) {
+	Announcements.find({}).sort({created: -1}).exec(function(err, announcements) {
 		if (err) {console.log(err);}
-		req.locals.news = news;
+		req.data.announcements = announcements;
 		completedQueryCount++;
 		done();
 	});
