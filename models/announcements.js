@@ -4,17 +4,17 @@ var mongoose = require('mongoose');
 //Related Models
 
 
-var newsSchema = mongoose.Schema({
+var announcementSchema = mongoose.Schema({
 	title : String,
 	body : String,
 	created : Date,
 	updated_at : Date,
-	author : { type:mongoose.Schema.ObjectId, ref:"User", childPath:"newsPosts" }
+	author : { type:mongoose.Schema.ObjectId, ref:"User", childPath:"announcements" }
 });
 
 
 // on every save, add the date
-newsSchema.pre('save', function(next) {
+announcementSchema.pre('save', function(next) {
   // get the current date
   var currentDate = new Date();
   
@@ -31,6 +31,6 @@ newsSchema.pre('save', function(next) {
 });
 
 //Model Definition
-var News = mongoose.model('News', newsSchema);
+var Announcement = mongoose.model('Announcement', announcementSchema);
 
-module.exports = News;
+module.exports = Announcement;
