@@ -25,6 +25,8 @@ var curriculumSchema = mongoose.Schema({
 
 curriculumSchema.plugin(relationship, { relationshipPathName:'assignments' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'units' });
+curriculumSchema.plugin(relationship, { relationshipPathName:'examples' });
+curriculumSchema.plugin(relationship, { relationshipPathName:'assignments' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'dependencies' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'dependencyOf' });
 
