@@ -12,8 +12,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/all', function(req, res, next) {
-	Curriculum.find({}, function(err, curriculum) {
-		res.render("curriculum/all_curriculum.html", { user : req.user, curriculum: curriculum });
+	req.data = {}
+	Curriculum.find({}).populate('units').exec(function(err, curriculum) {
+		req.data.curriculum = curriculum;
+		res.render("curriculum/all_curriculum.html", req);
 	});
 });
 
