@@ -1,15 +1,15 @@
-var Resource = Backbone.Model.extend({
+var Example = Backbone.Model.extend({
 	idAttribute: "_id",
-	url: "/resources"
+	url: "/examples"
 });
 
-var Resources = Backbone.Collection.extend({
-	url: "/resources",
-	model: Resource
+var Examples = Backbone.Collection.extend({
+	url: "/examples",
+	model: Example
 });
 
 
-var ResourceView = Backbone.View.extend({
+var ExampleView = Backbone.View.extend({
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-2"
@@ -19,66 +19,66 @@ var ResourceView = Backbone.View.extend({
 			$()
 		}
 	},
-	template: _.template($("#resourceTemplate").text()),
+	template: _.template($("#exampleTemplate").text()),
 	render: function() {
 		this.$el.html(this.template(this.model.attributes));
     	return this;
 	}
 });
 
-var NewResourceFormView = Backbone.View.extend({
+var NewExampleFormView = Backbone.View.extend({
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-3"
 	},
 	events: {
-		'click #saveResource' : function(e) {
+		'click #saveExample' : function(e) {
 			var self = this;
 			//Save it
-			this.model = new Resource();
+			this.model = new Example();
 			this.model.save({
-				link: $("#resource").val(),
-				linkText: $("#resource-text").val()
+				link: $("#example").val(),
+				linkText: $("#example-text").val()
 			}, 
 			{
 				success: function(model, response, options) {
 					//Put this in the collection passed in on creation, append the result
-					var resourceView = new ResourceCollectionView({collection: self.collection});
+					var exampleView = new ExampleCollectionView({collection: self.collection});
 					
 					self.collection.add(model);
 					
-					resourceView.render();
+					exampleView.render();
 					if (self.collectionLocation) {
-						$(self.collectionLocation).html(resourceView.$el);
+						$(self.collectionLocation).html(exampleView.$el);
 					} else {
-						$("#resources").html(resourceView.$el);
+						$("#examples").html(exampleView.$el);
 					}
 				}
 			});
 			
 		}
 	},
-	template: _.template($("#newResourceForm").text()),
+	template: _.template($("#newExampleForm").text()),
 	render: function() {
 		this.$el.html(this.template());
     	return this;
 	}
 });
 
-var ResourceCollectionView = Backbone.View.extend({
+var ExampleCollectionView = Backbone.View.extend({
 	tagname: 'div',
 	attributes : {
-		"class" : "resources"
+		"class" : "examples"
 	},
 	events: {
 		'click .close' : 'remove'
 	},
 	render : function() {
 		this.$el.empty();
-		this.collection.each(function(resource) {
-			var resourceView = new ResourceView({model: resource});
-			resourceView.render();
-			this.$el.append(resourceView.$el);
+		this.collection.each(function(example) {
+			var exampleView = new ExampleView({model: example});
+			exampleView.render();
+			this.$el.append(exampleView.$el);
 		}, this);
 	},
 	remove: function() {

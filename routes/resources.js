@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var Resource = require("../models/resources");
 
-router.post("/new", function(req, res, next) {
+router.post("/", function(req, res, next) {
 	var resource = new Resource({
 		link: req.body.link,
 		linkText: req.body.linkText

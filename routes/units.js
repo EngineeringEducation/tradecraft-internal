@@ -47,13 +47,30 @@ Create a new unit
 */
 router.post("/", function(req, res, next) {
 
-	console.log(req.body)
-	if (typeof req.body.examples !== 'Array') {
-		req.body.examples = [req.body.examples]
+	console.log("Request Body: ", req.body);
+
+	if (req.body.examples && !req.body.examples.push) {
+		req.body.examples = [req.body.examples];
 	}
 
-	if (typeof req.body.resources !== 'Array') {
-		req.body.resources = [req.body.resources]
+	if (req.body.resources && !req.body.resources.push) {
+		req.body.resources = [req.body.resources];
+	}
+
+	if (req.body.dependencies && !req.body.dependencies.push) {
+		req.body.dependencies = [req.body.dependencies];
+	}
+
+	if (req.body.dependencyOf && !req.body.dependencyOf.push) {
+		req.body.dependencyOf = [req.body.dependencyOf];
+	}
+
+	if (req.body.related && !req.body.related.push) {
+		req.body.related = [req.body.related];
+	}
+
+	if (req.body.assignments && !req.body.assignments.push) {
+		req.body.assignments = [req.body.assignments];
 	}
 
 	console.log("Form body: ",req.body);
@@ -75,8 +92,12 @@ router.post("/", function(req, res, next) {
 
 	unit.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
-		if (err) {throw err};
-		res.redirect("/units/"+ unit._id);
+		if (err) {console.log(err)};
+		if (req.accepts("html")) {
+			res.redirect("/units/"+ unit._id);
+		} else {
+			res.send(unit);
+		}
 	});
 
 });

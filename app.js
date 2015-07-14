@@ -174,7 +174,7 @@ app.use(function(req, res, next) {
         if (user) {
             User.findById(user._id, function(err, user) {
                 if (err) {throw err;}
-                console.log(user, " deserializeUser");
+                //console.log(user, " deserializeUser");
                 callback(null, user);
             });
         } else {

@@ -1,14 +1,4 @@
-<form class="form" id="newSubject" action="/units/" method="POST">
-	<button class="btn btn-success">Save</button>
 
-	<div class="form-group">
-	    <label for="new_subject_name">Subject:</label>
-	    <select class="form-control" required id="subject" placeholder="Choose One" autofocus name="subject">
-	    {% for c in data.curriculum %}
-				<option value="{{c._id}}">{{c.subject}}</option>
-			{% endfor %}
-	    </select>
-	</div>
 
 	<div class="form-group">
 	    <label for="new_subject_name">Unit Title:</label>
@@ -39,16 +29,16 @@
 	</div>
 
 	<h3>Resources</h3>
-	<div id="resources" class="row">
+	<div id="unitResources" class="row">
 	</div>
-	<a id="new_resource" class="btn btn-success btn-lg" data-toggle="modal" data-target="#resourceModal">
+	<a id="new_unit_resource" class="btn btn-success btn-lg">
 		Add Resource
 	</a>
 
 	<h3>Examples</h3>
-	<div id="examples" class="row">
+	<div id="unitExamples" class="row">
 	</div>
-	<a id="new_example" class="btn btn-success btn-lg" data-toggle="modal" data-target="#exampleModal">
+	<a id="new_unit_example" class="btn btn-success btn-lg">
 		Add Example
 	</a>
 
@@ -68,4 +58,3 @@
 	    <p>All learning is better with an awesome gif. Find or make one and it will appear to the side of the title.</p>
 	    <input type="url" class="form-control" id="gif_link" placeholder="Gif Link Here" name="gif">
 	</div>
-</form>

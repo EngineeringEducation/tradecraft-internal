@@ -1,6 +1,10 @@
-//Unit Model, Collection, View (factor out when done.)
+//Unit Model, Collection, View
 var Unit = Backbone.Model.extend({
 	idAttribute: "_id",
+	defaults: {
+		subject: "No Subject",
+		overview: "No Overview"
+	}
 });
 
 var Units = Backbone.Collection.extend({
@@ -41,12 +45,11 @@ var UnitCollectionView = Backbone.View.extend({
 			unitView.render();
 			this.$el.append(unitView.$el);
 		}, this);
-		//WHY DO I HAVE TO REDELEGATE EVENTS MANUALLY
-		this.delegateEvents(this.events);
 	},
-	remove: function() {
+	remove: function(e) {
 		//Find what one was clicked
-		var id = this.$("input").val();
+		//#TODO: Too brittle to do manual traversal, should use a selector, which I'll figure out later.
+		var id = $(e.target.parentNode.parentNode.parentNode.children[1].children[0]).val();
 		//Remove it from the collection
 		this.collection.remove(id);
 		//Rerender and replace

@@ -35,19 +35,39 @@ router.get("/new", function(req, res, next) {
 
 /* 
 Create a new curriculum
-	//#TODO Error Checking
-	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
+	//#TODO 
+	//Error Checking
+	//REST this up
 */
 router.post("/", function(req, res, next) {
 
 	console.log(req.body);
 
-	req.body.dependencies = _.toArray(req.body.dependencies);
-	req.body.dependencyOf = _.toArray(req.body.dependencyOf);
-	req.body.examples = _.toArray(req.body.examples);
-	req.body.resources = _.toArray(req.body.resources);
-	req.body.assignments = _.toArray(req.body.assignments);
-	req.body.units = _.toArray(req.body.units);
+	if (req.body.examples && !req.body.examples.push) {
+		req.body.examples = [req.body.examples];
+	}
+
+	if (req.body.resources && !req.body.resources.push) {
+		req.body.resources = [req.body.resources];
+	}
+
+	if (req.body.dependencies && !req.body.dependencies.push) {
+		req.body.dependencies = [req.body.dependencies];
+	}
+
+	if (req.body.dependencyOf && !req.body.dependencyOf.push) {
+		req.body.dependencyOf = [req.body.dependencyOf];
+	}
+
+	if (req.body.related && !req.body.related.push) {
+		req.body.related = [req.body.related];
+	}
+
+	if (req.body.assignments && !req.body.assignments.push) {
+		req.body.assignments = [req.body.assignments];
+	}
+
+	console.log(req.body)
 
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
@@ -93,6 +113,7 @@ router.get('/:id', function(req, res, next) {
 	.exec(function(err, curricula) {
 	if (err) {console.log(err);}
 	req.data.curricula = curricula;
+	console.log(curricula);
 	Curriculum.find({}).exec(function(err, curriculum) {
 			if (err) {console.log(err);}
 			req.data.curriculum = curriculum;

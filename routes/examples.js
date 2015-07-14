@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var Example = require("../models/examples");
 
-router.post("/new", function(req, res, next) {
+router.post("/", function(req, res, next) {
 	var example = new Example({
 		link: req.body.link,
 		linkText: req.body.linkText

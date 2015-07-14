@@ -2,54 +2,19 @@
 
 {% block body %}
 <h1>New Unit</h1>
+<form class="form" id="newUnit" action="/units/" method="POST">
+	<button class="btn btn-success" id="unitSave">Save</button>
 
+	<div class="form-group">
+	    <label for="new_subject_name">Subject:</label>
+	    <select class="form-control" required id="subject" placeholder="Choose One" autofocus name="subject">
+	    {% for c in data.curriculum %}
+				<option value="{{c._id}}">{{c.subject}}</option>
+			{% endfor %}
+	    </select>
+	</div>
 {% include "curriculum/units/new_form.html" %}
-
-
-<!-- Modal -->
-<div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="modalResourceTitle">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalResourceTitle">New Resource</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group form-inline">
-		    <input type="url" class="form-control form-inline" id="resource" placeholder="Link" >
-		    <input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text">
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveResource" data-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modalExampleTitle">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalExampleTitle">New Example</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group form-inline">
-		    <input type="url" class="form-control form-inline" id="example" placeholder="Link">
-		    <input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text">
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveExample" data-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+</form>
 {% endblock %}
 
 {% block javascript %}
@@ -58,81 +23,26 @@
 
 
 <script type="text/javascript">
+
+//Seperate instance for the new unit form
 //Resources
-$("#saveResource").on("click", function(e) {
-	var form = {
-		link: $("#resource").val(),
-		linkText: $("#resource-text").val()
-	}
-	$.ajax({
-		method: "POST",
-		url: "/resources/new",
-		data: form,
-		success: function(data) {
-			$("#resources").append(newResource(data));
+var unitResources = new Resources();
 
-		}
-	});
+$("#new_unit_resource").on("click", function(e) {
+	var newForm = new NewResourceFormView({collection: unitResources, collectionLocation: "#unitResources"});
+	newForm.render();
+	$("#unitResources").prepend(newForm.$el)
 });
-
-$("#resourceModal").on("hidden.bs.modal", function(e) {
-	$("#resource").val("");
-	$("#resource-text").val("");
-});
-
-function newResource (data) {
-	var div = $('<div class="col-md-2"></div>');
-	var panel = $('<div class="panel panel-info"></div>');
-	var closeButton = $('<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-	var panelBody = $('<div class="panel-body">');
-	var input = $('<input name="resources" type="hidden" value="'+data._id+'">');
-	var label = $('<a href="'+data.link+'">'+ data.linkText +'</a>');
-	panelBody.append(closeButton);
-	panelBody.append(input);
-	panelBody.append(label);
-	panel.append(panelBody);
-	div.append(panel)
-	return div;
-}
 
 
 //Examples
-$("#saveExample").on("click", function(e) {
-	var form = {
-		link: $("#example").val(),
-		linkText: $("#example-text").val()
-	}
-	$.ajax({
-		method: "POST",
-		url: "/examples/new",
-		data: form,
-		success: function(data) {
-			$("#examples").append(newExample(data));
+var unitExamples = new Examples();
 
-		}
-	});
+$("#new_unit_example").on("click", function(e) {
+	var newForm = new NewExampleFormView({collection: unitExamples, collectionLocation: "#unitExamples"});
+	newForm.render();
+	$("#unitExamples").prepend(newForm.$el)
 });
-
-$("#exampleModal").on("hidden.bs.modal", function(e) {
-	$("#example").val("");
-	$("#example-text").val("");
-});
-
-function newExample (data) {
-	var div = $('<div class="col-md-2"></div>');
-	var panel = $('<div class="panel panel-info"></div>');
-	var closeButton = $('<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-	var panelBody = $('<div class="panel-body">');
-	var input = $('<input name="examples" type="hidden" value="'+data._id+'">');
-	var label = $('<a href="'+data.link+'">'+ data.linkText +'</a>');
-	panelBody.append(closeButton);
-	panelBody.append(input);
-	panelBody.append(label);
-	panel.append(panelBody);
-	div.append(panel)
-	return div;
-}
-
 
 </script>
 
