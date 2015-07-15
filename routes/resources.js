@@ -17,7 +17,6 @@ router.post("/", function(req, res, next) {
 
 
 router.get('/:id', function(req, res, next) {
-	//Edit mode
 	Resource.findById(req.params.id, function(err, resource) {
 		if (err) {console.log(err)};
 		res.send(resource);

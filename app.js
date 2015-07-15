@@ -37,6 +37,7 @@ var units = require('./routes/units');
 var assignments = require('./routes/assignments');
 var examples = require('./routes/examples');
 var resources = require('./routes/resources');
+var appeals = require('./routes/appeals');
 
 
 //Include Models
@@ -223,6 +224,7 @@ app.use('/units', units);
 app.use('/assignments', assignments);
 app.use('/examples', examples);
 app.use('/resources', resources);
+app.use('/appeals', appeals);
 
 
 /// ### One-off, temporary, factor out later
