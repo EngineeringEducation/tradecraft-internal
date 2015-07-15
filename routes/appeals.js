@@ -9,7 +9,8 @@ var Appeal = require("../models/appeals");
 
 router.get("/new", function(req, res, next) {
 	var appeal = new Appeal({
-		author:req.user._id
+		author:req.user._id,
+		status:'NEW'
 	});
 	appeal.save(function(err, appeal) {
 		if (err) {console.log(err)};
@@ -18,16 +19,30 @@ router.get("/new", function(req, res, next) {
 });
 
 router.get("/", function(req, res, next) {
-	Appeal.find({})
+	Appeal.find({status:'NEW'})
 	.populate("author")
 	.exec(function(err, appeals) {
-		res.send(appeals);
+		if (err) {
+			console.log(err);
+		} else {
+			res.send(appeals);
+		}
 	});
 });
 
 
 router.get('/:id', function(req, res, next) {
 	Appeal.findById(req.params.id, function(err, appeal) {
+		if (err) {console.log(err)};
+		res.send(appeal);
+	});
+});
+
+
+router.put('/:id', function(req, res, next) {
+	console.log("body:", req.body);
+	// TODO: validate request body
+	Appeal.findOneAndUpdate({_id:req.params.id}, req.body, {new:true}, function(err, appeal) {
 		if (err) {console.log(err)};
 		res.send(appeal);
 	});

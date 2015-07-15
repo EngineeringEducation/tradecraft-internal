@@ -6,7 +6,8 @@ var relationship = require('mongoose-relationship');
 
 //Schema Definition
 var appealSchema = mongoose.Schema({
-    author : {type:mongoose.Schema.ObjectId, ref:"User", childPath:"appeals"}
+    author:{type:mongoose.Schema.ObjectId, ref:"User", childPath:"appeals"},
+    status:String
 });
 
 appealSchema.plugin(relationship, {relationshipPathName:'author'});
