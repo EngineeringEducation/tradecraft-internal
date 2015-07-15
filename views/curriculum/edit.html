@@ -25,7 +25,7 @@
 	    <label for="dependancies">Dependencies:</label>
 	    <select multiple class="form-control" name="dependencies" id="dependencies">
 		    {% for c in data.curriculum %}
-				<option value="{{c.id}}">{{c.subject}}</option>
+				<option value="optDependency_{{c.id}}">{{c.subject}}</option>
 			{% endfor %}
 		</select>
 	</div>
@@ -49,7 +49,7 @@
 	<div id="assignments">
 		<select multiple class="form-control" name="assignments" >
 			{% for assignment in data.assignments %}
-				<option value="{{assignment._id}}" {% if data.curricula.assignments.indexOf(assignment._id) > -1 %} selected="true" {%endif%}>{{assignment.title}}</option>
+				<option value="optAssignment_{{assignment._id}}" {% if data.curricula.assignments.indexOf(assignment._id) > -1 %} selected="true" {%endif%}>{{assignment.title}}</option>
 			{% endfor %}
 		</select>
 	</div>
@@ -64,59 +64,48 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="modalResourceTitle">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalResourceTitle">New Resource</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group form-inline">
-		    <input type="url" class="form-control form-inline" id="resource" placeholder="Link" >
-		    <input type="text" class="form-control form-inline" id="resource-text" placeholder="Link Text">
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveResource" data-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modalExampleTitle">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalExampleTitle">New Example</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group form-inline">
-		    <input type="url" class="form-control form-inline" id="example" placeholder="Link">
-		    <input type="text" class="form-control form-inline" id="example-text" placeholder="Link Text">
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveExample" data-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="modalUnitTitle">
+<div class="modal fade" id="unitModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalUnitTitle">Add Unit</h4>
-      </div>
-      <div class="modal-body" id="modalUnitBody">
+    	<div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        	<span aria-hidden="true">&times;</span>
+	        </button>
+	        <ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#modalUnitAddExisting" aria-controls="modalUnitAddExisting" role="tab" data-toggle="tab" id="existingUnitTab">
+						<h4 class="modal-title">Add Existing</h4>
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="#modalNewUnit" aria-controls="modalNewUnit" role="tab" data-toggle="tab" id="newUnitTab">
+						<h4 class="modal-title">New Unit</h4>
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="#modalOtherTracks" aria-controls="modalOtherTracks" role="tab" data-toggle="tab">
+						<h4 class="modal-title">Other Tracks' Units</h4>
+					</a>
+				</li>
+			</ul>
+        
+    	</div>
+		<div class="modal-body" id="modalUnitBody">
+		    <div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="modalUnitAddExisting">
+				</div>
+				<div role="tabpanel" class="tab-pane" id="modalNewUnit">
+					<form class="form" id="newUnit" action="/units/" method="POST">
+						<button class="btn btn-primary" id="unitSave" data-dismiss="modal">Add Unit</button>
+						{% include 'curriculum/units/new_form.html' %}
+					</form>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="modalOtherTracks">...</div>
+			</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -125,6 +114,22 @@
     </div>
   </div>
 </div>
+
+<script class="hide" id="newResourceForm" type="xx-template/underscore">
+{% include "resources/new.html" %}
+</script>
+
+<script class="hide" id="resourceTemplate" type="xx-template/underscore">
+{% include "resources/show.html" %}
+</script>
+
+<script class="hide" id="newExampleForm" type="xx-template/underscore">
+{% include "examples/new.html" %}
+</script>
+
+<script class="hide" id="exampleTemplate" type="xx-template/underscore">
+{% include "examples/show.html" %}
+</script>
 
 <script class="hide" id="unitTemplate" type="xx-template/underscore">
 	<div class="panel panel-default">
@@ -144,16 +149,68 @@
 
 {% block javascript %}
 <script type="text/javascript" src="/javascripts/units.js"></script>
+<script type="text/javascript" src="/javascripts/resources.js"></script>
+<script type="text/javascript" src="/javascripts/examples.js"></script>
 <script type="text/javascript">
+
+
+//Resources
+var resources = new Resources();
+
+$("#new_resource").on("click", function(e) {
+	var newForm = new NewResourceFormView({collection: resources});
+	newForm.render();
+	$("#resources").prepend(newForm.$el)
+});
+
+
+//Examples
+var examples = new Examples();
+
+$("#new_example").on("click", function(e) {
+	var newForm = new NewExampleFormView({collection: examples});
+	newForm.render();
+	$("#examples").prepend(newForm.$el)
+});
+
+
+//Seperate instance for the new unit form
+//Resources
+var unitResources = new Resources();
+
+$("#new_unit_resource").on("click", function(e) {
+	var newForm = new NewResourceFormView({collection: unitResources});
+	newForm.collectionLocation = "#unitResources";
+	newForm.render();
+	$("#unitResources").prepend(newForm.$el);
+});
+
+
+//Examples
+var unitExamples = new Examples();
+
+$("#new_unit_example").on("click", function(e) {
+	var newForm = new NewExampleFormView({collection: unitExamples});
+	newForm.collectionLocation = "#unitExamples";
+	newForm.render();
+	$("#unitExamples").prepend(newForm.$el);
+});
+
 //Dynamically populate resources and examples
 
 {% for r in data.curricula.resources %}
-	$("#resources").append(newResource({"_id": "{{r._id}}", link:"{{r.link}}", "linkText": "{{r.linkText}}"}));
+	resources.add(new Resource({"_id": "{{r._id}}", link:"{{r.link}}", "linkText": "{{r.linkText}}"}));
 {% endfor %}
+var resourceCollectionView = new ResourceCollectionView({collection: resources});
+resourceCollectionView.render();
+$('#resources').append(resourceCollectionView.$el);
 
 {% for e in data.curricula.examples %}
-	$("#examples").append(newExample({"_id": "{{e._id}}", link:"{{e.link}}", "linkText": "{{e.linkText}}"}));
+	examples.append(new Example({"_id": "{{e._id}}", link:"{{e.link}}", "linkText": "{{e.linkText}}"}));
 {% endfor %}
+var exampleCollectionView = new ExampleCollectionView({collection: examples});
+exampleCollectionView.render();
+$('#examples').append(exampleCollectionView.$el);
 
 {% for a in data.curricula.assignments %}
 	$("#optAssignment_{{a._id}}").attr("selected", true)
@@ -162,83 +219,6 @@
 {% for a in data.curricula.dependencies %}
 	$("#optDependency_{{a._id}}").attr("selected", true)
 {% endfor %}
-
-
-//Resources
-$("#saveResource").on("click", function(e) {
-	var form = {
-		link: $("#resource").val(),
-		linkText: $("#resource-text").val()
-	}
-	$.ajax({
-		method: "POST",
-		url: "/resources/new",
-		data: form,
-		success: function(data) {
-			$("#resources").append(newResource(data));
-
-		}
-	});
-});
-
-$("#resourceModal").on("hidden.bs.modal", function(e) {
-	$("#resource").val("");
-	$("#resource-text").val("");
-});
-
-function newResource (data) {
-	var div = $('<div class="col-md-2"></div>');
-	var panel = $('<div class="panel panel-info"></div>');
-	var closeButton = $('<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-	var panelBody = $('<div class="panel-body">');
-	var input = $('<input name="resources" type="hidden" value="'+data._id+'">');
-	var label = $('<a href="'+data.link+'">'+ data.linkText +'</a>');
-	panelBody.append(closeButton);
-	panelBody.append(input);
-	panelBody.append(label);
-	panel.append(panelBody);
-	div.append(panel)
-	return div;
-}
-
-
-//Examples
-$("#saveExample").on("click", function(e) {
-	var form = {
-		link: $("#example").val(),
-		linkText: $("#example-text").val()
-	}
-	$.ajax({
-		method: "POST",
-		url: "/examples/new",
-		data: form,
-		success: function(data) {
-			$("#examples").append(newExample(data));
-
-		}
-	});
-});
-
-$("#exampleModal").on("hidden.bs.modal", function(e) {
-	$("#example").val("");
-	$("#example-text").val("");
-});
-
-function newExample (data) {
-	var div = $('<div class="col-md-2"></div>');
-	var panel = $('<div class="panel panel-info"></div>');
-	var closeButton = $('<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-	var panelBody = $('<div class="panel-body">');
-	var input = $('<input name="examples" type="hidden" value="'+data._id+'">');
-	var label = $('<a href="'+data.link+'">'+ data.linkText +'</a>');
-	panelBody.append(closeButton);
-	panelBody.append(input);
-	panelBody.append(label);
-	panel.append(panelBody);
-	div.append(panel)
-	return div;
-}
-
 
 //Instances
 var allUnits = new Units();
@@ -254,7 +234,10 @@ allUnits.fetch({
 });
 
 //On the edit page, we'll need add a "selectedUnits" thing that is populated server-side
-var selectedUnits = new Units({{data.curricula.units}});
+var selectedUnits = new Units();
+{% for u in data.curricula.units %}
+	selectedUnits.add({name: "{{u.name}}", _id: "{{u._id}}", overview: "{{u.overview}}"});
+{% endfor %}
 var selectedUnitsView = new UnitCollectionView({collection: selectedUnits});
 selectedUnitsView.render();
 $("#units").html(selectedUnitsView.$el);

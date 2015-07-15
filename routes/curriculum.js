@@ -20,7 +20,7 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
-	req.data = {}
+	req.data = {};
 	Curriculum.find({published: true}).exec(function(err, curriculum) {
 		if (err) {console.log(err)};
 		req.data.curriculum = curriculum;
@@ -30,7 +30,7 @@ router.get("/new", function(req, res, next) {
 			Units.find({}).exec(function (err, units) {
 				req.data.units = units;
 				res.render("curriculum/new.html", req);
-			})
+			});
 		});
 	});
 });
