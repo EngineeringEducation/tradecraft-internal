@@ -16,7 +16,7 @@ appealSchema.plugin(relationship, {relationshipPathName:'author'});
 appealSchema.pre('save', function(next) {
   // get the current date
   var currentDate = new Date();
-  
+
   // change the updated_at field to current date
   this.updated_at = currentDate;
 

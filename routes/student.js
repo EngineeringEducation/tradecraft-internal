@@ -20,8 +20,8 @@ router.get("/", function(req, res, next) {
 		done();
 	});
 
-	
-	
+
+
 
 	function done () {
 		if (queryCount === completedQueryCount) {
@@ -59,7 +59,7 @@ router.post("/onboarding", function(req, res) {
 			res.redirect("/student/profile");
 		});
 	});
-	
+
 });
 
 router.get("/profile", function (req, res) {

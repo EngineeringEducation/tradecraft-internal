@@ -13,7 +13,7 @@ router.get("/new", function(req, res, next) {
 		status:'NEW'
 	});
 	appeal.save(function(err, appeal) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		res.send(appeal);
 	});
 });
@@ -33,7 +33,7 @@ router.get("/", function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
 	Appeal.findById(req.params.id, function(err, appeal) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		res.send(appeal);
 	});
 });
@@ -43,7 +43,7 @@ router.put('/:id', function(req, res, next) {
 	console.log("body:", req.body);
 	// TODO: validate request body
 	Appeal.findOneAndUpdate({_id:req.params.id}, req.body, {new:true}, function(err, appeal) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		res.send(appeal);
 	});
 });

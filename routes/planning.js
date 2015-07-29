@@ -19,7 +19,7 @@ router.get("/", function(req, res) {
 		res.render("planning/planning.html", req);
 	});
 
-	
+
 });
 
 module.exports = router;

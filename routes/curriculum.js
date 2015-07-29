@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var _ = require('underscore')
+var _ = require('underscore');
 
 var Curriculum = require('../models/curriculum');
 var Assignment = require('../models/assignments');
@@ -18,24 +18,24 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
-	req.data = {}
+	req.data = {};
 	Curriculum.find({published: true}).exec(function(err, curriculum) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
-			if (err) {console.log(err)};
+			if (err) {console.log(err);}
 			req.data.assignments = assignments;
 			Units.find({}).exec(function (err, units) {
 				req.data.units = units;
 				res.render("curriculum/new.html", req);
-			})
+			});
 		});
 	});
 });
 
-/* 
+/*
 Create a new curriculum
-	//#TODO 
+	//#TODO
 	//Error Checking
 	//REST this up
 */
@@ -67,7 +67,7 @@ router.post("/", function(req, res, next) {
 		req.body.assignments = [req.body.assignments];
 	}
 
-	console.log(req.body)
+	console.log(req.body);
 
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
@@ -76,10 +76,10 @@ router.post("/", function(req, res, next) {
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
 		dependencyOf : req.body.dependencyOf,
-		assignments : req.body.assignments, 
-		resources : req.body.resources, 
-		examples : req.body.examples, 
-		units : req.body.units,  
+		assignments : req.body.assignments,
+		resources : req.body.resources,
+		examples : req.body.examples,
+		units : req.body.units,
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
@@ -95,11 +95,11 @@ router.post("/", function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
 	req.data = {};
-	if (req.query.publish == "true") {
+	if (req.query.publish === "true") {
 		Curriculum.findByIdAndUpdate(req.params.id, {published: true});
 		res.redirect("/curriculum/" + req.params.id);
 	}
-	if (req.query.publish == "false") {
+	if (req.query.publish === "false") {
 		Curriculum.findByIdAndUpdate(req.params.id, {published: false});
 		res.redirect("/curriculum/" + req.params.id);
 	}
@@ -130,9 +130,9 @@ router.get('/:id', function(req, res, next) {
 	});
 });
 
-/* 
+/*
 Edit existing curriculum
-To conform to good REST principles tho this should be a PUT but eh, html forms. What can ya do. 
+To conform to good REST principles tho this should be a PUT but eh, html forms. What can ya do.
 Probably make this respond to PUT as well.
 */
 router.post('/:id', function(req, res, next) {
@@ -140,36 +140,36 @@ router.post('/:id', function(req, res, next) {
 	if (typeof req.body.dependencies !== "String") {
 		req.body.dependencies = _.toArray(req.body.dependencies);
 	}
-		
+
 	if (typeof req.body.dependencyOf !== "String") {
 		req.body.dependencyOf = _.toArray(req.body.dependencyOf);
 	}
-		
+
 	if (typeof req.body.examples !== "String") {
 		req.body.examples = _.toArray(req.body.examples);
 	}
-		
+
 	if (typeof req.body.resources !== "String") {
 		req.body.resources = _.toArray(req.body.resources);
 	}
-		
+
 	if (typeof req.body.assignments !== "String") {
 		req.body.assignments = _.toArray(req.body.assignments);
 	}
-		
+
 	if (typeof req.body.units !== "String") {
 		req.body.units = _.toArray(req.body.units);
 	}
-	
+
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
 		dependencyOf : req.body.dependencyOf,
-		assignments : req.body.assignments, 
-		resources : req.body.resources, 
-		examples : req.body.examples, 
-		units : req.body.units, 
+		assignments : req.body.assignments,
+		resources : req.body.resources,
+		examples : req.body.examples,
+		units : req.body.units,
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};

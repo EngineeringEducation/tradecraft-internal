@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 	if (req.accepts(['json', 'text'])) {
 		Unit.find({}, function(err, units) {
 			res.send(units);
-		})
+		});
 	} else {
   		res.render("unit.html", req);
 	}
@@ -27,20 +27,20 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
-	req.data = {}
+	req.data = {};
 	Curriculum.find().exec(function(err, curriculum) {
 		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
 			req.data.assignments = assignments;
 			Unit.find({}).exec(function(err, units) {
-				req.data.units = units
+				req.data.units = units;
 				res.render("curriculum/units/new.html", req);
 			});
 		});
 	});
 });
 
-/* 
+/*
 Create a new unit
 	//#TODO Error Checking
 	//If we fail out of error checking, kick them to a page where they can resubmit (so send form values back down)
@@ -80,19 +80,19 @@ router.post("/", function(req, res, next) {
 		name : req.body.name,
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
-		assignments : req.body.assignments, 
-		resources : req.body.resources, 
-		related : req.body.related, 
-		examples : req.body.examples, 
+		assignments : req.body.assignments,
+		resources : req.body.resources,
+		related : req.body.related,
+		examples : req.body.examples,
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
 
-	
+
 
 	unit.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		if (req.accepts("html")) {
 			res.redirect("/units/"+ unit._id);
 		} else {
@@ -105,11 +105,11 @@ router.post("/", function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
 	req.data = {};
-	if (req.query.publish == "true") {
+	if (req.query.publish === "true") {
 		Unit.findByIdAndUpdate(req.params.id, {published: true});
 		res.redirect("/units/" + req.params.id);
 	}
-	if (req.query.publish == "false") {
+	if (req.query.publish === "false") {
 		Unit.findByIdAndUpdate(req.params.id, {published: false});
 		res.redirect("/units/" + req.params.id);
 	}
@@ -145,9 +145,9 @@ router.get('/:id', function(req, res, next) {
 		});
 	});
 
-/* 
+/*
 Edit existing unit
-To conform to good REST principles tho this should be a PUT only but eh, html forms. What can ya do. 
+To conform to good REST principles tho this should be a PUT only but eh, html forms. What can ya do.
 */
 router.post('/:id', saveExistingUnit);
 router.put('/:id', saveExistingUnit);
@@ -160,10 +160,10 @@ function saveExistingUnit(req, res, next) {
 		name : req.body.name,
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
-		assignments : req.body.assignments, 
-		resources : req.body.resources, 
-		related : req.body.related, 
-		examples : req.body.examples, 
+		assignments : req.body.assignments,
+		resources : req.body.resources,
+		related : req.body.related,
+		examples : req.body.examples,
 		published: true, // hard coded for now
 		gif: req.body.gif
 	};
@@ -171,6 +171,6 @@ function saveExistingUnit(req, res, next) {
 	Unit.findByIdAndUpdate(req.params.id, unit, function(err) {
 		res.redirect("/units/" + req.params.id);
 	});
-};
+}
 
 module.exports = router;

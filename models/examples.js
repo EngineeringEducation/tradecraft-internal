@@ -14,7 +14,7 @@ exampleSchema.pre('save', function(next) {
   console.log(this);
   // get the current date
   var currentDate = new Date();
-  
+
   // change the updated_at field to current date
   this.updated_at = currentDate;
 

@@ -10,9 +10,9 @@ var student = function (config) {
 	if (!this.db) {
 		console.log("Oh, gotta get a DB on that sucker.");
 	}
-	
+
 	this.community = new Community();
-}
+};
 
 
 //This function is fucking giant. Also it makes student tightly coupled with like everything else.
@@ -22,13 +22,13 @@ student.prototype.getToday = function(cb) {
 		console.log("connected yay");
 		var db = this.db;
 	} else {
-		console.log("boo no db");	
+		console.log("boo no db");
 	}
 	if (this.user) {
 		console.log("got a user");
 		var user = this.user;
 	} else {
-		console.log("boo no user");	
+		console.log("boo no user");
 	}
 	var queryCount = 0;
 	var params = {
@@ -39,9 +39,9 @@ student.prototype.getToday = function(cb) {
 		feedback : [
 		]
 
-	}
+	};
 
-	this.community.getTopSubmissionsWrittenByMembers(db, user, 1, function(err, submissions) {
+	this.community.getTopSubmissionsWrittenByMembers(this.db, this.user, 1, function(err, submissions) {
 		if (err) {
 			console.log(err);
 			return;
@@ -53,7 +53,7 @@ student.prototype.getToday = function(cb) {
 
 
 	//Get student's assignments
-	db.query("SELECT a.title, a.short_notes AS notes, sa.due_date, sa.status FROM assignments a JOIN students_assignments sa ON sa.assignment_id = a.id;", function(err, results) {
+	this.db.query("SELECT a.title, a.short_notes AS notes, sa.due_date, sa.status FROM assignments a JOIN students_assignments sa ON sa.assignment_id = a.id;", function(err, results) {
 		if (err) {
 			console.log(err);
 			return;
@@ -61,14 +61,14 @@ student.prototype.getToday = function(cb) {
 		queryCount++;
 		//pretty-fy the dates using moment
 		results.rows.forEach(function(assignment) {
-			assignment.due_date = moment(assignment.due_date).fromNow()
+			assignment.due_date = moment(assignment.due_date).fromNow();
 		});
 		params.assignments = results.rows;
 		send(params);
 	});
 
 	//Get student's assignment materials
-	db.query("SELECT am.link, am.description AS title, am.subjects FROM assignments_materials am JOIN students_assignments sa ON sa.assignment_id = am.assignment_id;", function(err, results) {
+	this.db.query("SELECT am.link, am.description AS title, am.subjects FROM assignments_materials am JOIN students_assignments sa ON sa.assignment_id = am.assignment_id;", function(err, results) {
 		if (err) {
 			console.log(err);
 			return;
@@ -80,10 +80,10 @@ student.prototype.getToday = function(cb) {
 		});
 		params.assignments_materials = results.rows;
 		send(params);
-	})
+	});
 
 	//Get all the news
-	news.getNews(db, function(err, results) {
+	news.getNews(this.db, function(err, results) {
 		if (err) {
 			console.log("Error", err);
 			return;
@@ -95,10 +95,10 @@ student.prototype.getToday = function(cb) {
 
 	//Send once all the queries are finished running
 	function send (params) {
-		if (queryCount == 4) {
+		if (queryCount === 4) {
 			console.log("Got all queries");
 			cb(params);
 		}
 	}
-}
+};
 module.exports = student;
