@@ -12,9 +12,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/all', function(req, res, next) {
-	Curriculum.find({}, function(err, curriculum) {
-		res.render("curriculum/all_curriculum.html", { user : req.user, curriculum: curriculum });
-	});
+  Curriculum.find({})
+  .populate("units")
+  .exec(function(err, curriculum) {
+    res.render("curriculum/all_curriculum.html", {user:req.user, curriculum:curriculum});
+  });
 });
 
 router.get("/new", function(req, res, next) {
@@ -31,6 +33,21 @@ router.get("/new", function(req, res, next) {
 			});
 		});
 	});
+});
+
+router.get("/scheduler", function(req, res, next) {
+  Curriculum.find({published: true})
+  .populate("units")
+  .populate("units.assignments")
+  .populate("units.dependencies")
+  .populate("units.examples")
+  .populate("units.resources")
+  .exec(function(err, curriculum) {
+    // TODO: Proper error handling
+    if (err) {console.log(err);}
+    console.log(curriculum);
+    res.render("curriculum/scheduler.html", {user:req.user, curriculum:curriculum});
+  });
 });
 
 /*

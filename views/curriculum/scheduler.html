@@ -1,0 +1,183 @@
+<!-- This page helps you create correspondences between blocks of future curriculum time and intended curriculum units. -->
+
+{% extends "layouts/main.html" %}
+
+{% block body %}
+<div class="row">
+	<div class="col-xs-12">
+
+		<div class="page-header">
+			<h1 class="inline-block">Schedule You A Unit</h1>
+			<a href="/curriculum/new" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i> New Subject</a>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-8">
+
+		<div class="input-group">
+			<input type="text" class="form-control" placeholder="Search for...">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+			</span>
+		</div>
+
+		<hr>
+	{% for c in curriculum %}
+		<div class="subject">
+			<h3>Subject: {{c.subject}} <a class="pull-right glyphicon glyphicon-collapse-down" role="button" data-toggle="collapse" href="#curriculum-units-{{c._id}}" aria-expanded="false" aria-controls="curriculum-units-{{c._id}}"></a></h3>
+
+			<p>
+				<!-- TODO: Seems like we want 'rich text' here? By processing Markdown, maybe? -->
+				{{c.overview}}
+			</p>
+
+			<div class="collapse" id="curriculum-units-{{c._id}}">
+
+				<!-- List all individual curriculum units here -->
+				{% for u in c.units %}
+				<div class="panel panel-default">
+					<div class="panel-heading draggable">
+						<div class="row">
+
+							<div class="col-xs-5 col-sm-7">
+								<!-- TODO: Ignored Zac's 'initialism' span class here for the 'HTML' example? -->
+								<h3 class="panel-title"><strong>Unit: </strong>{{u.name}}</h3>
+							</div>
+
+							<div class="col-xs-7 col-sm-5 no-padding-left">
+								<div class="panel-controls">
+									<a class="pull-right glyphicon glyphicon-collapse-up vr-left" role="button" data-toggle="collapse" href="#unit-{{u._id}}" aria-expanded="false" aria-controls="unit-{{u._id}}"></a>
+
+									<a href="#" class="glyphicon glyphicon-cog pull-right vr-left"></a>
+
+									<div class="points points-3 pull-right" title="2 points">
+										<i class="glyphicon glyphicon-flash"></i>
+										<i class="glyphicon glyphicon-flash"></i>
+										<i class="glyphicon glyphicon-flash"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body collapse" id="unit-{{u._id}}">
+						<p>Things about stuff.</p>
+
+						<ul class="list-group">
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-4 small">
+										Schedule:
+									</div>
+									<div class="col-xs-8 text-right">
+										<select>
+											<option value="1">Monday 6/23</option>
+											<option value="2">Monday 6/30</option>
+											<option value="3">Monday 7/7</option>
+										</select>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-4 small">
+										Repeat:
+									</div>
+									<div class="col-xs-8 text-right">
+										<select>
+											<option value="1">Every week</option>
+											<option value="2">Every 2 weeks</option>
+											<option value="3">Every 3 weeks</option>
+											<option value="4" default="default">Every 4 weeks</option>
+											<option value="5">Every 8 weeks</option>
+										</select>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-4 small">
+										Prerequisites:
+									</div>
+									<div class="col-xs-8 text-right">
+										<div class="tag-list">
+											<a href="#" class="label label-success">Unit 1</a>
+											<a href="#" class="label label-success">Unit 2</a>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-4 small">
+										Assignment:
+									</div>
+									<div class="col-xs-8 text-right">
+										<ul class="link-list">
+											<li><a href="#">Assignment time!</a></li>
+											<li><a href="#">Assignment time 2!</a></li>
+										</ul>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-4 small">
+										Examples:
+									</div>
+									<div class="col-xs-8 text-right">
+										<ul class="link-list">
+											<li><a href="#">Example 1!</a></li>
+											<li><a href="#">Example 2!</a></li>
+										</ul>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-4 small">
+										Resources:
+									</div>
+									<div class="col-xs-8 text-right">
+										<ul class="link-list">
+											<li><a href="#">Example 1!</a></li>
+											<li><a href="#">Example 2!</a></li>
+										</ul>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div> <!-- /.subject -->
+	{% endfor %}
+	</div>
+
+	<!-- TODO: The side panel is currently just boilerplate :o -->
+	<!-- SIDE PANEL -->
+	<div class="col-xs-12 col-sm-4">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Upcoming weeks</h3>
+			</div>
+			<div class="panel-body">
+				<ul class="list-group">
+					<li class="list-group-item">Monday</li>
+					<li class="list-group-item">Tuesday</li>
+					<li class="list-group-item">Wednesday</li>
+					<li class="list-group-item">Thursday</li>
+					<li class="list-group-item">Friday</li>
+				</ul>
+			</div>
+			<div class="panel-footer">
+				Next week
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}
