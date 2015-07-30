@@ -1,10 +1,11 @@
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
 
-var Announcements = require('../../models/announcements');
+var Announcement = require('../../models/announcements');
 
 router.get('/', function(req, res, next) {
-	Announcements.find({}, function(err, announcements) {
+	Announcement.find({}, function(err, announcements) {
 		if (err) {
       res.sendStatus(500);
 		} else {
@@ -13,11 +14,12 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/', function(req, res, next) {
-  var newAnnouncement = new Announcements({
+router.post('/', passport.authenticate('google-token'), function(req, res, next) {
+  var newAnnouncement = new Announcement({
     title : req.body.title,
     body : req.body.body,
     created : Date.now(),
+		updated_at: Date.now(),
     author : req.user._id
   });
 
