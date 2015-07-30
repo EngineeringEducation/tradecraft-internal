@@ -4,7 +4,7 @@ var router = express.Router();
 var Appeal = require('../../models/appeals');
 
 router.get('/', function(req, res, next) {
-	Appeal.find({status:'NEW'})
+	Appeal.find({status:'OPEN'})
 	.populate("author")
 	.exec(function(err, appeals) {
 		if (err) {
@@ -18,7 +18,9 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
 	var newAppeal = new Appeal({
 		author:req.user._id,
-		status:'NEW'
+		need:req.need,
+		track:req.track,
+		status:'OPEN'
 	});
 	newAppeal.save(function(err, createdAppeal) {
 		if (err) {
