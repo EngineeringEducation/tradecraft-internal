@@ -10,11 +10,7 @@ router.get('/', function(req, res, next) {
 			req.data = {
 				announcements: announcements
 			};
-			if (!req.accepts("application/html")) {
-				res.send(announcements);
-			} else {
-				res.render("announcements/all.html", req);
-			}
+			res.render("announcements/all.html", req);
 		}
 	});
 });
