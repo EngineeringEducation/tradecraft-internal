@@ -37,8 +37,9 @@ var units = require('./routes/units');
 var assignments = require('./routes/assignments');
 var examples = require('./routes/examples');
 var resources = require('./routes/resources');
-var appeals = require('./routes/appeals');
 
+var api_announcements = require('./routes/api/api-announcements');
+var api_appeals       = require('./routes/api/api-appeals');
 
 //Include Models
 var User = require('./models/user');
@@ -50,8 +51,8 @@ var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ 
-        dest: './uploads/', 
+app.use(multer({
+        dest: './uploads/',
         rename: function (fieldname, filename) {
             return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
         }
@@ -106,7 +107,7 @@ app.use(function(req, res, next) {
 
 //// AUTHENTICATION RELATED
     //Tabbed over because it's a big hunk I want to factor out.
-        
+
     // Sessions
     //Sets up a session instance, tells the app to use it
     //Sets up a function to generate unique identifiers for each session
@@ -127,9 +128,9 @@ app.use(function(req, res, next) {
     }));
 
     // Passport setup
-    // OK YOU GOTTA ENABLE GOOGLE+ or this shit don't work 
+    // OK YOU GOTTA ENABLE GOOGLE+ or this shit don't work
     // https://github.com/jaredhanson/passport-google-oauth/issues/46
-    passport.use(new GoogleStrategy({ 
+    passport.use(new GoogleStrategy({
             clientID: GOOGLE_CLIENT_ID,
             clientSecret: GOOGLE_CLIENT_SECRET,
             callbackURL: GOOGLE_CALLBACK_URL
@@ -181,17 +182,17 @@ app.use(function(req, res, next) {
         } else {
             callback("User couldn't be parsed because it is falsey", null);
         }
-        
+
     });
 
     //## AUTHENTICATION ROUTES ##
-    app.use('/auth/google', passport.authenticate('google',  
+    app.use('/auth/google', passport.authenticate('google',
         { scope: ['https://www.googleapis.com/auth/plus.login',
         'https://www.googleapis.com/auth/plus.profile.emails.read',
         'https://www.googleapis.com/auth/calendar'] }),
         function(req, res){
             console.log("response after scopes");
-        } 
+        }
     );
 
     //redirect after authenticate
@@ -224,8 +225,9 @@ app.use('/units', units);
 app.use('/assignments', assignments);
 app.use('/examples', examples);
 app.use('/resources', resources);
-app.use('/appeals', appeals);
 
+app.use('/api/announcements', api_announcements);
+app.use('/api/appeals', api_appeals);
 
 /// ### One-off, temporary, factor out later
 ///These will turn into full-blown controllers later

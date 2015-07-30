@@ -79,7 +79,7 @@
     </object>
     <object type="LMREQUEST" id="z104">
         <attribute name="uuid" type="string">97147B92-629A-4D17-93F9-CA95417A1E28</attribute>
-        <attribute name="url" type="string">http://localhost:3000/announcements</attribute>
+        <attribute name="url" type="string">http://localhost:3000/api/announcements</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -90,7 +90,7 @@
         <attribute name="name" type="string">GET Announcements</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z109 z102"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z102 z109"></relationship>
     </object>
     <object type="LMCOOKIEJAR" id="z105">
         <attribute name="uuid" type="string">CD5D36DB-0EF0-4C27-8F3D-CB4C4021AA58</attribute>
@@ -128,7 +128,7 @@
     </object>
     <object type="LMREQUEST" id="z110">
         <attribute name="uuid" type="string">F5E9F6F5-2B39-4AB6-A37E-A34AF66139E8</attribute>
-        <attribute name="url" type="string">http://localhost:3000/appeals</attribute>
+        <attribute name="url" type="string">http://localhost:3000/api/appeals</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -163,15 +163,15 @@
     </object>
     <object type="LMREQUEST" id="z113">
         <attribute name="uuid" type="string">EB3928A5-A4DE-4B00-9EBE-71E7DAF68F33</attribute>
-        <attribute name="url" type="string">http://localhost:3000/appeals/new</attribute>
+        <attribute name="url" type="string">http://localhost:3000/api/appeals</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
         <attribute name="redirectauthorization" type="bool">0</attribute>
-        <attribute name="method" type="string">GET</attribute>
+        <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
         <attribute name="order" type="int64">1</attribute>
-        <attribute name="name" type="string">GET to Create New Appeal (needs login info)</attribute>
+        <attribute name="name" type="string">POST Appeal (needs login info)</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z112"></relationship>
@@ -189,7 +189,7 @@
     <object type="LMREQUEST" id="z115">
         <attribute name="body" type="string">[{"data":{"json":"{\\"status\\":\\"COMPLETE\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">3399C2B2-0431-4332-8D64-2885CEE673BD</attribute>
-        <attribute name="url" type="string">http://localhost:3000/appeals/55a5b56c0cbed449c05d59e8</attribute>
+        <attribute name="url" type="string">http://localhost:3000/api/appeals/55a5b56c0cbed449c05d59e8</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -204,7 +204,7 @@
     </object>
     <object type="LMREQUEST" id="z116">
         <attribute name="uuid" type="string">5238C743-0E01-4DB1-A199-48906C785068</attribute>
-        <attribute name="url" type="string">http://localhost:3000/appeals/55a5b56c0cbed449c05d59e8</attribute>
+        <attribute name="url" type="string">http://localhost:3000/api/appeals/55a5b56c0cbed449c05d59e8</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
