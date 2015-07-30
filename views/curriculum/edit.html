@@ -17,7 +17,7 @@
 
 	<h3>Units</h3>
 	<div id="units" class="row"></div>
-	<a id="new_resource" class="btn btn-success btn-lg" data-toggle="modal" data-target="#unitModal">
+	<a id="add_units" class="btn btn-success btn-lg" data-toggle="modal" data-target="#unitModal">
 		<span class="glyphicon glyphicon-plus"></span> Add Units
 	</a>
 
@@ -170,7 +170,7 @@ var examples = new Examples();
 $("#new_example").on("click", function(e) {
 	var newForm = new NewExampleFormView({collection: examples});
 	newForm.render();
-	$("#examples").prepend(newForm.$el)
+	$("#examples").prepend(newForm.$el);
 });
 
 

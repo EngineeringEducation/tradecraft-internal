@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var _ = require('underscore')
+var _ = require('underscore');
 
 var Curriculum = require('../models/curriculum');
 var Assignment = require('../models/assignments');
@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/all', function(req, res, next) {
-	req.data = {}
+	req.data = {};
 	Curriculum.find({}).populate('units').exec(function(err, curriculum) {
 		req.data.curriculum = curriculum;
 		res.render("curriculum/all_curriculum.html", req);
@@ -22,10 +22,10 @@ router.get('/all', function(req, res, next) {
 router.get("/new", function(req, res, next) {
 	req.data = {};
 	Curriculum.find({published: true}).exec(function(err, curriculum) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
-			if (err) {console.log(err)};
+			if (err) {console.log(err);}
 			req.data.assignments = assignments;
 			Units.find({}).exec(function (err, units) {
 				req.data.units = units;
@@ -69,7 +69,7 @@ router.post("/", function(req, res, next) {
 		req.body.assignments = [req.body.assignments];
 	}
 
-	console.log(req.body)
+	console.log(req.body);
 
 	//Create the new curriculum to be saved.
 	var curriculum = Curriculum({
@@ -97,11 +97,11 @@ router.post("/", function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
 	req.data = {};
-	if (req.query.publish == "true") {
+	if (req.query.publish === "true") {
 		Curriculum.findByIdAndUpdate(req.params.id, {published: true});
 		res.redirect("/curriculum/" + req.params.id);
 	}
-	if (req.query.publish == "false") {
+	if (req.query.publish === "false") {
 		Curriculum.findByIdAndUpdate(req.params.id, {published: false});
 		res.redirect("/curriculum/" + req.params.id);
 	}

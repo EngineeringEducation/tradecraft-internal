@@ -27,13 +27,13 @@ router.get('/all', function(req, res, next) {
 });
 
 router.get("/new", function(req, res, next) {
-	req.data = {}
+	req.data = {};
 	Curriculum.find().exec(function(err, curriculum) {
 		req.data.curriculum = curriculum;
 		Assignment.find({}).exec(function(err, assignments) {
 			req.data.assignments = assignments;
 			Unit.find({}).exec(function(err, units) {
-				req.data.units = units
+				req.data.units = units;
 				res.render("curriculum/units/new.html", req);
 			});
 		});
