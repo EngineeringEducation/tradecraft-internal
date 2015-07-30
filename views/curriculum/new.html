@@ -241,10 +241,11 @@ $("#unitSave").on("click", function(e) {
 	_.each($("#newUnit").serializeArray(), function(e, i, l) {
 		//#TODO This seems hacky and like I shouldn't have to do this.
 		//Probably just not finding a good form serializer
+		console.log("name: ", e.name, " in dict: ", form[e.name], " value:", e.value)
 		if (!form[e.name]) {
 			form[e.name] = e.value;
 		} else {
-			if (typeof form[e.name] === "Array") {
+			if (form[e.name].push) {
 				form[e.name].push(e.value);
 			} else {
 				form[e.name] = [form[e.name], e.value];
