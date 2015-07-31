@@ -31,7 +31,7 @@ var ExampleView = Backbone.View.extend({
 
 var NewExampleFormView = Backbone.View.extend({
 	initialize: function(){
-		this.model.bind("change", this.render, this);
+		this.collection.bind("change", this.render, this);
 	},
 	tagname: 'div',
 	attributes : {
@@ -73,7 +73,7 @@ var NewExampleFormView = Backbone.View.extend({
 
 var ExampleCollectionView = Backbone.View.extend({
 	initialize: function(){
-		this.model.bind("change", this.render, this);
+		this.collection.bind("change", this.render, this);
 	},
 	tagname: 'div',
 	attributes : {

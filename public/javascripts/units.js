@@ -35,7 +35,7 @@ var UnitView = Backbone.View.extend({
 
 var UnitCollectionView = Backbone.View.extend({
 	initialize: function(){
-		this.model.bind("change", this.render, this);
+		this.collection.bind("change", this.render, this);
 	},
 	tagname: 'div',
 	attributes : {

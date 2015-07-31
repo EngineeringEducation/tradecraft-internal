@@ -31,7 +31,7 @@ var ResourceView = Backbone.View.extend({
 
 var NewResourceFormView = Backbone.View.extend({
 	initialize: function(){
-		this.model.bind("change", this.render, this);
+		this.collection.bind("change", this.render, this);
 	},
 	tagname: 'div',
 	attributes : {
@@ -73,7 +73,7 @@ var NewResourceFormView = Backbone.View.extend({
 
 var ResourceCollectionView = Backbone.View.extend({
 	initialize: function(){
-		this.model.bind("change", this.render, this);
+		this.collection.bind("change", this.render, this);
 	},
 	tagname: 'div',
 	attributes : {
