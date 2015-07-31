@@ -7,7 +7,7 @@
     "futurehostile" : true,
     "nonew" : true,
     "notypeof" : true,
-    "undef" : true,
+    "undef" : false,
     "globals" : {
         "require" : false,
         "__dirname": false,
