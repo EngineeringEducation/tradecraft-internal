@@ -10,6 +10,9 @@ var Examples = Backbone.Collection.extend({
 
 
 var ExampleView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-2"
@@ -27,6 +30,9 @@ var ExampleView = Backbone.View.extend({
 });
 
 var NewExampleFormView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-3"
@@ -66,12 +72,15 @@ var NewExampleFormView = Backbone.View.extend({
 });
 
 var ExampleCollectionView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "examples"
 	},
 	events: {
-		'click .close' : 'remove'
+		'click .close' : 'close'
 	},
 	render : function() {
 		this.$el.empty();
@@ -81,14 +90,13 @@ var ExampleCollectionView = Backbone.View.extend({
 			this.$el.append(exampleView.$el);
 		}, this);
 	},
-	remove: function() {
+	close: function() {
 		//Find what one was clicked
 		var id = this.$("input").val();
 		//Remove it from the collection
 		this.collection.remove(id);
-		//Rerender and replace
+		//Replace
 		var p = this.el.parent;
-		this.render();
 		$(p).append(this.$el);
 	}
 });

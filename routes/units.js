@@ -59,10 +59,6 @@ router.post("/", function(req, res, next) {
 		req.body.dependencies = [req.body.dependencies];
 	}
 
-	if (req.body.dependencyOf && !req.body.dependencyOf.push) {
-		req.body.dependencyOf = [req.body.dependencyOf];
-	}
-
 	if (req.body.related && !req.body.related.push) {
 		req.body.related = [req.body.related];
 	}

@@ -3,7 +3,7 @@
 {% block body %}
 <h1>{{data.curricula.subject}}</h1>
 <form class="form" id="newSubject" action="/curriculum/{{data.curricula._id}}" method="POST">
-	<button class="btn btn-success">Save</button>
+	<button class="btn btn-success" id="saveCurricula">Save</button>
 
 	<div class="form-group">
 	    <label for="new_subject_name">Subject:</label>
@@ -25,7 +25,7 @@
 	    <label for="dependancies">Dependencies:</label>
 	    <select multiple class="form-control" name="dependencies" id="dependencies">
 		    {% for c in data.curriculum %}
-				<option value="optDependency_{{c.id}}">{{c.subject}}</option>
+				<option id="optDependency_{{c.id}}" value="{{c.id}}">{{c.subject}}</option>
 			{% endfor %}
 		</select>
 	</div>
@@ -49,7 +49,7 @@
 	<div id="assignments">
 		<select multiple class="form-control" name="assignments" >
 			{% for assignment in data.assignments %}
-				<option value="optAssignment_{{assignment._id}}" {% if data.curricula.assignments.indexOf(assignment._id) > -1 %} selected="true" {%endif%}>{{assignment.title}}</option>
+				<option id="optAssignment_{{assignment._id}}" value="{{assignment._id}}" {% if (data.curricula.assignments.indexOf and data.curricula.assignments.indexOf(assignment._id) > -1) %} selected="true" {%endif%}>{{assignment.title}}</option>
 			{% endfor %}
 		</select>
 	</div>
@@ -152,6 +152,10 @@
 <script type="text/javascript" src="/javascripts/resources.js"></script>
 <script type="text/javascript" src="/javascripts/examples.js"></script>
 <script type="text/javascript">
+//Hide save button while loading
+$("#saveCurricula").hide();
+
+
 
 
 //Resources
@@ -206,7 +210,7 @@ resourceCollectionView.render();
 $('#resources').append(resourceCollectionView.$el);
 
 {% for e in data.curricula.examples %}
-	examples.append(new Example({"_id": "{{e._id}}", link:"{{e.link}}", "linkText": "{{e.linkText}}"}));
+	examples.add(new Example({"_id": "{{e._id}}", link:"{{e.link}}", "linkText": "{{e.linkText}}"}));
 {% endfor %}
 var exampleCollectionView = new ExampleCollectionView({collection: examples});
 exampleCollectionView.render();

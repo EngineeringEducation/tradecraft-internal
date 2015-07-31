@@ -13,6 +13,9 @@ var Units = Backbone.Collection.extend({
 });
 
 var UnitView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-3"
@@ -31,12 +34,15 @@ var UnitView = Backbone.View.extend({
 });
 
 var UnitCollectionView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "units"
 	},
 	events: {
-		'click .close' : 'remove'
+		'click .close' : 'close'
 	},
 	render : function() {
 		this.$el.empty();
@@ -46,7 +52,7 @@ var UnitCollectionView = Backbone.View.extend({
 			this.$el.append(unitView.$el);
 		}, this);
 	},
-	remove: function(e) {
+	close: function(e) {
 		//Find what one was clicked
 		//#TODO: Too brittle to do manual traversal, should use a selector, which I'll figure out later.
 		var id = $(e.target.parentNode.parentNode.parentNode.children[1].children[0]).val();
