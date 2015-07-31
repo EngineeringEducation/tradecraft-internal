@@ -1,94 +1,292 @@
-.body {
-	margin-top: 60px;
+/*///// TC color palette (as of 7/7/2015) /////*/
+
+body {
+  background: #f2f2f4;
+  color: #585b60;
+  font-family: 'proxima-nova', Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.666666667;
+  min-width: 320px;
 }
 
-.emailer {
-	width : 80%;
-	height: 400px;
+.inline-block {
+  display: inline-block;
 }
 
-.done {
-	text-decoration: line-through;
+a {
+  color: #cb9c59;
 }
 
-.meta {
-  font-weight: normal;
-  font-size: 0.8em;
+a:hover,
+a:active,
+a:focus {
+  color: #a26116;
+  text-decoration: none;
 }
 
-.no-margin-top {
-  margin-top: 0;
+a.glyphicon:hover {
+  text-decoration: none;
 }
 
-.title-block {
-  margin: 15px 0;
-}
-
-.bare {
-  margin: 0;
-}
-
-.showhide-container {
-  display: none;
-}
-
-section {
-  margin-bottom: 60px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #eee;
-}
-
-h2 {
-  margin: 20px 0;
-}
-
-h3 {
-  font-weight: 200;
-}
-
-/* Community Styles */
-
-.vote {
-	padding-top:20px;
-	float: left;
-}
-
-.up {
-	padding-left: 5px;
-	padding-right: 5px;
-}
-.down {
-	padding-left: 5px;
-	padding-right: 5px;
-}
-.count {
-	padding-top: 13px;
-	float: left;
-}
-
-.community_title {
-	padding-left: 10px;
-}
-
-/* Brand styles */
-
-.logo-table {
-  width: 100%;
-  border: 1px solid #eee;
+p {
+  font-size: 18px;
+  line-height: 30px;
   margin-bottom: 30px;
 }
 
-.logo-table th,
-.logo-table td {
-  padding: 10px;
-  width: calc(100% / 6);
-  text-align: center;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7,
+small,
+p {
+  margin-top: 0;
 }
 
-.logo-table th {
-  vertical-align: top;
+h1 {
+  font-size: 60px;
+  line-height: 75px;
+  margin-bottom: 30px;
 }
 
-.logo-table td.disabled {
-  background: #f5f5f5;
+h1,
+h2 {
+  font-family: 'Libre Baskerville', Georgia, Palatino, serif;
+}
+
+h2 {
+  font-size: 30px;
+  line-height: 45px;
+  margin-bottom: 30px;
+}
+
+h1,
+h2,
+h3 {
+  color: #25272a;
+}
+
+h3 {
+  font-size: 27px;
+  line-height: 30px;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+h4,
+small,
+.small,
+caption {
+  color: #a0a1a5;
+}
+
+small,
+.small {
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 15px;
+  color: #A0A1A5;
+}
+
+hr {
+  margin: 30px 0;
+}
+
+hr,
+input,
+.panel-default {
+  border-color: #ccc;
+}
+
+/*///// COMMENCE CSSing! /////*/
+
+body {
+  padding-top: 30px;
+}
+
+.no-padding-left {
+  padding-left: 0;
+}
+
+.subject {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+}
+
+.panel {
+  margin-bottom: 30px;
+  box-shadow: 0 1px 2px #e1e1e5;
+}
+
+.panel-default>.panel-heading {
+  background-color: #e7e8ec;
+}
+
+.draggable {
+  cursor: move;
+  position: relative;
+}
+
+.draggable:active {
+  outline: 2px solid #a0a1a5;
+  background-color: #dcdce0;
+}
+
+.draggable .panel-title::before {
+  content: "\e235\e235";
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  display: inline-block;
+  height: 100%;
+  font-size: 0.85em;
+  color: #A0A1A5;
+  margin: 0 12px 0 0;
+  line-height: 1;
+  letter-spacing: -8px;
+}
+
+.panel-title .glyphicon {
+  font-size: 1em;
+  color: #A0A1A5;
+  line-height: 1.6;
+}
+
+.panel-title .glyphicon::before {
+  margin: 0 12px 0 -8px;
+  line-height: 1;
+  letter-spacing: -8px;
+}
+
+.panel-controls a.glyphicon {
+  color: #A0A1A5;
+}
+
+.panel-controls a.glyphicon:hover {
+  color: #25272A;
+}
+
+.points .glyphicon,
+.points.points-3 .glyphicon {
+  color: #25272A;
+}
+
+.points.points-1 .glyphicon {
+  color: #A0A1A5;
+}
+.points.points-1 .glyphicon:first-child {
+  color: #25272A;
+}
+
+.points-2 .glyphicon:last-child {
+  color: #A0A1A5;
+}
+
+.points .glyphicon {
+  display: inline-block;
+}
+
+.label {
+  font-family: 'proxima-nova', Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  text-transform: uppercase;
+  line-height: 15px;
+  font-size: 10px;
+  border-radius: 1px;
+  padding: 0.35em 0.85em;
+  letter-spacing: 0.75px;
+}
+
+a.label {
+  color: #fff;
+}
+
+.link-list {
+  list-style-type: none;
+}
+
+.bg-info {
+  background-color: #d9edf7 !important;
+}
+
+.panel-title {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.panel-controls {
+  display: inline-block;
+  float: right;
+}
+
+.panel-controls .glyphicon {
+  line-height: 1.75;
+}
+
+.panel-body {
+  padding: 15px 0 0 0;
+}
+
+.panel-body p {
+  padding: 0 15px;
+}
+
+.panel-body .list-group {
+  margin: 0;
+}
+
+.list-group-item {
+  border-left-width: 0;
+  border-right-width: 0;
+  background-color: inherit;
+}
+
+.list-group-item:first-child,
+.list-group-item:last-child {
+  border-radius: 0;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.vr-left {
+  padding-left: 0.65em;
+  margin-left: 0.65em;
+  border-left: 1px solid #ddd;
+}
+
+.btn.btn-primary {
+  padding: 1em 1.5em;
+}
+
+.btn-primary,
+a.btn-primary {
+  background-color: #454E62;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+}
+
+a.btn-primary:hover,
+a.btn-primary:active,
+a.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: #2E3441;
+}
+
+[aria-expanded="false"].glyphicon::before {
+  content: "\e159";
+}
+
+[aria-expanded="true"].glyphicon::before {
+  content: "\e160";
 }

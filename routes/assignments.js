@@ -8,7 +8,7 @@ var User = require("../models/user");
 
 
 router.get("/", function(req, res) {
-	
+
 	Assignment.find({}, function(err, assignments) {
 		req.data = {
 			assignments : assignments
@@ -24,10 +24,10 @@ router.get("/new", function(req, res) {
 
 router.post("/new", function(req, res) {
 	console.log("NEW ASSIGNMENT:", req.body);
-
+	var assignment = null; // To be filled by (most) switch paths
 	switch (req.body.type) {
 		case 'link':
-			var assignment = new Assignment({
+			assignment = new Assignment({
 				title : req.body.title,
 				type: "link",
 				link : {
@@ -35,10 +35,10 @@ router.post("/new", function(req, res) {
 					description : req.body.link_description[0]
 				}
 			});
-			
+
 			break;
 		case 'reading':
-			var assignment = new Assignment({
+			assignment = new Assignment({
 				title : req.body.title,
 				type: "reading",
 				reading : {
@@ -49,7 +49,7 @@ router.post("/new", function(req, res) {
 			});
 			break;
 		case 'walkthrough':
-			var assignment = new Assignment({
+			assignment = new Assignment({
 				title : req.body.title,
 				type : "walkthrough",
 				walkthrough : {
@@ -59,7 +59,7 @@ router.post("/new", function(req, res) {
 			});
 			break;
 		case 'research':
-			var assignment = new Assignment({
+			assignment = new Assignment({
 				title : req.body.title,
 				type : "research",
 				research : {
@@ -76,29 +76,29 @@ router.post("/new", function(req, res) {
 				}
 			});
 			break;
-		case undefined: 
+		case undefined:
 			res.redirect("/assignments/new", {user: req.user});
 			break;
 	}
 	if (assignment) {
 		assignment.save(function(err, assignment) {
-			if (err) console.log(err);
+			if (err) {console.log(err);}
 			done(assignment);
 		});
 	}
 
 	function done (assignment) {
-		res.redirect("/assignments/" + assignment._id)
+		res.redirect("/assignments/" + assignment._id);
 	}
 });
 
 /* GET new assignment maker */
 router.get("/:id", function(req, res) {
 	Assignment.findById(req.params.id, function(err, assignment) {
-		if (err) console.log(err);
+		if (err) {console.log(err);}
 		res.render("assignments/show.html", {user: req.user, assignment: assignment});
 	});
-	
+
 });
 
 

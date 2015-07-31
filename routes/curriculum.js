@@ -35,9 +35,24 @@ router.get("/new", function(req, res, next) {
 	});
 });
 
-/* 
+router.get("/scheduler", function(req, res, next) {
+  Curriculum.find({published: true})
+  .populate("units")
+  .populate("units.assignments")
+  .populate("units.dependencies")
+  .populate("units.examples")
+  .populate("units.resources")
+  .exec(function(err, curriculum) {
+    // TODO: Proper error handling
+    if (err) {console.log(err);}
+    console.log(curriculum);
+    res.render("curriculum/scheduler.html", {user:req.user, curriculum:curriculum});
+  });
+});
+
+/*
 Create a new curriculum
-	//#TODO 
+	//#TODO
 	//Error Checking
 	//REST this up
 */
@@ -78,10 +93,10 @@ router.post("/", function(req, res, next) {
 		overview : req.body.overview,
 		dependencies : req.body.dependencies,
 		dependencyOf : req.body.dependencyOf,
-		assignments : req.body.assignments, 
-		resources : req.body.resources, 
-		examples : req.body.examples, 
-		units : req.body.units,  
+		assignments : req.body.assignments,
+		resources : req.body.resources,
+		examples : req.body.examples,
+		units : req.body.units,
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
@@ -133,9 +148,9 @@ router.get('/:id', function(req, res, next) {
 	});
 });
 
-/* 
+/*
 Edit existing curriculum
-To conform to good REST principles tho this should be a PUT but eh, html forms. What can ya do. 
+To conform to good REST principles tho this should be a PUT but eh, html forms. What can ya do.
 Probably make this respond to PUT as well.
 */
 router.post('/:id', function(req, res, next) {
@@ -165,7 +180,7 @@ router.post('/:id', function(req, res, next) {
 	if (req.body.assignments && !req.body.assignments.push) {
 		req.body.assignments = [req.body.assignments];
 	}
-	
+
 	var curriculum = {
 		subject : req.body.subject,
 		overview : req.body.overview,

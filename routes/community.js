@@ -66,7 +66,7 @@ router.post("/submit", function(req, res, next) {
 		tweet = {
 			tweet : req.body.tweet_data
 		};
-	}	
+	}
 
 	var submission = new Community({
 		submitter: req.user._id,
@@ -97,14 +97,19 @@ router.get("/:id", function(req, res, next) {
 	Community.findById(req.params.id).populate("comments").populate("submitter").exec(function(err, submission) {
 		req.data = submission;
 		//iterator, done, finish
-		for (var i=0, d=0, f=submission.comments.length; i < submission.comments.length; i++) {
-			submission.comments[i].populate("submitter", function(err, c) {
+
+		var makeHandler = function(d, f) {
+			return function(err, c) {
 				d++;
 				console.log(d, " ", f);
 				if (d === f) {
 					res.render("community/discussion.html", req);
 				}
-			});
+			};
+		};
+
+		for (var i=0, d=0, f=submission.comments.length; i < submission.comments.length; i++) {
+			submission.comments[i].populate("submitter", makeHandler(d, f));
 		}
 		if (submission.comments.length < 1) {
 			res.render("community/discussion.html", req);

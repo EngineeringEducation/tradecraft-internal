@@ -17,7 +17,7 @@ var announcementSchema = mongoose.Schema({
 announcementSchema.pre('save', function(next) {
   // get the current date
   var currentDate = new Date();
-  
+
   // change the updated_at field to current date
   this.updated_at = currentDate;
 
@@ -25,7 +25,7 @@ announcementSchema.pre('save', function(next) {
 	if (!this.created_at) {
 		this.created_at = currentDate;
 	}
-    
+
 
   next();
 });

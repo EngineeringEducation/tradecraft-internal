@@ -10,16 +10,15 @@ router.post("/", function(req, res, next) {
 		linkText: req.body.linkText
 	});
 	resource.save(function(err, resource) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		res.send(resource);
 	});
 });
 
 
 router.get('/:id', function(req, res, next) {
-	//Edit mode
 	Resource.findById(req.params.id, function(err, resource) {
-		if (err) {console.log(err)};
+		if (err) {console.log(err);}
 		res.send(resource);
 	});
 });

@@ -1,17 +1,19 @@
+// models/appeals.js
+// an appeal is a cry for help from a student because sadness. go help them
+
 var mongoose = require('mongoose');
 var relationship = require('mongoose-relationship');
 
 //Schema Definition
-var exampleSchema = mongoose.Schema({
-    link: String,
-    linkText: String
+var appealSchema = mongoose.Schema({
+    author:{type:mongoose.Schema.ObjectId, ref:"User", childPath:"appeals"},
+    status:String
 });
 
-
+appealSchema.plugin(relationship, {relationshipPathName:'author'});
 
 // on every save, add the date
-exampleSchema.pre('save', function(next) {
-  console.log(this);
+appealSchema.pre('save', function(next) {
   // get the current date
   var currentDate = new Date();
 
@@ -27,6 +29,6 @@ exampleSchema.pre('save', function(next) {
 });
 
 //Model Definition
-var Example = mongoose.model('Example', exampleSchema);
+var Appeal = mongoose.model('Appeal', appealSchema);
 
-module.exports = Example;
+module.exports = Appeal;
