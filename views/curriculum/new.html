@@ -164,7 +164,7 @@ var resources = new Resources();
 $("#new_resource").on("click", function(e) {
 	var newForm = new NewResourceFormView({collection: resources});
 	newForm.render();
-	$("#resources").prepend(newForm.$el)
+	$("#resources").prepend(newForm.$el);
 });
 
 
@@ -174,7 +174,7 @@ var examples = new Examples();
 $("#new_example").on("click", function(e) {
 	var newForm = new NewExampleFormView({collection: examples});
 	newForm.render();
-	$("#examples").prepend(newForm.$el)
+	$("#examples").prepend(newForm.$el);
 });
 
 
