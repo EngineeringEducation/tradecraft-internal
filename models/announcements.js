@@ -5,11 +5,11 @@ var mongoose = require('mongoose');
 
 
 var announcementSchema = mongoose.Schema({
-	title : String,
-	body : String,
-	created : Date,
-	updated_at : Date,
-	author : { type:mongoose.Schema.ObjectId, ref:"User", childPath:"announcements" }
+	title : {type:String, required:true},
+	body : {type:String, required:true},
+	created : {type:Date, required:true},
+	updated_at : {type:Date, required:true},
+	author : { type:mongoose.Schema.ObjectId, ref:"User", childPath:"announcements", required:true }
 });
 
 

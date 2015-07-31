@@ -61,6 +61,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var GoogleTokenStrategy = require('passport-google-token').Strategy;
 
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -164,6 +165,27 @@ app.use(function(req, res, next) {
     ));
     app.use(passport.initialize());
     app.use(passport.session());
+
+    // Passport API setup
+    passport.use(new GoogleTokenStrategy({
+            clientID: GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET
+        },
+        function(accessToken, refreshToken, profile, done) {
+            User.find({provider_id: profile.id}, function(err, user) {
+                if (err) {throw err;}
+                if (user.length > 0) {
+                    done(err, user[0]);
+                } else {
+                  // TODO: Make sure it gets passed up the grapevine that users must currently sign up on the web first so all their initial signup stuff is there
+                  throw null;
+                }
+            });
+        }
+    ));
+    app.use(passport.initialize());
+    app.use(passport.session());
+
 
 
     //// ### OTHER RANDOM SHIT
