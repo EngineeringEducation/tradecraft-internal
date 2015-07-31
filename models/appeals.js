@@ -1,5 +1,6 @@
 // models/appeals.js
-// an appeal is a cry for help from a student because sadness. go help them
+// An appeal describes a student's need which they hope to get help with.
+// It's addressed to a particular track, starts as an open request, and is eventually addressed or retracted.
 
 var mongoose = require('mongoose');
 var relationship = require('mongoose-relationship');
@@ -7,7 +8,9 @@ var relationship = require('mongoose-relationship');
 //Schema Definition
 var appealSchema = mongoose.Schema({
     author:{type:mongoose.Schema.ObjectId, ref:"User", childPath:"appeals"},
-    status:String
+    need:String, // User-entered text explaining their problem
+    track:{type:String, enum:['SALES', 'DESIGN', 'GROWTH', 'ENGINEERING']}, // Target track
+    status:{type:String, enum:['OPEN', 'ADDRESSED', 'RETRACTED']} // OPEN <-> ADDRESSED|RETRACTED
 });
 
 appealSchema.plugin(relationship, {relationshipPathName:'author'});

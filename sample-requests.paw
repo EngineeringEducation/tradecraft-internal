@@ -162,6 +162,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z113"></relationship>
     </object>
     <object type="LMREQUEST" id="z113">
+        <attribute name="body" type="string">[{"data":{"json":"{}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">EB3928A5-A4DE-4B00-9EBE-71E7DAF68F33</attribute>
         <attribute name="url" type="string">http://localhost:3000/api/appeals</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
