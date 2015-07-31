@@ -6,7 +6,6 @@ var Curriculum = require('../models/curriculum');
 var Unit = require('../models/units');
 var Assignment = require('../models/assignments');
 
-/* GET curriculum page. */
 router.get('/', function(req, res, next) {
 	if (req.accepts(['json', 'text'])) {
 		Unit.find({}, function(err, units) {
@@ -47,8 +46,7 @@ Create a new unit
 */
 router.post("/", function(req, res, next) {
 
-	console.log("Request Body: ", req.body);
-
+	//Make sure these are arrays and don't make empty arrays
 	if (req.body.examples && !req.body.examples.push) {
 		req.body.examples = [req.body.examples];
 	}
@@ -61,10 +59,6 @@ router.post("/", function(req, res, next) {
 		req.body.dependencies = [req.body.dependencies];
 	}
 
-	if (req.body.dependencyOf && !req.body.dependencyOf.push) {
-		req.body.dependencyOf = [req.body.dependencyOf];
-	}
-
 	if (req.body.related && !req.body.related.push) {
 		req.body.related = [req.body.related];
 	}
@@ -73,7 +67,6 @@ router.post("/", function(req, res, next) {
 		req.body.assignments = [req.body.assignments];
 	}
 
-	console.log("Form body: ",req.body);
 	//Create the new curriculum to be saved.
 	var unit = Unit({
 		subject : req.body.subject,
@@ -87,8 +80,6 @@ router.post("/", function(req, res, next) {
 		published: true, // hard coded for now
 		gif: req.body.gif
 	});
-
-
 
 	unit.save(function(err) {
 		//If there is a mongodb error, also rerender and send values back down.

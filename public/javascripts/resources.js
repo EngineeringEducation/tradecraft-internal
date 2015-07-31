@@ -10,6 +10,9 @@ var Resources = Backbone.Collection.extend({
 
 
 var ResourceView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-2"
@@ -27,6 +30,9 @@ var ResourceView = Backbone.View.extend({
 });
 
 var NewResourceFormView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "col-md-3"
@@ -66,12 +72,15 @@ var NewResourceFormView = Backbone.View.extend({
 });
 
 var ResourceCollectionView = Backbone.View.extend({
+	initialize: function(){
+		this.model.bind("change", this.render, this);
+	},
 	tagname: 'div',
 	attributes : {
 		"class" : "resources"
 	},
 	events: {
-		'click .close' : 'remove'
+		'click .close' : 'close'
 	},
 	render : function() {
 		this.$el.empty();
@@ -81,14 +90,13 @@ var ResourceCollectionView = Backbone.View.extend({
 			this.$el.append(resourceView.$el);
 		}, this);
 	},
-	remove: function() {
+	close: function() {
 		//Find what one was clicked
 		var id = this.$("input").val();
 		//Remove it from the collection
 		this.collection.remove(id);
-		//Rerender and replace
+		//Replace
 		var p = this.el.parent;
-		this.render();
 		$(p).append(this.$el);
 	}
 });

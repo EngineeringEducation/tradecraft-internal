@@ -13,11 +13,11 @@ var curriculumSchema = mongoose.Schema({
     track : String,
     subject: String,
     overview: String,
-    dependencies : [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencyOf"}],
+    dependencies : [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "related"}],
     resources : [{type: mongoose.Schema.ObjectId, ref: "Resource", childPath: "resources"}],
     examples : [{type: mongoose.Schema.ObjectId, ref: "Example", childPath: "examples"}],
     assignments: [{ type:mongoose.Schema.ObjectId, ref:"Assignment", childPath:"subjects" }],
-    dependencyOf: [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencies"}],
+    related: [{type: mongoose.Schema.ObjectId, ref: "Curriculum", childPath: "dependencies"}],
     units: [{type: mongoose.Schema.ObjectId, ref: "Unit", childPath: "subject"}],
     published: Boolean,
     gif: String
@@ -28,7 +28,7 @@ curriculumSchema.plugin(relationship, { relationshipPathName:'units' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'examples' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'assignments' });
 curriculumSchema.plugin(relationship, { relationshipPathName:'dependencies' });
-curriculumSchema.plugin(relationship, { relationshipPathName:'dependencyOf' });
+curriculumSchema.plugin(relationship, { relationshipPathName:'related' });
 
 // on every save, add the date
 curriculumSchema.pre('save', function(next) {
