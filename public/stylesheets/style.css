@@ -3,7 +3,7 @@
 body {
   background: #f2f2f4;
   color: #585b60;
-  font-family: 'proxima-nova', Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: proxima-nova, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.666666667;
   min-width: 320px;
@@ -104,7 +104,7 @@ input,
 /*///// COMMENCE CSSing! /////*/
 
 body {
-  padding-top: 30px;
+  padding-top: 70px;
 }
 
 .no-padding-left {
