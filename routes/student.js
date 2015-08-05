@@ -67,7 +67,7 @@ router.get("/profile", function (req, res) {
 });
 
 router.get("/dashboard", function(req, res) {
-	res.render("dashboards/student.html")
+	res.render("dashboards/student.html", req);
 });
 
 module.exports = router;
