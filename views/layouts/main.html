@@ -53,7 +53,11 @@
             </div>
             {% endif %}
             {% if user %}
-              <li id="student_today_link"><a href="/student">Today</a></li>
+            {% if user.instructor %}
+              <li id="instructor_today_link"><a href="/dashboard">Today</a></li>
+            {% else %}
+              <li id="student_today_link"><a href="/student/dashboard">Today</a></li>
+            {% endif %}
               <li id="brand_link"><a href="/curriculum/all">Curriculum</a></li>
               <li id="brand_link"><a href="/assignments">Assignments</a></li>
               <li id="brand_link"><a href="/tradecraft-brand">Brand</a></li>
