@@ -1,0 +1,249 @@
+{% extends "layouts/main.html" %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="/stylesheets/radar-chart.css">
+{% endblock %}
+{% block body %}
+<!-- Main content -->
+<div class="col-md-8">
+	<!-- Section 1 -->
+	<div class="row">
+		<!-- Picture, name and props row -->
+		<div class="row">
+			<div class="col-md-3">
+				<img class="img" id="google_plus" src="{{user.getImageURL(150)}}">
+			</div>
+			<div class="col-md-9">
+				<a class="btn btn-primary btn-xs pull-right">Edit Profile <i class="glyphicon glyphicon-wrench"></i></a>
+				<h2>{{user.name.givenName}} {{user.name.familyName}}</h2>
+				<i class="glyphicon glyphicon-thumbs-up"></i>
+				<i class="glyphicon glyphicon-thumbs-up"></i>
+				<i class="glyphicon glyphicon-thumbs-up"></i>
+				<a href="#">Give props to someone else</a>
+			</div>
+		</div>
+		<!-- Career Goals -->
+		<div class="row">
+
+			<div class="col-md-3">
+				<div class="center-block h3">Roles</div>
+				<span class="label label-info">Professor</span>
+				<span class="label label-info">Senior Developer</span>
+				<span class="label label-info">Lead Developer</span>
+				<span class="label label-info">CTO</span>
+				<span class="label label-info">Engineering Manager</span>
+				<span class="label label-info">Security Consultant</span>
+			</div>
+			<div class="col-md-3">
+				<div class="center-block h3">Location</div>
+				<span class="label label-success">San Francisco, CA</span>
+				<span class="label label-success">Oakland, CA</span>
+				<span class="label label-warning">Los Angeles, CA</span>
+			</div>
+			<div class="col-md-3">
+				<div class="center-block h3">Buckets</div>
+				<span class="label label-success">FinTech</span>
+				<span class="label label-success">HealthTech</span>
+				<span class="label label-danger">B2B Software</span>
+			</div>
+			<div class="col-md-3">
+				<div class="center-block h3">Company Size</div>
+				<span class="label label-success">Series A</span>
+				<span class="label label-success">Series B</span>
+				<span class="label label-warning">Series C+</span>
+				<span class="label label-danger">Public</span>
+			</div>
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div id="hard-skills"></div>
+		</div>
+		<div class="col-md-6">
+			<div id="soft-skills"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="h2">Learning Roadmap</div>
+			<ul class="list-group">
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post
+					<ul>
+						<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+						<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+						<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+					</ul>
+				</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+				<li class="list-group-item"><input type="checkbox" /> Write a blog post</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- Sidebar -->
+<div class="col-md-4">
+	<div class="row">
+		<div class="h4">Mentors Today</div>
+		<table class="table">
+			<tr>
+				<td>Kristen Mentor</td>
+			</tr>
+			<tr>
+				<td>Sally Mentor</td>
+			</tr>
+			<tr>
+				<td>David Mentor</td>
+			</tr>
+			<tr>
+				<td>John Mentor</td>
+			</tr>
+			<tr>
+				<td>Baltazar Mentor</td>
+			</tr>
+			<tr>
+				<td>June Mentor</td>
+			</tr>
+		</table>
+	</div>
+	<div class="row">
+		<div class="h4">Curriculum This Week</div>
+		<table class="table">
+			<tr>
+				<td>Python</td>
+			</tr>
+			<tr>
+				<td>Dancing</td>
+			</tr>
+			<tr>
+				<td>UI Sketches</td>
+			</tr>
+			<tr>
+				<td>Telekenesis</td>
+			</tr>
+			<tr>
+				<td>Growth Hacking</td>
+			</tr>
+		</table>
+	</div>
+	<div class="row">
+		<div class="h4">Prep for Next Week</div>
+		<table class="table">
+			<tr>
+				<td>
+					<input type="checkbox"> Read a book
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox"> Watch this video
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox"> Fill out this thing
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox"> Think about cookies
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="/javascripts/radar-chart.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+		//Data
+		var hard = [
+			{
+				className: 'tn2',
+				axes: [
+					{axis: "strength", value: 10}, 
+					{axis: "intelligence", value: 14}, 
+					{axis: "charisma", value: 16},  
+					{axis: "dexterity", value: 18},  
+					{axis: "luck", value: 11}
+				]
+			},
+			{
+				className: 'tn1',
+				axes: [
+					{axis: "strength", value: 6}, 
+					{axis: "intelligence", value: 7}, 
+					{axis: "charisma", value: 10},  
+					{axis: "dexterity", value: 13},  
+					{axis: "luck", value: 9}
+				]
+			},
+			{
+				className: 'tn0', // optional can be used for styling
+				axes: [
+					{axis: "strength", value: 2}, 
+					{axis: "intelligence", value: 3}, 
+					{axis: "charisma", value: 5},  
+					{axis: "dexterity", value: 3},  
+					{axis: "luck", value: 2}
+				]
+			}
+		];
+
+		var soft = [
+		  {
+				className: 'tn2',
+				axes: [
+					{axis: "strength", value: 10}, 
+					{axis: "intelligence", value: 14}, 
+					{axis: "charisma", value: 16},  
+					{axis: "dexterity", value: 18},  
+					{axis: "luck", value: 11}
+				]
+			},
+			{
+				className: 'tn1',
+				axes: [
+					{axis: "strength", value: 6}, 
+					{axis: "intelligence", value: 7}, 
+					{axis: "charisma", value: 10},  
+					{axis: "dexterity", value: 13},  
+					{axis: "luck", value: 9}
+				]
+			},
+			{
+				className: 'tn0', // optional can be used for styling
+				axes: [
+					{axis: "strength", value: 2}, 
+					{axis: "intelligence", value: 3}, 
+					{axis: "charisma", value: 5},  
+					{axis: "dexterity", value: 3},  
+					{axis: "luck", value: 2}
+				]
+			}
+		];
+
+		//Options for the Radar chart, other than default
+		var mycfg = {
+		  w: 350,
+		  h: 350
+		};
+
+		//Call function to draw the Radar chart
+		RadarChart.draw("#hard-skills", hard, mycfg);
+		RadarChart.draw("#soft-skills", soft, mycfg);
+		
+	</script>
+{% endblock %}
