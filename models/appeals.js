@@ -7,10 +7,10 @@ var relationship = require('mongoose-relationship');
 
 //Schema Definition
 var appealSchema = mongoose.Schema({
-    author:{type:mongoose.Schema.ObjectId, ref:"User", childPath:"appeals"},
-    need:String, // User-entered text explaining their problem
-    track:{type:String, enum:['SALES', 'DESIGN', 'GROWTH', 'ENGINEERING']}, // Target track
-    status:{type:String, enum:['OPEN', 'ADDRESSED', 'RETRACTED']} // OPEN <-> ADDRESSED|RETRACTED
+    author:{type:mongoose.Schema.ObjectId, ref:"User", childPath:"appeals", required:true},
+    need:{type:String, required:true}, // User-entered text explaining their problem
+    track:{type:String, required:true, enum:['SALES', 'DESIGN', 'GROWTH', 'ENGINEERING']}, // Target track
+    status:{type:String, required:true, enum:['OPEN', 'ADDRESSED', 'RETRACTED']} // OPEN <-> ADDRESSED|RETRACTED
 });
 
 appealSchema.plugin(relationship, {relationshipPathName:'author'});

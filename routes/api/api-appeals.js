@@ -1,4 +1,5 @@
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
 
 var Appeal = require('../../models/appeals');
@@ -15,11 +16,11 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', passport.authenticate('google-token'), function(req, res, next) {
 	var newAppeal = new Appeal({
 		author:req.user._id,
-		need:req.need,
-		track:req.track,
+		need:req.body.need,
+		track:req.body.track,
 		status:'OPEN'
 	});
 	newAppeal.save(function(err, createdAppeal) {
