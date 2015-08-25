@@ -5,7 +5,9 @@ var router = express.Router();
 var Announcement = require('../../models/announcements');
 
 router.get('/', function(req, res, next) {
-	Announcement.find({}, function(err, announcements) {
+	Announcement.find({visible:true})
+	.populate("author")
+	.exec(function(err, announcements) {
 		if (err) {
       res.sendStatus(500);
 		} else {
@@ -16,11 +18,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/', passport.authenticate('google-token'), function(req, res, next) {
   var newAnnouncement = new Announcement({
-    title : req.body.title,
-    body : req.body.body,
-    created : Date.now(),
-		updated_at: Date.now(),
-    author : req.user._id
+    title:req.body.title,
+    body:req.body.body,
+    created:Date.now(),
+		updated_at:Date.now(),
+		visible:true,
+    author:req.user._id
   });
 
   newAnnouncement.save(function(err, createdAnnouncement) {
@@ -30,6 +33,17 @@ router.post('/', passport.authenticate('google-token'), function(req, res, next)
       res.json(createdAnnouncement);
     }
   });
+});
+
+router.post('/:announcement_id/hide', passport.authenticate('google-token'), function(req, res, next) {
+	// TODO: restrict this function to staff and the author?
+	Announcement.findOneAndUpdate({_id:req.params.announcement_id}, {visible:false}, {new:true}, function(err, announcement) {
+		if (err) {
+			res.sendStatus(500);
+		} else {
+			res.json(announcement);
+		}
+	});
 });
 
 module.exports = router;
